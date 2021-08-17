@@ -9,13 +9,13 @@
 - [Documentation of the ApplicationPattern](https://github.com/openBackhaul/ApplicationPattern/tree/tsi)
 
 ### Open API specification (Swagger)
-- []()
+- [OamLog_0.0.1_tsi.210817.1050](OamLog_0.0.1_tsi.210817.1050.yaml)
 
 ### Test Cases (Postman Export) and Data File
 - []()
 
 ### Load File (JSON)
-- []()
+- [OamLog_0.0.1_tsi.210817.1050+data.1](OamLog_0.0.1_tsi.210817.1050+data.1.json)
 
 ### Publication
 - No official publication planned
