@@ -8,8 +8,17 @@
 ### Documentation
 - [Documentation of the ApplicationPattern](https://github.com/openBackhaul/ApplicationPattern/tree/tsi)
 
+### Services
+- [OamLog_0.0.2_tsi.211208.2015+services.1](./OamLog_0.0.2_tsi.211208.2015+services.1.xlsx)
+
+### Forwardings
+- [OamLog_0.0.2_tsi.211208.2015+forwardings.1](./OamLog_0.0.2_tsi.211208.2015+forwardings.1.xlsx)
+
 ### Open API specification (Swagger)
-- [OamLog_0.0.1_tsi.210817.1050](OamLog_0.0.1_tsi.210817.1050.yaml)
+- [OamLog_0.0.2_tsi.211208.2015](OamLog_0.0.2_tsi.211208.2015.yaml)
+
+### Load File (JSON)
+- [OamLog_0.0.2_tsi.211208.2015+data.1](OamLog_0.0.2_tsi.211208.2015+data.1.json)
 
 ### Test Cases (Postman Export) and Data File
 - []()
