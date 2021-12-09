@@ -21,10 +21,7 @@
 - [OamLog_0.0.2_tsi.211208.2015+data.1](OamLog_0.0.2_tsi.211208.2015+data.1.json)
 
 ### Test Cases (Postman Export) and Data File
-- []()
-
-### Load File (JSON)
-- [OamLog_0.0.1_tsi.210817.1050+data.1](OamLog_0.0.1_tsi.210817.1050+data.1.json)
+- 
 
 ### Publication
 - No official publication planned
