@@ -3,7 +3,7 @@ info:
   title: OamLog
   version: 0.0.2
 servers:
-- url: https://10.118.125.157:1003
+- url: http://localhost:3003
   description: Initial deployment
 paths:
   /v1/bequeath-your-data-and-die:

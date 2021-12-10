@@ -52,7 +52,7 @@
                             },
                             "operation-server-interface-configuration": {
                                 "life-cycle-state": "operation-server-interface-1-0:LIFE_CYCLE_STATE_TYPE_EXPERIMENTAL",
-                                "operation-key": "Operation key not yet provided."
+                                "operation-key": "11111"
                             }
                         }
                     }
@@ -633,9 +633,9 @@
                         "tcp-server-interface-1-0:tcp-server-interface-pac": {
                             "tcp-server-interface-configuration": {
                                 "local-address": {
-                                    "ipv-4-address": "10.118.125.157"
+                                    "ipv-4-address": "192.168.178.22"
                                 },
-                                "local-port": 1003
+                                "local-port": 3003
                             }
                         }
                     }
@@ -704,10 +704,10 @@
                             "tcp-client-interface-configuration": {
                                 "remote-address": {
                                     "ip-address": {
-                                        "ipv-4-address": "10.118.125.157"
+                                        "ipv-4-address": "192.168.178.22"
                                     }
                                 },
-                                "remote-port": 1003
+                                "remote-port": 3003
                             }
                         }
                     }
@@ -926,10 +926,10 @@
                             "tcp-client-interface-configuration": {
                                 "remote-address": {
                                     "ip-address": {
-                                        "ipv-4-address": "10.118.125.157"
+                                        "ipv-4-address": "192.168.178.22"
                                     }
                                 },
-                                "remote-port": 7003
+                                "remote-port": 3003
                             }
                         }
                     }
@@ -1173,10 +1173,10 @@
                             "tcp-client-interface-configuration": {
                                 "remote-address": {
                                     "ip-address": {
-                                        "ipv-4-address": "10.118.125.157"
+                                        "ipv-4-address": "192.168.178.22"
                                     }
                                 },
-                                "remote-port": 1000
+                                "remote-port": 8080
                             }
                         }
                     }
@@ -1344,10 +1344,10 @@
                             "tcp-client-interface-configuration": {
                                 "remote-address": {
                                     "ip-address": {
-                                        "ipv-4-address": "10.118.125.157"
+                                        "ipv-4-address": "192.168.178.22"
                                     }
                                 },
-                                "remote-port": 1002
+                                "remote-port": 3002
                             }
                         }
                     }
@@ -1441,10 +1441,10 @@
                             "tcp-client-interface-configuration": {
                                 "remote-address": {
                                     "ip-address": {
-                                        "ipv-4-address": "10.118.125.157"
+                                        "ipv-4-address": "192.168.178.22"
                                     }
                                 },
-                                "remote-port": 1003
+                                "remote-port": 3003
                             }
                         }
                     }
@@ -1538,10 +1538,10 @@
                             "tcp-client-interface-configuration": {
                                 "remote-address": {
                                     "ip-address": {
-                                        "ipv-4-address": "10.118.125.157"
+                                        "ipv-4-address": "192.168.178.22"
                                     }
                                 },
-                                "remote-port": 1004
+                                "remote-port": 3004
                             }
                         }
                     }
@@ -1585,7 +1585,7 @@
                         "operation-client-interface-1-0:operation-client-interface-pac": {
                             "operation-client-interface-configuration": {
                                 "operation-name": "/v1/update-ltp",
-                                "operation-key": "Operation key not yet provided."
+                                "operation-key": "11111"
                             },
                             "operation-client-interface-status": {
                                 "operational-state": "operation-client-interface-1-0:OPERATIONAL_STATE_TYPE_NOT_YET_DEFINED",
@@ -1760,10 +1760,10 @@
                             "tcp-client-interface-configuration": {
                                 "remote-address": {
                                     "ip-address": {
-                                        "ipv-4-address": "10.118.125.157"
+                                        "ipv-4-address": "192.168.178.22"
                                     }
                                 },
-                                "remote-port": 1005
+                                "remote-port": 3000
                             }
                         }
                     }
