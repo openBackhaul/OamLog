@@ -6,16 +6,16 @@
 - 1.0.0-tsi.d.t : Defintion to be used within the Transport SDN Introduction at Telefonica Germany
 
 ### Services
-- [OamLog_0.0.2_tsi.211208.2015+services.1](./OamLog_0.0.2_tsi.211208.2015+services.1.xlsx)
+- [OamLog_0.0.2_tsi.211217.1745+services.1](./OamLog_0.0.2_tsi.211217.1745+services.1.xlsx)
 
 ### Forwardings
-- [OamLog_0.0.2_tsi.211208.2015+forwardings.1](./OamLog_0.0.2_tsi.211208.2015+forwardings.1.xlsx)
+- [OamLog_0.0.2_tsi.211217.1745+forwardings.1](./OamLog_0.0.2_tsi.211217.1745+forwardings.1.xlsx)
 
 ### Open API specification (Swagger)
-- [OamLog_0.0.2_tsi.211208.2015](OamLog_0.0.2_tsi.211208.2015.yaml)
+- [OamLog_0.0.2_tsi.211217.1745](OamLog_0.0.2_tsi.211217.1745.yaml)
 
 ### Load File (JSON)
-- [OamLog_0.0.2_tsi.211208.2015+data.2](OamLog_0.0.2_tsi.211208.2015+data.2.json)
+- [OamLog_0.0.2_tsi.211217.1745+data.1](OamLog_0.0.2_tsi.211217.1745+data.1.json)
 
 ### Test Cases (Postman Export) and Data File
 - 
