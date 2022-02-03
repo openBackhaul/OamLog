@@ -15,7 +15,7 @@
 - [OamLog_0.0.2_tsi.211217.1745](OamLog_0.0.2_tsi.211217.1745.yaml)
 
 ### Load File (JSON)
-- [OamLog_0.0.2_tsi.211217.1745+data.1](OamLog_0.0.2_tsi.211217.1745+data.1.json)
+- [OamLog_0.0.2_tsi.211217.1745+data.2](OamLog_0.0.2_tsi.211217.1745+data.2.json)
 
 ### Test Cases (Postman Export) and Data File
 - 
