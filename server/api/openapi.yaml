@@ -3,7 +3,7 @@ info:
   title: OamLog
   version: 0.0.2
 servers:
-- url: http://localhost:3003
+- url: https://10.118.125.157:1003
   description: Initial deployment
 paths:
   /v1/bequeath-your-data-and-die:
@@ -335,1276 +335,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/errorDescription'
       callbacks:
-        PromptForBequeathingDataCausesNewApplicationBeingRequestedToSendServiceInfoToEaTL:
-          ? https://[/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-tcp-c-0010/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/ip-address/ipv-4-address]:[/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-tcp-c-0010/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port][/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-op-c-0011/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]
-          : post:
-              requestBody:
-                content:
-                  application/json:
-                    schema:
-                      required:
-                      - service-log-address
-                      - service-log-application
-                      - service-log-application-release-number
-                      - service-log-operation
-                      - service-log-port
-                      type: object
-                      properties:
-                        service-log-application:
-                          type: string
-                          description: "'Name of application that shall record the\
-                            \ service requests from [/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-http-c-0040/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-capability/application-name]'\n"
-                        service-log-application-release-number:
-                          type: string
-                          description: "'Release of application that shall record\
-                            \ the service requests from [/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-http-c-0040/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/release-number]'\n"
-                        service-log-operation:
-                          type: string
-                          description: "'Operation for recording the service requests\
-                            \ from [/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-op-c-0040/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]'\n"
-                        service-log-address:
-                          type: string
-                          description: "'IP address of application that shall record\
-                            \ the service requests from [/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-tcp-c-0040/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/ip-address/ipv-4-address]'\n"
-                        service-log-port:
-                          type: integer
-                          description: "'Port of application that shall record the\
-                            \ service requests from [/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-tcp-c-0040/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port]'\n"
-                      example:
-                        service-log-application: ExecutionAndTraceLog
-                        service-log-application-release-number: 0.0.1
-                        service-log-operation: /v1/record-service-request
-                        service-log-address: 10.118.125.157
-                        service-log-port: 1002
-                required: true
-              responses:
-                "204":
-                  description: Information about service requests will be send to
-                    the new target
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                    life-cycle-state:
-                      description: Life cycle state of the consumed service
-                      style: simple
-                      explode: false
-                      schema:
-                        type: string
-                        example: EXPERIMENTAL
-                        enum:
-                        - EXPERIMENTAL
-                        - OPERATIONAL
-                        - DEPRECATED
-                        - OBSOLETE
-                        - UNKNOWN
-                        - NOT_YET_DEFINED
-                "400":
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-                "401":
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-                "403":
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-                "404":
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-                "500":
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-                default:
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-            parameters:
-            - $ref: '#/components/parameters/user'
-            - $ref: '#/components/parameters/originator'
-            - $ref: '#/components/parameters/x-correlator'
-            - $ref: '#/components/parameters/trace-indicator'
-            - $ref: '#/components/parameters/customer-journey'
-        PromptForBequeathingDataCausesNewApplicationBeingRequestedToSendOamInfoToOL:
-          ? https://[/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-tcp-c-0010/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/ip-address/ipv-4-address]:[/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-tcp-c-0010/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port][/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-op-c-0012/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]
-          : post:
-              requestBody:
-                content:
-                  application/json:
-                    schema:
-                      required:
-                      - oam-log-address
-                      - oam-log-application
-                      - oam-log-application-release-number
-                      - oam-log-operation
-                      - oam-log-port
-                      type: object
-                      properties:
-                        oam-log-application:
-                          type: string
-                          description: "'Name of application that shall record the\
-                            \ OaM requests from [/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-http-c-0050/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-capability/application-name]'\n"
-                        oam-log-application-release-number:
-                          type: string
-                          description: "'Release of application that shall record\
-                            \ the OaM request from [/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-http-c-0050/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/release-number]'\n"
-                        oam-log-operation:
-                          type: string
-                          description: "'Operation for recording the OaM requests\
-                            \ from [/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-op-c-0050/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]'\n"
-                        oam-log-address:
-                          type: string
-                          description: "'IP address of application that shall record\
-                            \ the OaM requests from [/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-tcp-c-0050/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/ip-address/ipv-4-address]'\n"
-                        oam-log-port:
-                          type: integer
-                          description: "'Port of application that shall record the\
-                            \ OaM requests from [/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-tcp-c-0050/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port]'\n"
-                      example:
-                        oam-log-application: OamLog
-                        oam-log-application-release-number: 0.0.1
-                        oam-log-operation: /v1/record-oam-request
-                        oam-log-address: 10.118.125.157
-                        oam-log-port: 1003
-                required: true
-              responses:
-                "204":
-                  description: Information about OaM requests will be send to the
-                    new target
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                    life-cycle-state:
-                      description: Life cycle state of the consumed service
-                      style: simple
-                      explode: false
-                      schema:
-                        type: string
-                        example: EXPERIMENTAL
-                        enum:
-                        - EXPERIMENTAL
-                        - OPERATIONAL
-                        - DEPRECATED
-                        - OBSOLETE
-                        - UNKNOWN
-                        - NOT_YET_DEFINED
-                "400":
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-                "401":
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-                "403":
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-                "404":
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-                "500":
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-                default:
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-            parameters:
-            - $ref: '#/components/parameters/user'
-            - $ref: '#/components/parameters/originator'
-            - $ref: '#/components/parameters/x-correlator'
-            - $ref: '#/components/parameters/trace-indicator'
-            - $ref: '#/components/parameters/customer-journey'
-        PromptForBequeathingDataCausesNewApplicationBeingRequestedToInquireForOamRequestApprovals:
-          ? https://[/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-tcp-c-0010/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/ip-address/ipv-4-address]:[/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-tcp-c-0010/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port][/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-op-c-0013/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]
-          : post:
-              requestBody:
-                content:
-                  application/json:
-                    schema:
-                      required:
-                      - oam-approval-address
-                      - oam-approval-application
-                      - oam-approval-application-release-number
-                      - oam-approval-operation
-                      - oam-approval-port
-                      type: object
-                      properties:
-                        oam-approval-application:
-                          type: string
-                          description: "'Name of application that shall approve the\
-                            \ OaM requests from [/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-http-c-0060/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-capability/application-name]'\n"
-                        oam-approval-application-release-number:
-                          type: string
-                          description: "'Release of application that shall approve\
-                            \ the OaM requests from [/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-http-c-0060/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/release-number]'\n"
-                        oam-approval-operation:
-                          type: string
-                          description: "'Operation for approving the OaM requests\
-                            \ from [/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-op-c-0060/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]'\n"
-                        oam-approval-address:
-                          type: string
-                          description: "'IP address of application that shall approve\
-                            \ the OaM requests from [/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-tcp-c-0060/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/ip-address/ipv-4-address]'\n"
-                        oam-approval-port:
-                          type: integer
-                          description: "'Port of application that shall approve the\
-                            \ OaM requests from [/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-tcp-c-0060/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port]'\n"
-                      example:
-                        oam-approval-application: AdministratorAdministration
-                        oam-approval-application-release-number: 0.0.1
-                        oam-approval-operation: /v1/approve-oam-request
-                        oam-approval-address: 10.118.125.157
-                        oam-approval-port: 1004
-                required: true
-              responses:
-                "204":
-                  description: Informed about where to inquire for approval of OaM
-                    requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                    life-cycle-state:
-                      description: Life cycle state of the consumed service
-                      style: simple
-                      explode: false
-                      schema:
-                        type: string
-                        example: EXPERIMENTAL
-                        enum:
-                        - EXPERIMENTAL
-                        - OPERATIONAL
-                        - DEPRECATED
-                        - OBSOLETE
-                        - UNKNOWN
-                        - NOT_YET_DEFINED
-                "400":
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-                "401":
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-                "403":
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-                "404":
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-                "500":
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-                default:
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-            parameters:
-            - $ref: '#/components/parameters/user'
-            - $ref: '#/components/parameters/originator'
-            - $ref: '#/components/parameters/x-correlator'
-            - $ref: '#/components/parameters/trace-indicator'
-            - $ref: '#/components/parameters/customer-journey'
-        PromptForBequeathingDataCausesNewApplicationBeingRequestedToSendTopologyChangeInfoToALT:
-          ? https://[/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-tcp-c-0010/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/ip-address/ipv-4-address]:[/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-tcp-c-0010/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port][/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-op-c-0014/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]
-          : post:
-              requestBody:
-                content:
-                  application/json:
-                    schema:
-                      required:
-                      - topology-application
-                      - topology-application-address
-                      - topology-application-port
-                      - topology-application-release-number
-                      - topology-operation-application-update
-                      - topology-operation-fc-port-deletion
-                      - topology-operation-fc-port-update
-                      - topology-operation-fc-update
-                      - topology-operation-ltp-deletion
-                      - topology-operation-ltp-update
-                      type: object
-                      properties:
-                        topology-application:
-                          type: string
-                          description: "'Name of application that shall document the\
-                            \ application layer topology from [/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-http-c-0070/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-capability/application-name]'\n"
-                        topology-application-release-number:
-                          type: string
-                          description: "'Release of application that shall document\
-                            \ the application layer topology from [/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-http-c-0070/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/release-number]'\n"
-                        topology-operation-application-update:
-                          type: string
-                          description: "'Operation for updating the entire information\
-                            \ about an application from [/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-op-c-0070/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]'\n"
-                        topology-operation-ltp-update:
-                          type: string
-                          description: "'Operation for updating an LTP from [/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-op-c-0071/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]'\n"
-                        topology-operation-ltp-deletion:
-                          type: string
-                          description: "'Operation for deleting an LTP from [/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-op-c-0072/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]'\n"
-                        topology-operation-fc-update:
-                          type: string
-                          description: "'Operation for updating an FC port from [/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-op-c-0073/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]'\n"
-                        topology-operation-fc-port-update:
-                          type: string
-                          description: "'Operation for updating an FC port update\
-                            \ or create [/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-op-c-0074/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]'\n"
-                        topology-operation-fc-port-deletion:
-                          type: string
-                          description: "'Operation for deleting an FC port from [/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-op-c-0075/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]'\n"
-                        topology-application-address:
-                          type: string
-                          description: "'IP address of application that shall record\
-                            \ the service requests from [/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-tcp-c-0070/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/ip-address/ipv-4-address]'\n"
-                        topology-application-port:
-                          type: integer
-                          description: "'Port of application that shall record the\
-                            \ service requests from [/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-tcp-c-0070/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port]'\n"
-                      example:
-                        topology-application: ApplicationLayerTopology
-                        topology-application-release-number: 0.0.1
-                        topology-operation-application-update: /v1/update-all-ltps-and-fcs
-                        topology-operation-ltp-update: /v1/update-ltp
-                        topology-operation-ltp-deletion: /v1/delete-ltp-and-dependents
-                        topology-operation-fc-update: /v1/update-fc
-                        topology-operation-fc-port-update: /v1/update-fc-port
-                        topology-operation-fc-port-deletion: /v1/delete-fc-port
-                        topology-application-address: 10.118.125.157
-                        topology-application-port: 1005
-                required: true
-              responses:
-                "204":
-                  description: Client side for sending information about topology
-                    changes has been updated
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                    life-cycle-state:
-                      description: Life cycle state of the consumed service
-                      style: simple
-                      explode: false
-                      schema:
-                        type: string
-                        example: EXPERIMENTAL
-                        enum:
-                        - EXPERIMENTAL
-                        - OPERATIONAL
-                        - DEPRECATED
-                        - OBSOLETE
-                        - UNKNOWN
-                        - NOT_YET_DEFINED
-                "400":
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-                "401":
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-                "403":
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-                "404":
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-                "500":
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-                default:
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-            parameters:
-            - $ref: '#/components/parameters/user'
-            - $ref: '#/components/parameters/originator'
-            - $ref: '#/components/parameters/x-correlator'
-            - $ref: '#/components/parameters/trace-indicator'
-            - $ref: '#/components/parameters/customer-journey'
         PromptForBequeathingDataCausesTransferOfListOfApplications:
           ? https://[/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-tcp-c-0010/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/ip-address/ipv-4-address]:[/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-tcp-c-0010/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port][/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-op-c-1010/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]
           : post:
@@ -3095,745 +1825,6 @@ paths:
             - $ref: '#/components/parameters/x-correlator'
             - $ref: '#/components/parameters/trace-indicator'
             - $ref: '#/components/parameters/customer-journey'
-        PromptForBequeathingDataCausesALTbeingRequestedToUpdateTopologyInfoAboutNewApplication:
-          ? https://[/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-tcp-c-0070/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/ip-address/ipv-4-address]:[/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-tcp-c-0070/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port][/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-op-c-0070/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]
-          : post:
-              requestBody:
-                content:
-                  application/json:
-                    schema:
-                      required:
-                      - core-model-1-4:control-construct
-                      type: object
-                      properties:
-                        core-model-1-4:control-construct:
-                          required:
-                          - forwarding-domain
-                          - logical-termination-point
-                          type: object
-                          properties:
-                            logical-termination-point:
-                              uniqueItems: true
-                              type: array
-                              example:
-                              - uuid: ol-0-0-1-op-s-0002
-                                ltp-direction: core-model-1-4:TERMINATION_DIRECTION_SOURCE
-                                client-ltp: []
-                                server-ltp:
-                                - ol-0-0-1-http-s-0000
-                                layer-protocol:
-                                - local-id: "0"
-                                  layer-protocol-name: operation-server-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_OPERATION_LAYER
-                                  operation-server-interface-1-0:operation-server-interface-pac:
-                                    operation-server-interface-capability:
-                                      operation-name: /v1/redirect-service-request-information
-                                    operation-server-interface-configuration:
-                                      life-cycle-state: operation-server-interface-1-0:LIFE_CYCLE_STATE_TYPE_EXPERIMENTAL
-                                      operation-key: Operation key not yet provided.
-                              - uuid: ol-0-0-1-http-s-0000
-                                ltp-direction: core-model-1-4:TERMINATION_DIRECTION_SOURCE
-                                client-ltp:
-                                - ol-0-0-1-op-s-0002
-                                - ol-0-0-1-op-s-0003
-                                server-ltp:
-                                - ol-0-0-1-tcp-s-0000
-                                layer-protocol:
-                                - local-id: "0"
-                                  layer-protocol-name: http-server-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_HTTP_LAYER
-                                  http-server-interface-1-0:http-server-interface-pac:
-                                    http-server-interface-capability:
-                                      application-name: RegistryOffice
-                                      release-number: 0.0.1
-                                      application-purpose: All applications being
-                                        part of the MBH SDN must be register here.
-                                      data-update-period: http-server-interface-1-0:DATA_UPDATE_PERIOD_TYPE_REAL_TIME
-                                      owner-name: Thorsten Heinze
-                                      owner-email-address: Thorsten.Heinze@telefonica.com
-                                      release-list:
-                                      - release-number: 0.0.1
-                                        release-date: 16.07.2021
-                                        changes: Initial version.
-                              items:
-                                required:
-                                - client-ltp
-                                - layer-protocol
-                                - ltp-direction
-                                - server-ltp
-                                - uuid
-                                type: object
-                                properties:
-                                  uuid:
-                                    type: string
-                                  ltp-direction:
-                                    type: string
-                                    enum:
-                                    - core-model-1-4:TERMINATION_DIRECTION_BIDIRECTIONAL
-                                    - core-model-1-4:TERMINATION_DIRECTION_SINK
-                                    - core-model-1-4:TERMINATION_DIRECTION_SOURCE
-                                    - core-model-1-4:TERMINATION_DIRECTION_UNDEFINED_OR_UNKNOWN
-                                  client-ltp:
-                                    uniqueItems: true
-                                    type: array
-                                    items:
-                                      type: string
-                                  server-ltp:
-                                    uniqueItems: true
-                                    type: array
-                                    items:
-                                      type: string
-                                  layer-protocol:
-                                    maxItems: 1
-                                    minItems: 1
-                                    type: array
-                                    items:
-                                      oneOf:
-                                      - required:
-                                        - layer-protocol-name
-                                        - local-id
-                                        - operation-server-interface-1-0:operation-server-interface-pac
-                                        type: object
-                                        properties:
-                                          local-id:
-                                            type: string
-                                          layer-protocol-name:
-                                            type: string
-                                            enum:
-                                            - operation-server-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_OPERATION_LAYER
-                                            - http-server-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_HTTP_LAYER
-                                            - tcp-server-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_TCP_LAYER
-                                            - operation-client-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_OPERATION_LAYER
-                                            - http-client-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_HTTP_LAYER
-                                            - tcp-client-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_TCP_LAYER
-                                          operation-server-interface-1-0:operation-server-interface-pac:
-                                            required:
-                                            - operation-server-interface-capability
-                                            - operation-server-interface-configuration
-                                            type: object
-                                            properties:
-                                              operation-server-interface-capability:
-                                                required:
-                                                - operation-name
-                                                type: object
-                                                properties:
-                                                  operation-name:
-                                                    type: string
-                                              operation-server-interface-configuration:
-                                                required:
-                                                - life-cycle-state
-                                                - operation-key
-                                                type: object
-                                                properties:
-                                                  life-cycle-state:
-                                                    type: string
-                                                    enum:
-                                                    - operation-server-interface-1-0:LIFE_CYCLE_STATE_TYPE_EXPERIMENTAL
-                                                    - operation-server-interface-1-0:LIFE_CYCLE_STATE_TYPE_OPERATIONAL
-                                                    - operation-server-interface-1-0:LIFE_CYCLE_STATE_TYPE_DEPRECATED
-                                                    - operation-server-interface-1-0:LIFE_CYCLE_STATE_TYPE_OBSOLETE
-                                                    - operation-server-interface-1-0:LIFE_CYCLE_STATE_TYPE_UNKNOWN
-                                                    - operation-server-interface-1-0:LIFE_CYCLE_STATE_TYPE_NOT_YET_DEFINED
-                                                  operation-key:
-                                                    type: string
-                                        description: operation server
-                                      - required:
-                                        - http-server-interface-1-0:http-server-interface-pac
-                                        - layer-protocol-name
-                                        - local-id
-                                        type: object
-                                        properties:
-                                          local-id:
-                                            type: string
-                                          layer-protocol-name:
-                                            type: string
-                                            enum:
-                                            - operation-server-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_OPERATION_LAYER
-                                            - http-server-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_HTTP_LAYER
-                                            - tcp-server-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_TCP_LAYER
-                                            - operation-client-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_OPERATION_LAYER
-                                            - http-client-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_HTTP_LAYER
-                                            - tcp-client-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_TCP_LAYER
-                                          http-server-interface-1-0:http-server-interface-pac:
-                                            required:
-                                            - http-server-interface-capability
-                                            type: object
-                                            properties:
-                                              http-server-interface-capability:
-                                                required:
-                                                - application-name
-                                                - application-purpose
-                                                - data-update-period
-                                                - owner-email-address
-                                                - owner-name
-                                                - release-list
-                                                - release-number
-                                                type: object
-                                                properties:
-                                                  application-name:
-                                                    type: string
-                                                  release-number:
-                                                    type: string
-                                                  application-purpose:
-                                                    type: string
-                                                  data-update-period:
-                                                    type: string
-                                                    enum:
-                                                    - http-server-interface-1-0:DATA_UPDATE_PERIOD_TYPE_REAL_TIME
-                                                    - http-server-interface-1-0:DATA_UPDATE_PERIOD_TYPE_1H_PERIOD
-                                                    - http-server-interface-1-0:DATA_UPDATE_PERIOD_TYPE_24H_PERIOD
-                                                    - http-server-interface-1-0:DATA_UPDATE_PERIOD_TYPE_MANUAL
-                                                  owner-name:
-                                                    type: string
-                                                  owner-email-address:
-                                                    type: string
-                                                  release-list:
-                                                    uniqueItems: true
-                                                    type: array
-                                                    items:
-                                                      required:
-                                                      - changes
-                                                      - release-date
-                                                      - release-number
-                                                      type: object
-                                                      properties:
-                                                        release-number:
-                                                          type: string
-                                                        release-date:
-                                                          type: string
-                                                        changes:
-                                                          type: string
-                                        description: http server
-                                      - required:
-                                        - layer-protocol-name
-                                        - local-id
-                                        - tcp-server-interface-1-0:tcp-server-interface-pac
-                                        type: object
-                                        properties:
-                                          local-id:
-                                            type: string
-                                          layer-protocol-name:
-                                            type: string
-                                            enum:
-                                            - operation-server-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_OPERATION_LAYER
-                                            - http-server-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_HTTP_LAYER
-                                            - tcp-server-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_TCP_LAYER
-                                            - operation-client-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_OPERATION_LAYER
-                                            - http-client-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_HTTP_LAYER
-                                            - tcp-client-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_TCP_LAYER
-                                          tcp-server-interface-1-0:tcp-server-interface-pac:
-                                            required:
-                                            - tcp-server-interface-configuration
-                                            type: object
-                                            properties:
-                                              tcp-server-interface-configuration:
-                                                required:
-                                                - local-address
-                                                - local-port
-                                                type: object
-                                                properties:
-                                                  local-address:
-                                                    type: object
-                                                    properties:
-                                                      ipv-4-address:
-                                                        pattern: "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\\
-                                                          .){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
-                                                        type: string
-                                                  local-port:
-                                                    maximum: 65535
-                                                    minimum: 0
-                                                    type: integer
-                                        description: tcp server
-                                      - required:
-                                        - layer-protocol-name
-                                        - local-id
-                                        - operation-client-interface-1-0:operation-client-interface-pac
-                                        type: object
-                                        properties:
-                                          local-id:
-                                            type: string
-                                          layer-protocol-name:
-                                            type: string
-                                            enum:
-                                            - operation-server-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_OPERATION_LAYER
-                                            - http-server-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_HTTP_LAYER
-                                            - tcp-server-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_TCP_LAYER
-                                            - operation-client-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_OPERATION_LAYER
-                                            - http-client-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_HTTP_LAYER
-                                            - tcp-client-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_TCP_LAYER
-                                          operation-client-interface-1-0:operation-client-interface-pac:
-                                            required:
-                                            - operation-client-interface-configuration
-                                            - operation-client-interface-status
-                                            type: object
-                                            properties:
-                                              operation-client-interface-configuration:
-                                                required:
-                                                - operation-key
-                                                - operation-name
-                                                type: object
-                                                properties:
-                                                  operation-name:
-                                                    type: string
-                                                  operation-key:
-                                                    type: string
-                                              operation-client-interface-status:
-                                                required:
-                                                - life-cycle-state
-                                                - operational-state
-                                                type: object
-                                                properties:
-                                                  operational-state:
-                                                    type: string
-                                                    enum:
-                                                    - operation-client-interface-1-0:OPERATIONAL_STATE_TYPE_AVAILABLE
-                                                    - operation-client-interface-1-0:OPERATIONAL_STATE_TYPE_UNAVAILABLE
-                                                    - operation-client-interface-1-0:OPERATIONAL_STATE_TYPE_NOT_YET_DEFINED
-                                                  life-cycle-state:
-                                                    type: string
-                                                    enum:
-                                                    - operation-client-interface-1-0:LIFE_CYCLE_STATE_TYPE_EXPERIMENTAL
-                                                    - operation-client-interface-1-0:LIFE_CYCLE_STATE_TYPE_OPERATIONAL
-                                                    - operation-client-interface-1-0:LIFE_CYCLE_STATE_TYPE_DEPRECATED
-                                                    - operation-client-interface-1-0:LIFE_CYCLE_STATE_TYPE_OBSOLETE
-                                                    - operation-client-interface-1-0:LIFE_CYCLE_STATE_TYPE_UNKNOWN
-                                                    - operation-client-interface-1-0:LIFE_CYCLE_STATE_TYPE_NOT_YET_DEFINED
-                                        description: operation client
-                                      - required:
-                                        - http-client-interface-1-0:http-client-interface-pac
-                                        - layer-protocol-name
-                                        - local-id
-                                        type: object
-                                        properties:
-                                          local-id:
-                                            type: string
-                                          layer-protocol-name:
-                                            type: string
-                                            enum:
-                                            - operation-server-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_OPERATION_LAYER
-                                            - http-server-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_HTTP_LAYER
-                                            - tcp-server-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_TCP_LAYER
-                                            - operation-client-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_OPERATION_LAYER
-                                            - http-client-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_HTTP_LAYER
-                                            - tcp-client-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_TCP_LAYER
-                                          http-client-interface-1-0:http-client-interface-pac:
-                                            required:
-                                            - http-client-interface-capability
-                                            - http-client-interface-configuration
-                                            type: object
-                                            properties:
-                                              http-client-interface-capability:
-                                                required:
-                                                - application-name
-                                                type: object
-                                                properties:
-                                                  application-name:
-                                                    type: string
-                                              http-client-interface-configuration:
-                                                required:
-                                                - release-number
-                                                type: object
-                                                properties:
-                                                  release-number:
-                                                    type: string
-                                        description: http client
-                                      - required:
-                                        - layer-protocol-name
-                                        - local-id
-                                        - tcp-client-interface-1-0:tcp-client-interface-pac
-                                        type: object
-                                        properties:
-                                          local-id:
-                                            type: string
-                                          layer-protocol-name:
-                                            type: string
-                                            enum:
-                                            - operation-server-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_OPERATION_LAYER
-                                            - http-server-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_HTTP_LAYER
-                                            - tcp-server-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_TCP_LAYER
-                                            - operation-client-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_OPERATION_LAYER
-                                            - http-client-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_HTTP_LAYER
-                                            - tcp-client-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_TCP_LAYER
-                                          tcp-client-interface-1-0:tcp-client-interface-pac:
-                                            required:
-                                            - tcp-client-interface-configuration
-                                            type: object
-                                            properties:
-                                              tcp-client-interface-configuration:
-                                                required:
-                                                - remote-address
-                                                - remote-port
-                                                type: object
-                                                properties:
-                                                  remote-address:
-                                                    required:
-                                                    - ip-address
-                                                    type: object
-                                                    properties:
-                                                      ip-address:
-                                                        required:
-                                                        - ipv-4-address
-                                                        type: object
-                                                        properties:
-                                                          ipv-4-address:
-                                                            pattern: "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\\
-                                                              .){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
-                                                            type: string
-                                                  remote-port:
-                                                    maximum: 65535
-                                                    minimum: 0
-                                                    type: integer
-                                        description: tcp client
-                            forwarding-domain:
-                              maxItems: 1
-                              minItems: 1
-                              type: array
-                              example:
-                              - uuid: ol-0-0-1-op-fd-0000
-                                forwarding-construct:
-                                - uuid: ol-0-0-1-op-fc-0003
-                                  name:
-                                  - value-name: ForwardingKind
-                                    value: core-model-1-4:FORWARDING_KIND_TYPE_INVARIANT_PROCESS_SNIPPET
-                                  - value-name: ForwardingName
-                                    value: OamRequestCausesLoggingRequest
-                                  fc-port:
-                                  - local-id: "000"
-                                    port-direction: core-model-1-4:PORT_DIRECTION_TYPE_MANAGEMENT
-                                    logical-termination-point: ol-0-0-1-op-s-0003
-                                  - local-id: "200"
-                                    port-direction: core-model-1-4:PORT_DIRECTION_TYPE_OUTPUT
-                                    logical-termination-point: ol-0-0-1-op-c-0050
-                                - uuid: ol-0-0-1-op-fc-0004
-                                  name:
-                                  - value-name: ForwardingKind
-                                    value: core-model-1-4:FORWARDING_KIND_TYPE_INVARIANT_PROCESS_SNIPPET
-                                  - value-name: ForwardingName
-                                    value: OamRequestCausesInquiryForAuthentication
-                                  fc-port:
-                                  - local-id: "000"
-                                    port-direction: core-model-1-4:PORT_DIRECTION_TYPE_MANAGEMENT
-                                    logical-termination-point: ol-0-0-1-op-s-0005
-                                  - local-id: "200"
-                                    port-direction: core-model-1-4:PORT_DIRECTION_TYPE_OUTPUT
-                                    logical-termination-point: ol-0-0-1-op-c-0060
-                              items:
-                                required:
-                                - forwarding-construct
-                                - uuid
-                                type: object
-                                properties:
-                                  uuid:
-                                    type: string
-                                  forwarding-construct:
-                                    type: array
-                                    items:
-                                      required:
-                                      - fc-port
-                                      - name
-                                      - uuid
-                                      type: object
-                                      properties:
-                                        uuid:
-                                          type: string
-                                        name:
-                                          type: array
-                                          items:
-                                            required:
-                                            - value
-                                            - value-name
-                                            type: object
-                                            properties:
-                                              value-name:
-                                                type: string
-                                              value:
-                                                type: string
-                                        fc-port:
-                                          type: array
-                                          items:
-                                            required:
-                                            - local-id
-                                            - logical-termination-point
-                                            - port-direction
-                                            type: object
-                                            properties:
-                                              local-id:
-                                                type: string
-                                              port-direction:
-                                                type: string
-                                                enum:
-                                                - core-model-1-4:PORT_DIRECTION_TYPE_MANAGEMENT
-                                                - core-model-1-4:PORT_DIRECTION_TYPE_INPUT
-                                                - core-model-1-4:PORT_DIRECTION_TYPE_OUTPUT
-                                              logical-termination-point:
-                                                type: string
-                required: true
-              responses:
-                "204":
-                  description: Updated all LTPs and FCs of application
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                    life-cycle-state:
-                      description: Life cycle state of the consumed service
-                      style: simple
-                      explode: false
-                      schema:
-                        type: string
-                        example: EXPERIMENTAL
-                        enum:
-                        - EXPERIMENTAL
-                        - OPERATIONAL
-                        - DEPRECATED
-                        - OBSOLETE
-                        - UNKNOWN
-                        - NOT_YET_DEFINED
-                "400":
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-                "401":
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-                "403":
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-                "404":
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-                "500":
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-                default:
-                  description: Response in case of errored service requests
-                  headers:
-                    x-correlator:
-                      description: UUID for the service execution flow that allows
-                        to correlate requests and responses. Its value must be identical
-                        at the response compared with its corresponding request
-                      style: simple
-                      explode: false
-                      schema:
-                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
-                        type: string
-                        example: 550e8400-e29b-11d4-a716-446655440000
-                    exec-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the total elapsed time for the execution, including all\
-                        \ the additional processing needed to retrieve the data from\
-                        \ the backend service. Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 1100
-                    backend-time:
-                      description: "Value written by the service provider, reporting\
-                        \ the elapsed time for data retrieval from the backend (service\
-                        \ invocation, database access…). Expressed in milliseconds"
-                      style: simple
-                      explode: false
-                      schema:
-                        type: integer
-                        example: 850
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/errorDescription'
-            parameters:
-            - $ref: '#/components/parameters/user'
-            - $ref: '#/components/parameters/originator'
-            - $ref: '#/components/parameters/x-correlator'
-            - $ref: '#/components/parameters/trace-indicator'
-            - $ref: '#/components/parameters/customer-journey'
         PromptForBequeathingDataCausesRequestForBroadcastingInfoAboutServerReplacement:
           ? https://[/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-tcp-c-0020/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/ip-address/ipv-4-address]:[/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-tcp-c-0020/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port][/core-model-1-4:control-construct/logical-termination-point=ol-0-0-1-op-c-0021/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]
           : post:
@@ -4164,6 +2155,306 @@ paths:
               responses:
                 "204":
                   description: Application deregistered
+                  headers:
+                    x-correlator:
+                      description: UUID for the service execution flow that allows
+                        to correlate requests and responses. Its value must be identical
+                        at the response compared with its corresponding request
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                        example: 550e8400-e29b-11d4-a716-446655440000
+                    exec-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the total elapsed time for the execution, including all\
+                        \ the additional processing needed to retrieve the data from\
+                        \ the backend service. Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 1100
+                    backend-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the elapsed time for data retrieval from the backend (service\
+                        \ invocation, database access…). Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 850
+                    life-cycle-state:
+                      description: Life cycle state of the consumed service
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                        example: EXPERIMENTAL
+                        enum:
+                        - EXPERIMENTAL
+                        - OPERATIONAL
+                        - DEPRECATED
+                        - OBSOLETE
+                        - UNKNOWN
+                        - NOT_YET_DEFINED
+                "400":
+                  description: Response in case of errored service requests
+                  headers:
+                    x-correlator:
+                      description: UUID for the service execution flow that allows
+                        to correlate requests and responses. Its value must be identical
+                        at the response compared with its corresponding request
+                      style: simple
+                      explode: false
+                      schema:
+                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
+                        type: string
+                        example: 550e8400-e29b-11d4-a716-446655440000
+                    exec-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the total elapsed time for the execution, including all\
+                        \ the additional processing needed to retrieve the data from\
+                        \ the backend service. Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 1100
+                    backend-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the elapsed time for data retrieval from the backend (service\
+                        \ invocation, database access…). Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 850
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/errorDescription'
+                "401":
+                  description: Response in case of errored service requests
+                  headers:
+                    x-correlator:
+                      description: UUID for the service execution flow that allows
+                        to correlate requests and responses. Its value must be identical
+                        at the response compared with its corresponding request
+                      style: simple
+                      explode: false
+                      schema:
+                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
+                        type: string
+                        example: 550e8400-e29b-11d4-a716-446655440000
+                    exec-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the total elapsed time for the execution, including all\
+                        \ the additional processing needed to retrieve the data from\
+                        \ the backend service. Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 1100
+                    backend-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the elapsed time for data retrieval from the backend (service\
+                        \ invocation, database access…). Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 850
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/errorDescription'
+                "403":
+                  description: Response in case of errored service requests
+                  headers:
+                    x-correlator:
+                      description: UUID for the service execution flow that allows
+                        to correlate requests and responses. Its value must be identical
+                        at the response compared with its corresponding request
+                      style: simple
+                      explode: false
+                      schema:
+                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
+                        type: string
+                        example: 550e8400-e29b-11d4-a716-446655440000
+                    exec-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the total elapsed time for the execution, including all\
+                        \ the additional processing needed to retrieve the data from\
+                        \ the backend service. Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 1100
+                    backend-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the elapsed time for data retrieval from the backend (service\
+                        \ invocation, database access…). Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 850
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/errorDescription'
+                "404":
+                  description: Response in case of errored service requests
+                  headers:
+                    x-correlator:
+                      description: UUID for the service execution flow that allows
+                        to correlate requests and responses. Its value must be identical
+                        at the response compared with its corresponding request
+                      style: simple
+                      explode: false
+                      schema:
+                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
+                        type: string
+                        example: 550e8400-e29b-11d4-a716-446655440000
+                    exec-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the total elapsed time for the execution, including all\
+                        \ the additional processing needed to retrieve the data from\
+                        \ the backend service. Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 1100
+                    backend-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the elapsed time for data retrieval from the backend (service\
+                        \ invocation, database access…). Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 850
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/errorDescription'
+                "500":
+                  description: Response in case of errored service requests
+                  headers:
+                    x-correlator:
+                      description: UUID for the service execution flow that allows
+                        to correlate requests and responses. Its value must be identical
+                        at the response compared with its corresponding request
+                      style: simple
+                      explode: false
+                      schema:
+                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
+                        type: string
+                        example: 550e8400-e29b-11d4-a716-446655440000
+                    exec-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the total elapsed time for the execution, including all\
+                        \ the additional processing needed to retrieve the data from\
+                        \ the backend service. Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 1100
+                    backend-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the elapsed time for data retrieval from the backend (service\
+                        \ invocation, database access…). Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 850
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/errorDescription'
+                default:
+                  description: Response in case of errored service requests
+                  headers:
+                    x-correlator:
+                      description: UUID for the service execution flow that allows
+                        to correlate requests and responses. Its value must be identical
+                        at the response compared with its corresponding request
+                      style: simple
+                      explode: false
+                      schema:
+                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
+                        type: string
+                        example: 550e8400-e29b-11d4-a716-446655440000
+                    exec-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the total elapsed time for the execution, including all\
+                        \ the additional processing needed to retrieve the data from\
+                        \ the backend service. Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 1100
+                    backend-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the elapsed time for data retrieval from the backend (service\
+                        \ invocation, database access…). Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 850
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/errorDescription'
+            parameters:
+            - $ref: '#/components/parameters/user'
+            - $ref: '#/components/parameters/originator'
+            - $ref: '#/components/parameters/x-correlator'
+            - $ref: '#/components/parameters/trace-indicator'
+            - $ref: '#/components/parameters/customer-journey'
+        PromptingNewReleaseForUpdatingServerCausesRequestForBroadcastingInfoAboutBackwardCompatibleUpdateOfOperation:
+          ? https://[/core-model-1-4:control-construct/logical-termination-point=*-0-0-1-tcp-c-0020/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/ip-address/ipv-4-address]:[/core-model-1-4:control-construct/logical-termination-point=*-0-0-1-tcp-c-0020/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port][/core-model-1-4:control-construct/logical-termination-point=*-0-0-1-op-c-0023/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]
+          : post:
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      required:
+                      - application-name
+                      - application-release-number
+                      - new-operation-name
+                      - old-operation-name
+                      type: object
+                      properties:
+                        application-name:
+                          type: string
+                          description: "'Own application name from [/core-model-1-4:control-construct/logical-termination-point=*-0-0-1-http-s-0000/layer-protocol=0/http-server-interface-1-0:http-server-interface-pac/http-server-interface-capability/application-name]'\n"
+                        application-release-number:
+                          type: string
+                          description: "'Own release number from [/core-model-1-4:control-construct/logical-termination-point=*-0-0-1-http-s-0000/layer-protocol=0/http-server-interface-1-0:http-server-interface-pac/http-server-interface-capability/release-number]'\n"
+                        old-operation-name:
+                          type: string
+                          description: "'Name of the deprecated operation from [/core-model-1-4:control-construct/logical-termination-point=*-0-0-1-op-s-*/layer-protocol=0/operation-server-interface-1-0:operation-server-interface-pac/operation-server-interface-capability/operation-name]'\n"
+                        new-operation-name:
+                          type: string
+                          description: "'Name of the replacing operation from [/core-model-1-4:control-construct/logical-termination-point=*-0-0-1-op-s-*/layer-protocol=0/operation-server-interface-1-0:operation-server-interface-pac/operation-server-interface-capability/operation-name]'\n"
+                      example:
+                        application-name: AdministratorAdministration
+                        application-release-number: 0.0.2
+                        old-operation-name: /v1/regard-application
+                        new-operation-name: /v2/regard-application
+                required: true
+              responses:
+                "204":
+                  description: Will broadcast operation update
                   headers:
                     x-correlator:
                       description: UUID for the service execution flow that allows
@@ -11722,6 +10013,622 @@ paths:
               schema:
                 $ref: '#/components/schemas/errorDescription'
       callbacks:
+        PromptForRedirectingTopologyInformationCausesSendingAnInitialStateToALT:
+          ? https://{$request.body#topology-application-address}:{$request.body#topology-application-port}{$request.body#topology-operation-application-update}
+          : description: Informing about a potentially new ALT results in sending
+              all interfaces and internal conntections to that ALT
+            post:
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      required:
+                      - core-model-1-4:control-construct
+                      type: object
+                      properties:
+                        core-model-1-4:control-construct:
+                          required:
+                          - forwarding-domain
+                          - logical-termination-point
+                          type: object
+                          properties:
+                            logical-termination-point:
+                              uniqueItems: true
+                              type: array
+                              example:
+                              - uuid: '*-0-0-1-op-s-0000'
+                                ltp-direction: core-model-1-4:TERMINATION_DIRECTION_SOURCE
+                                client-ltp: []
+                                server-ltp:
+                                - '*-0-0-1-http-s-0000'
+                                layer-protocol:
+                                - local-id: "0"
+                                  layer-protocol-name: operation-server-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_OPERATION_LAYER
+                                  operation-server-interface-1-0:operation-server-interface-pac:
+                                    operation-server-interface-capability:
+                                      operation-name: /v1/register-yourself
+                                    operation-server-interface-configuration:
+                                      life-cycle-state: operation-server-interface-1-0:LIFE_CYCLE_STATE_TYPE_EXPERIMENTAL
+                              - uuid: '*-0-0-1-http-s-0000'
+                                ltp-direction: core-model-1-4:TERMINATION_DIRECTION_SOURCE
+                                client-ltp:
+                                - '*-0-0-1-op-s-0000'
+                                server-ltp: []
+                                layer-protocol:
+                                - local-id: "0"
+                                  layer-protocol-name: http-server-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_HTTP_LAYER
+                                  http-server-interface-1-0:http-server-interface-pac:
+                                    http-server-interface-capability:
+                                      application-name: RegistryOffice
+                                      release-number: 0.0.1
+                                      data-update-period: http-server-interface-1-0:DATA_UPDATE_PERIOD_TYPE_REAL_TIME
+                              items:
+                                required:
+                                - client-ltp
+                                - layer-protocol
+                                - ltp-direction
+                                - server-ltp
+                                - uuid
+                                type: object
+                                properties:
+                                  uuid:
+                                    type: string
+                                  ltp-direction:
+                                    type: string
+                                  client-ltp:
+                                    uniqueItems: true
+                                    type: array
+                                    items:
+                                      type: string
+                                  server-ltp:
+                                    uniqueItems: true
+                                    type: array
+                                    items:
+                                      type: string
+                                  layer-protocol:
+                                    maxItems: 1
+                                    minItems: 1
+                                    type: array
+                                    items:
+                                      oneOf:
+                                      - required:
+                                        - layer-protocol-name
+                                        - local-id
+                                        - operation-server-interface-1-0:operation-server-interface-pac
+                                        type: object
+                                        properties:
+                                          local-id:
+                                            type: string
+                                          layer-protocol-name:
+                                            type: string
+                                          operation-server-interface-1-0:operation-server-interface-pac:
+                                            required:
+                                            - operation-server-interface-capability
+                                            - operation-server-interface-configuration
+                                            type: object
+                                            properties:
+                                              operation-server-interface-capability:
+                                                required:
+                                                - operation-name
+                                                type: object
+                                                properties:
+                                                  operation-name:
+                                                    type: string
+                                              operation-server-interface-configuration:
+                                                required:
+                                                - life-cycle-state
+                                                type: object
+                                                properties:
+                                                  life-cycle-state:
+                                                    type: string
+                                        description: operation server
+                                      - required:
+                                        - http-server-interface-1-0:http-server-interface-pac
+                                        - layer-protocol-name
+                                        - local-id
+                                        type: object
+                                        properties:
+                                          local-id:
+                                            type: string
+                                          layer-protocol-name:
+                                            type: string
+                                          http-server-interface-1-0:http-server-interface-pac:
+                                            required:
+                                            - http-server-interface-capability
+                                            type: object
+                                            properties:
+                                              http-server-interface-capability:
+                                                required:
+                                                - application-name
+                                                - data-update-period
+                                                - release-number
+                                                type: object
+                                                properties:
+                                                  application-name:
+                                                    type: string
+                                                  release-number:
+                                                    type: string
+                                                  data-update-period:
+                                                    type: string
+                                        description: http server
+                                      - required:
+                                        - layer-protocol-name
+                                        - local-id
+                                        - tcp-server-interface-1-0:tcp-server-interface-pac
+                                        type: object
+                                        properties:
+                                          local-id:
+                                            type: string
+                                          layer-protocol-name:
+                                            type: string
+                                          tcp-server-interface-1-0:tcp-server-interface-pac:
+                                            required:
+                                            - tcp-server-interface-configuration
+                                            type: object
+                                            properties:
+                                              tcp-server-interface-configuration:
+                                                required:
+                                                - local-address
+                                                - local-port
+                                                type: object
+                                                properties:
+                                                  local-address:
+                                                    type: object
+                                                    properties:
+                                                      ipv-4-address:
+                                                        type: string
+                                                  local-port:
+                                                    type: integer
+                                        description: tcp server
+                                      - required:
+                                        - layer-protocol-name
+                                        - local-id
+                                        - operation-client-interface-1-0:operation-client-interface-pac
+                                        type: object
+                                        properties:
+                                          local-id:
+                                            type: string
+                                          layer-protocol-name:
+                                            type: string
+                                          operation-client-interface-1-0:operation-client-interface-pac:
+                                            required:
+                                            - operation-client-interface-configuration
+                                            - operation-client-interface-status
+                                            type: object
+                                            properties:
+                                              operation-client-interface-configuration:
+                                                required:
+                                                - operation-name
+                                                type: object
+                                                properties:
+                                                  operation-name:
+                                                    type: string
+                                              operation-client-interface-status:
+                                                required:
+                                                - life-cycle-state
+                                                - operational-state
+                                                type: object
+                                                properties:
+                                                  operational-state:
+                                                    type: string
+                                                  life-cycle-state:
+                                                    type: string
+                                        description: operation client
+                                      - required:
+                                        - http-client-interface-1-0:http-client-interface-pac
+                                        - layer-protocol-name
+                                        - local-id
+                                        type: object
+                                        properties:
+                                          local-id:
+                                            type: string
+                                          layer-protocol-name:
+                                            type: string
+                                          http-client-interface-1-0:http-client-interface-pac:
+                                            required:
+                                            - http-client-interface-capability
+                                            - http-client-interface-configuration
+                                            type: object
+                                            properties:
+                                              http-client-interface-capability:
+                                                required:
+                                                - application-name
+                                                type: object
+                                                properties:
+                                                  application-name:
+                                                    type: string
+                                              http-client-interface-configuration:
+                                                required:
+                                                - release-number
+                                                type: object
+                                                properties:
+                                                  release-number:
+                                                    type: string
+                                        description: http client
+                                      - required:
+                                        - layer-protocol-name
+                                        - local-id
+                                        - tcp-client-interface-1-0:tcp-client-interface-pac
+                                        type: object
+                                        properties:
+                                          local-id:
+                                            type: string
+                                          layer-protocol-name:
+                                            type: string
+                                          tcp-client-interface-1-0:tcp-client-interface-pac:
+                                            required:
+                                            - tcp-client-interface-configuration
+                                            type: object
+                                            properties:
+                                              tcp-client-interface-configuration:
+                                                required:
+                                                - remote-address
+                                                - remote-port
+                                                type: object
+                                                properties:
+                                                  remote-address:
+                                                    required:
+                                                    - ip-address
+                                                    type: object
+                                                    properties:
+                                                      ip-address:
+                                                        required:
+                                                        - ipv-4-address
+                                                        type: object
+                                                        properties:
+                                                          ipv-4-address:
+                                                            type: string
+                                                  remote-port:
+                                                    type: integer
+                                        description: tcp client
+                            forwarding-domain:
+                              maxItems: 1
+                              minItems: 1
+                              type: array
+                              example:
+                              - uuid: '*-0-0-1-op-fd-0000'
+                                forwarding-construct:
+                                - uuid: '*-0-0-1-op-fc-0000'
+                                  name:
+                                  - value-name: ForwardingKind
+                                    value: core-model-1-4:FORWARDING_KIND_TYPE_INVARIANT_PROCESS_SNIPPET
+                                  - value-name: ForwardingName
+                                    value: PromptForRegisteringCausesRegistrationRequest
+                                  fc-port:
+                                  - local-id: "000"
+                                    port-direction: core-model-1-4:PORT_DIRECTION_TYPE_MANAGEMENT
+                                    logical-termination-point: '*-0-0-1-op-s-0000'
+                                  - local-id: "100"
+                                    port-direction: core-model-1-4:PORT_DIRECTION_TYPE_INPUT
+                                    logical-termination-point: '*-0-0-1-op-s-0000'
+                                - uuid: '*-0-0-1-op-fc-0001'
+                                  name:
+                                  - value-name: ForwardingKind
+                                    value: core-model-1-4:FORWARDING_KIND_TYPE_INVARIANT_PROCESS_SNIPPET
+                                  - value-name: ForwardingName
+                                    value: PromptForEmbeddingCausesRequestForBequeathingData
+                                  fc-port:
+                                  - local-id: "100"
+                                    port-direction: core-model-1-4:PORT_DIRECTION_TYPE_INPUT
+                                    logical-termination-point: '*-0-0-1-op-s-0001'
+                                  - local-id: "200"
+                                    port-direction: core-model-1-4:PORT_DIRECTION_TYPE_OUTPUT
+                                    logical-termination-point: '*-0-0-1-op-c-0020'
+                              items:
+                                required:
+                                - forwarding-construct
+                                - uuid
+                                type: object
+                                properties:
+                                  uuid:
+                                    type: string
+                                  forwarding-construct:
+                                    type: array
+                                    items:
+                                      required:
+                                      - fc-port
+                                      - name
+                                      - uuid
+                                      type: object
+                                      properties:
+                                        uuid:
+                                          type: string
+                                        name:
+                                          type: array
+                                          items:
+                                            required:
+                                            - value
+                                            - value-name
+                                            type: object
+                                            properties:
+                                              value-name:
+                                                type: string
+                                              value:
+                                                type: string
+                                        fc-port:
+                                          type: array
+                                          items:
+                                            required:
+                                            - local-id
+                                            - logical-termination-point
+                                            - port-direction
+                                            type: object
+                                            properties:
+                                              local-id:
+                                                type: string
+                                              port-direction:
+                                                type: string
+                                              logical-termination-point:
+                                                type: string
+                required: true
+              responses:
+                "204":
+                  description: LTPs and FD will be updated
+                  headers:
+                    x-correlator:
+                      description: UUID for the service execution flow that allows
+                        to correlate requests and responses. Its value must be identical
+                        at the response compared with its corresponding request
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                        example: 550e8400-e29b-11d4-a716-446655440000
+                    exec-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the total elapsed time for the execution, including all\
+                        \ the additional processing needed to retrieve the data from\
+                        \ the backend service. Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 1100
+                    backend-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the elapsed time for data retrieval from the backend (service\
+                        \ invocation, database access…). Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 850
+                    life-cycle-state:
+                      description: Life cycle state of the consumed service
+                      style: simple
+                      explode: false
+                      schema:
+                        type: string
+                        example: EXPERIMENTAL
+                        enum:
+                        - EXPERIMENTAL
+                        - OPERATIONAL
+                        - DEPRECATED
+                        - OBSOLETE
+                        - UNKNOWN
+                        - NOT_YET_DEFINED
+                "400":
+                  description: Response in case of errored service requests
+                  headers:
+                    x-correlator:
+                      description: UUID for the service execution flow that allows
+                        to correlate requests and responses. Its value must be identical
+                        at the response compared with its corresponding request
+                      style: simple
+                      explode: false
+                      schema:
+                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
+                        type: string
+                        example: 550e8400-e29b-11d4-a716-446655440000
+                    exec-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the total elapsed time for the execution, including all\
+                        \ the additional processing needed to retrieve the data from\
+                        \ the backend service. Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 1100
+                    backend-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the elapsed time for data retrieval from the backend (service\
+                        \ invocation, database access…). Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 850
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/errorDescription'
+                "401":
+                  description: Response in case of errored service requests
+                  headers:
+                    x-correlator:
+                      description: UUID for the service execution flow that allows
+                        to correlate requests and responses. Its value must be identical
+                        at the response compared with its corresponding request
+                      style: simple
+                      explode: false
+                      schema:
+                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
+                        type: string
+                        example: 550e8400-e29b-11d4-a716-446655440000
+                    exec-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the total elapsed time for the execution, including all\
+                        \ the additional processing needed to retrieve the data from\
+                        \ the backend service. Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 1100
+                    backend-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the elapsed time for data retrieval from the backend (service\
+                        \ invocation, database access…). Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 850
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/errorDescription'
+                "403":
+                  description: Response in case of errored service requests
+                  headers:
+                    x-correlator:
+                      description: UUID for the service execution flow that allows
+                        to correlate requests and responses. Its value must be identical
+                        at the response compared with its corresponding request
+                      style: simple
+                      explode: false
+                      schema:
+                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
+                        type: string
+                        example: 550e8400-e29b-11d4-a716-446655440000
+                    exec-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the total elapsed time for the execution, including all\
+                        \ the additional processing needed to retrieve the data from\
+                        \ the backend service. Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 1100
+                    backend-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the elapsed time for data retrieval from the backend (service\
+                        \ invocation, database access…). Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 850
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/errorDescription'
+                "404":
+                  description: Response in case of errored service requests
+                  headers:
+                    x-correlator:
+                      description: UUID for the service execution flow that allows
+                        to correlate requests and responses. Its value must be identical
+                        at the response compared with its corresponding request
+                      style: simple
+                      explode: false
+                      schema:
+                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
+                        type: string
+                        example: 550e8400-e29b-11d4-a716-446655440000
+                    exec-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the total elapsed time for the execution, including all\
+                        \ the additional processing needed to retrieve the data from\
+                        \ the backend service. Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 1100
+                    backend-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the elapsed time for data retrieval from the backend (service\
+                        \ invocation, database access…). Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 850
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/errorDescription'
+                "500":
+                  description: Response in case of errored service requests
+                  headers:
+                    x-correlator:
+                      description: UUID for the service execution flow that allows
+                        to correlate requests and responses. Its value must be identical
+                        at the response compared with its corresponding request
+                      style: simple
+                      explode: false
+                      schema:
+                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
+                        type: string
+                        example: 550e8400-e29b-11d4-a716-446655440000
+                    exec-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the total elapsed time for the execution, including all\
+                        \ the additional processing needed to retrieve the data from\
+                        \ the backend service. Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 1100
+                    backend-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the elapsed time for data retrieval from the backend (service\
+                        \ invocation, database access…). Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 850
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/errorDescription'
+                default:
+                  description: Response in case of errored service requests
+                  headers:
+                    x-correlator:
+                      description: UUID for the service execution flow that allows
+                        to correlate requests and responses. Its value must be identical
+                        at the response compared with its corresponding request
+                      style: simple
+                      explode: false
+                      schema:
+                        pattern: "^[0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12}$"
+                        type: string
+                        example: 550e8400-e29b-11d4-a716-446655440000
+                    exec-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the total elapsed time for the execution, including all\
+                        \ the additional processing needed to retrieve the data from\
+                        \ the backend service. Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 1100
+                    backend-time:
+                      description: "Value written by the service provider, reporting\
+                        \ the elapsed time for data retrieval from the backend (service\
+                        \ invocation, database access…). Expressed in milliseconds"
+                      style: simple
+                      explode: false
+                      schema:
+                        type: integer
+                        example: 850
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/errorDescription'
+            parameters:
+            - $ref: '#/components/parameters/user'
+            - $ref: '#/components/parameters/originator'
+            - $ref: '#/components/parameters/x-correlator'
+            - $ref: '#/components/parameters/trace-indicator'
+            - $ref: '#/components/parameters/customer-journey'
         ServiceRequestCausesLtpUpdateRequest:
           ? https://{$request.body#topology-application-address}:{$request.body#topology-application-port}{$request.body#topology-operation-ltp-update}
           : description: To be activated whenever a service request causes the creation
@@ -19850,13 +18757,13 @@ components:
             \ key find [/core-model-1-4:control-construct/logical-termination-point=uuid]'\n"
         old-operation-key:
           type: string
-          description: "'Current operation key find [/core-model-1-4:control-construct/logical-termination-point=operation-uuid/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-key]'\n"
+          description: "'Current operation key find [/core-model-1-4:control-construct/logical-termination-point={operation-uuid}/layer-protocol=0/operation-*-interface-1-0:operation-*-interface-pac/operation-*-interface-configuration/operation-key]'\n"
         new-operation-key:
           minLength: 5
           type: string
-          description: "'Future operation key update [/core-model-1-4:control-construct/logical-termination-point=operation-uuid/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-key]'\n"
+          description: "'Future operation key update [/core-model-1-4:control-construct/logical-termination-point={operation-uuid}/layer-protocol=0/operation-*-interface-1-0:operation-*-interface-pac/operation-*-interface-configuration/operation-key]'\n"
       example:
-        operation-uuid: RegistryOffice
+        operation-uuid: ro-0-0-1-op-s-3003
         old-operation-key: Operation key not yet provided.
         new-operation-key: Operation key not yet provided.
     v1_updateoperationclient_body:
@@ -20561,6 +19468,7 @@ components:
           type: string
           enum:
           - String
+      example: null
     inline_response_200_inputvaluelist:
       required:
       - field-name
@@ -20594,6 +19502,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/inline_response_200_inputvaluelist'
+      example: null
     inline_response_200_2_coremodel14controlconstruct_logicalterminationpoint:
       required:
       - client-ltp
@@ -20813,6 +19722,7 @@ components:
                         remote-port:
                           type: integer
               description: tcp client
+      example: null
     inline_response_200_2_coremodel14controlconstruct_name:
       required:
       - value
@@ -20823,6 +19733,7 @@ components:
           type: string
         value:
           type: string
+      example: null
     inline_response_200_2_coremodel14controlconstruct_fcport:
       required:
       - local-id
@@ -20836,6 +19747,7 @@ components:
           type: string
         logical-termination-point:
           type: string
+      example: null
     inline_response_200_2_coremodel14controlconstruct_forwardingconstruct:
       required:
       - fc-port
@@ -20853,6 +19765,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/inline_response_200_2_coremodel14controlconstruct_fcport'
+      example: null
     inline_response_200_2_coremodel14controlconstruct_forwardingdomain:
       required:
       - forwarding-construct
@@ -20865,6 +19778,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/inline_response_200_2_coremodel14controlconstruct_forwardingconstruct'
+      example: null
     inline_response_200_2_coremodel14controlconstruct:
       required:
       - forwarding-domain
@@ -21023,6 +19937,7 @@ components:
           type: string
           enum:
           - String
+      example: null
     inline_response_200_4_consequentactionlist:
       required:
       - label
@@ -21046,6 +19961,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/inline_response_200_inputvaluelist'
+      example: null
     inline_response_200_6_responsevaluelist:
       required:
       - datatype
@@ -21064,6 +19980,7 @@ components:
           type: string
           enum:
           - String
+      example: null
     inline_response_200_6_consequentactionlist:
       required:
       - input-value-list
@@ -21736,6 +20653,7 @@ components:
                         remote-port:
                           type: integer
               description: tcp client
+      example: null
     inline_response_200_7_coremodel14controlconstruct_fcport:
       required:
       - local-id
@@ -21753,6 +20671,7 @@ components:
           - core-model-1-4:PORT_DIRECTION_TYPE_OUTPUT
         logical-termination-point:
           type: string
+      example: null
     inline_response_200_7_coremodel14controlconstruct_forwardingconstruct:
       required:
       - fc-port
@@ -21770,6 +20689,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/inline_response_200_7_coremodel14controlconstruct_fcport'
+      example: null
     inline_response_200_7_coremodel14controlconstruct_forwardingdomain:
       required:
       - forwarding-construct
@@ -21782,6 +20702,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/inline_response_200_7_coremodel14controlconstruct_forwardingconstruct'
+      example: null
     inline_response_200_7_coremodel14controlconstruct:
       required:
       - forwarding-domain
@@ -22004,6 +20925,7 @@ components:
           type: string
         changes:
           type: string
+      example: null
   responses:
     responseForErroredServiceRequests:
       description: Response in case of errored service requests

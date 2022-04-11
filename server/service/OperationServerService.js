@@ -1,27 +1,22 @@
 'use strict';
-var fileOperation = require('../applicationPattern/databaseDriver/JSONDriver');
+
 
 /**
  * Returns the configured life cycle state of the operation
  *
  * uuid String 
- * returns inline_response_200_10
+ * returns inline_response_200_15
  **/
-exports.getOperationServerLifeCycleState = function (url) {
-  return new Promise(async function (resolve, reject) {
-    try {
-      var value = await fileOperation.readFromDatabase(url);
-      var response = {};
-      response['application/json'] = {
-        "operation-server-interface-1-0:life-cycle-state": value
-      };
-      if (Object.keys(response).length > 0) {
-        resolve(response[Object.keys(response)[0]]);
-      } else {
-        resolve();
-      }
-    } catch (error) {
-      reject();
+exports.getOperationServerLifeCycleState = function(uuid) {
+  return new Promise(function(resolve, reject) {
+    var examples = {};
+    examples['application/json'] = {
+  "operation-server-interface-1-0:life-cycle-state" : "operation-server-interface-1-0:LIFE_CYCLE_STATE_TYPE_EXPERIMENTAL"
+};
+    if (Object.keys(examples).length > 0) {
+      resolve(examples[Object.keys(examples)[0]]);
+    } else {
+      resolve();
     }
   });
 }
@@ -31,25 +26,19 @@ exports.getOperationServerLifeCycleState = function (url) {
  * Returns key for connecting
  *
  * uuid String 
- * returns inline_response_200_11
+ * returns inline_response_200_16
  **/
-exports.getOperationServerOperationKey = function (url) {
-  return new Promise(async function (resolve, reject) {
-    try {
-      var value = await fileOperation.readFromDatabase(url);
-      var response = {};
-      response['application/json'] = {
-        "operation-server-interface-1-0:operation-key": value
-      };
-      if (Object.keys(response).length > 0) {
-        resolve(response[Object.keys(response)[0]]);
-      } else {
-        resolve();
-      }
-    } catch (error) {
-      reject();
+exports.getOperationServerOperationKey = function(uuid) {
+  return new Promise(function(resolve, reject) {
+    var examples = {};
+    examples['application/json'] = {
+  "operation-server-interface-1-0:operation-key" : "Operation key not yet provided."
+};
+    if (Object.keys(examples).length > 0) {
+      resolve(examples[Object.keys(examples)[0]]);
+    } else {
+      resolve();
     }
-
   });
 }
 
@@ -58,26 +47,22 @@ exports.getOperationServerOperationKey = function (url) {
  * Returns operation name
  *
  * uuid String 
- * returns inline_response_200_9
+ * returns inline_response_200_14
  **/
-exports.getOperationServerOperationName = function (url) {
-  return new Promise(async function (resolve, reject) {
-    try {
-      var value = await fileOperation.readFromDatabase(url);
-      var response = {};
-      response['application/json'] = {
-        "operation-server-interface-1-0:operation-name": value
-      };
-      if (Object.keys(response).length > 0) {
-        resolve(response[Object.keys(response)[0]]);
-      } else {
-        resolve();
-      }
-    } catch (error) {
-      reject();
+exports.getOperationServerOperationName = function(uuid) {
+  return new Promise(function(resolve, reject) {
+    var examples = {};
+    examples['application/json'] = {
+  "operation-server-interface-1-0:operation-name" : "/v1/register-yourself"
+};
+    if (Object.keys(examples).length > 0) {
+      resolve(examples[Object.keys(examples)[0]]);
+    } else {
+      resolve();
     }
   });
 }
+
 
 /**
  * Configures life cycle state
@@ -86,14 +71,9 @@ exports.getOperationServerOperationName = function (url) {
  * uuid String 
  * no response value expected for this operation
  **/
-exports.putOperationServerLifeCycleState = function (url, body) {
-  return new Promise(async function (resolve, reject) {
-    try {
-      await fileOperation.writeToDatabase(url, body, false);
-      resolve();
-    } catch (error) {
-      reject();
-    }
+exports.putOperationServerLifeCycleState = function(body,uuid) {
+  return new Promise(function(resolve, reject) {
+    resolve();
   });
 }
 
@@ -105,13 +85,9 @@ exports.putOperationServerLifeCycleState = function (url, body) {
  * uuid String 
  * no response value expected for this operation
  **/
-exports.putOperationServerOperationKey = function (url, body) {
-  return new Promise(async function (resolve, reject) {
-    try {
-      await fileOperation.writeToDatabase(url, body, false);
-      resolve();
-    } catch (error) {
-      reject();
-    }
+exports.putOperationServerOperationKey = function(body,uuid) {
+  return new Promise(function(resolve, reject) {
+    resolve();
   });
 }
+
