@@ -34,6 +34,7 @@ const ForwardingConstruct = require('onf-core-model-ap/applicationPattern/onfMod
 const serviceRecordProfile = require('onf-core-model-ap/applicationPattern/onfModel/models/profile/ServiceRecordProfile');
 const ProfileCollection = require('onf-core-model-ap/applicationPattern/onfModel/models/ProfileCollection');
 const Profile = require('onf-core-model-ap/applicationPattern/onfModel/models/Profile');
+const OamRecordProfile = require('onf-core-model-ap/applicationPattern/onfModel/models/profile/OamRecordProfile');
 
 /**
  * Initiates process of embedding a new release
@@ -173,29 +174,23 @@ exports.listApplications = function (user, originator, xCorrelator, traceIndicat
  * returns List
  **/
 exports.listRecords = function (user, originator, xCorrelator, traceIndicator, customerJourney) {
-  return new Promise(function (resolve, reject) {
-    var examples = {};
-    examples['application/json'] = [{
-      "application-name": "CurrentController",
-      "release-number": "0.0.1",
-      "method": "GET",
-      "resource": "/core-model-1-4:control-construct/profile-collection/profile=string-p-1000/string-profile-1-0:string-profile-pac/string-profile-capability/string-name",
-      "stringified-body": "",
-      "response-code": 200,
-      "user-name": "Max Mustermann",
-      "timestamp": "2010-11-20T14:00:00+01:00"
-    }, {
-      "application-name": "CurrentController",
-      "release-number": "0.0.1",
-      "method": "GET",
-      "resource": "/core-model-1-4:control-construct/profile-collection/profile=string-p-1000/string-profile-1-0:string-profile-pac/string-profile-configuration/string-value",
-      "stringified-body": "",
-      "response-code": 200,
-      "user-name": "Max Mustermann",
-      "timestamp": "2010-11-20T14:00:00+01:01"
-    }];
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
+  return new Promise(async function (resolve, reject) {
+    let response = {};
+    try {
+      /****************************************************************************************
+       * Preparing response body
+       ****************************************************************************************/
+      let oamRecordProfileList = await OamRecordProfile.getlistOfRecordedOamRequestsAsync();
+      
+      /****************************************************************************************
+       * Setting 'application/json' response body
+       ****************************************************************************************/
+      response['application/json'] = oamRecordProfileList;
+    } catch (error) {
+      console.log(error);
+    }
+    if (Object.keys(response).length > 0) {
+      resolve(response[Object.keys(response)[0]]);
     } else {
       resolve();
     }
@@ -215,29 +210,27 @@ exports.listRecords = function (user, originator, xCorrelator, traceIndicator, c
  * returns List
  **/
 exports.listRecordsOfApplication = function (body, user, originator, xCorrelator, traceIndicator, customerJourney) {
-  return new Promise(function (resolve, reject) {
-    var examples = {};
-    examples['application/json'] = [{
-      "application-name": "CurrentController",
-      "release-number": "0.0.1",
-      "method": "GET",
-      "resource": "/core-model-1-4:control-construct/profile-collection/profile=string-p-1000/string-profile-1-0:string-profile-pac/string-profile-configuration/string-value",
-      "stringified-body": "",
-      "response-code": 200,
-      "user-name": "Max Mustermann",
-      "timestamp": "2010-11-20T14:00:00+01:01"
-    }, {
-      "application-name": "CurrentController",
-      "release-number": "0.0.1",
-      "method": "PUT",
-      "resource": "/core-model-1-4:control-construct/profile-collection/profile=string-p-1000/string-profile-1-0:string-profile-pac/string-profile-configuration/string-value",
-      "stringified-body": "{\"string-profile-1-0:string-value\":\"10.118.125.157:8443\"}",
-      "response-code": 204,
-      "user-name": "Max Mustermann",
-      "timestamp": "2010-11-20T14:00:00+01:02"
-    }];
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
+  return new Promise(async function (resolve, reject) {
+    let response = {};
+    try {
+      /****************************************************************************************
+       * Setting up required local variables from the request body
+       ****************************************************************************************/
+      let applicationName = body["application-name"];
+      /****************************************************************************************
+       * Preparing response body
+       ****************************************************************************************/
+      let oamRecordProfileList = await OamRecordProfile.getRecordsListForApplicationAsync(applicationName);
+      
+      /****************************************************************************************
+       * Setting 'application/json' response body
+       ****************************************************************************************/
+      response['application/json'] = oamRecordProfileList;
+    } catch (error) {
+      console.log(error);
+    }
+    if (Object.keys(response).length > 0) {
+      resolve(response[Object.keys(response)[0]]);
     } else {
       resolve();
     }
@@ -256,9 +249,28 @@ exports.listRecordsOfApplication = function (body, user, originator, xCorrelator
  * customerJourney String Holds information supporting customer’s journey to which the execution applies
  * no response value expected for this operation
  **/
-exports.recordOamRequest = function (body, user, originator, xCorrelator, traceIndicator, customerJourney) {
-  return new Promise(function (resolve, reject) {
-    resolve();
+exports.recordOamRequest = async function (body, user, originator, xCorrelator, traceIndicator, customerJourney) {
+  return new Promise(async function (resolve, reject) {
+    try {
+      /****************************************************************************************
+       * Setting up required local variables from the request body
+       ****************************************************************************************/
+
+      let oamRecord = body;
+
+      /********************************************************************************      
+       * create oam record profile and include it to the profile-collection
+       *******************************************************************************/
+      
+      let oamProfile = await OamRecordProfile.createProfileAsync(oamRecord);
+      if (oamProfile) {
+        await ProfileCollection.addProfileAsync(oamProfile);
+      }
+      resolve();
+    } catch (error) {
+      console.log(error);
+      reject(error);
+    }
   });
 }
 
@@ -363,7 +375,7 @@ exports.regardApplication = function (body, user, originator, xCorrelator, trace
  * customerJourney String Holds information supporting customer’s journey to which the execution applies
  * returns inline_response_200
  **/
- exports.startApplicationInGenericRepresentation = function (user, originator, xCorrelator, traceIndicator, customerJourney) {
+exports.startApplicationInGenericRepresentation = function (user, originator, xCorrelator, traceIndicator, customerJourney) {
   return new Promise(async function (resolve, reject) {
     let response = {};
     try {
