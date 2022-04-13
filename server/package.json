@@ -17,6 +17,6 @@
     "js-yaml": "^3.3.0",
     "oas3-tools": "^2.2.3",
     "onf-core-model-ap-bs": "0.0.6",
-    "onf-core-model-ap": "0.0.7"
+    "onf-core-model-ap": "0.0.8"
   }
 }
