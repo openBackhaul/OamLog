@@ -36,6 +36,8 @@ const ProfileCollection = require('onf-core-model-ap/applicationPattern/onfModel
 const Profile = require('onf-core-model-ap/applicationPattern/onfModel/models/Profile');
 const OamRecordProfile = require('onf-core-model-ap/applicationPattern/onfModel/models/profile/OamRecordProfile');
 
+const softwareUpgrade = require('./individualServices/SoftwareUpgrade');
+const TcpServerInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/TcpServerInterface');
 /**
  * Initiates process of embedding a new release
  *
@@ -47,9 +49,67 @@ const OamRecordProfile = require('onf-core-model-ap/applicationPattern/onfModel/
  * customerJourney String Holds information supporting customer’s journey to which the execution applies
  * no response value expected for this operation
  **/
-exports.bequeathYourDataAndDie = function (body, user, originator, xCorrelator, traceIndicator, customerJourney) {
-  return new Promise(function (resolve, reject) {
-    resolve();
+exports.bequeathYourDataAndDie = function (body, user, originator, xCorrelator, traceIndicator, customerJourney, operationServerName) {
+  return new Promise(async function (resolve, reject) {
+    try {
+
+      /****************************************************************************************
+       * Setting up required local variables from the request body
+       ****************************************************************************************/
+      let applicationName = body["new-application-name"];
+      let releaseNumber = body["new-application-release"];
+      let applicationAddress = body["new-application-address"];
+      let applicationPort = body["new-application-port"];
+
+      /****************************************************************************************
+       * Prepare logicalTerminatinPointConfigurationInput object to 
+       * configure logical-termination-point
+       ****************************************************************************************/
+      let isdataTransferRequired = true;
+      let currentApplicationName = await httpServerInterface.getApplicationNameAsync();
+      if (currentApplicationName == applicationName) {
+        let isUpdated = await httpClientInterface.setReleaseNumberAsync("ol-0-0-1-http-c-0010", releaseNumber);
+        let currentApplicationRemoteAddress = await TcpServerInterface.getLocalAddress();
+        let currentApplicationRemotePort = await TcpServerInterface.getLocalPort();
+        if ((applicationAddress == currentApplicationRemoteAddress) &&
+          (applicationPort == currentApplicationRemotePort)) {
+          isdataTransferRequired = true;
+        }
+        if (isUpdated) {
+          applicationName = await httpClientInterface.getApplicationNameAsync("ol-0-0-1-http-c-0010");
+          let operationList = [];
+          let logicalTerminatinPointConfigurationInput = new LogicalTerminatinPointConfigurationInput(
+            applicationName,
+            releaseNumber,
+            applicationAddress,
+            applicationPort,
+            operationList
+          );
+          let logicalTerminationPointconfigurationStatus = await LogicalTerminationPointService.createOrUpdateApplicationInformationAsync(
+            logicalTerminatinPointConfigurationInput
+          );
+
+          /****************************************************************************************
+           * Prepare attributes to automate forwarding-construct
+           ****************************************************************************************/
+          let forwardingAutomationInputList = await prepareForwardingAutomation.bequeathYourDataAndDie(
+            logicalTerminationPointconfigurationStatus
+          );
+          ForwardingAutomationService.automateForwardingConstructAsync(
+            operationServerName,
+            forwardingAutomationInputList,
+            user,
+            xCorrelator,
+            traceIndicator,
+            customerJourney
+          );
+        }
+      }
+      softwareUpgrade.upgradeSoftwareVersion(isdataTransferRequired, user, xCorrelator, traceIndicator, customerJourney);
+      resolve();
+    } catch (error) {
+      reject(error);
+    }
   });
 }
 
@@ -181,7 +241,7 @@ exports.listRecords = function (user, originator, xCorrelator, traceIndicator, c
        * Preparing response body
        ****************************************************************************************/
       let oamRecordProfileList = await OamRecordProfile.getlistOfRecordedOamRequestsAsync();
-      
+
       /****************************************************************************************
        * Setting 'application/json' response body
        ****************************************************************************************/
@@ -221,7 +281,7 @@ exports.listRecordsOfApplication = function (body, user, originator, xCorrelator
        * Preparing response body
        ****************************************************************************************/
       let oamRecordProfileList = await OamRecordProfile.getRecordsListForApplicationAsync(applicationName);
-      
+
       /****************************************************************************************
        * Setting 'application/json' response body
        ****************************************************************************************/
@@ -261,7 +321,7 @@ exports.recordOamRequest = async function (body, user, originator, xCorrelator, 
       /********************************************************************************      
        * create oam record profile and include it to the profile-collection
        *******************************************************************************/
-      
+
       let oamProfile = await OamRecordProfile.createProfileAsync(oamRecord);
       if (oamProfile) {
         await ProfileCollection.addProfileAsync(oamProfile);
