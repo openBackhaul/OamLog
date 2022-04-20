@@ -374,7 +374,7 @@ exports.regardApplication = function (body, user, originator, xCorrelator, trace
         applicationPort,
         operationList
       );
-      let logicalTerminationPointconfigurationStatus = await LogicalTerminationPointService.createOrUpdateApplicationInformationAsync(
+      let logicalTerminationPointconfigurationStatus = await LogicalTerminationPointService.findOrCreateApplicationInformationAsync(
         logicalTerminatinPointConfigurationInput
       );
 
@@ -500,7 +500,7 @@ exports.startApplicationInGenericRepresentation = function (user, originator, xC
  * <b>step 1 :</b> get all http client Interface and get the application name, release number and server-ltp<br>
  * <b>step 2 :</b> get the ipaddress and port name of each associated tcp-client <br>
  **/
-function getAllApplicationList() {
+ function getAllApplicationList() {
   return new Promise(async function (resolve, reject) {
     let clientApplicationList = [];
     try {

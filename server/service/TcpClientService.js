@@ -1,5 +1,6 @@
 'use strict';
 
+var fileOperation = require('onf-core-model-ap/applicationPattern/databaseDriver/JSONDriver');
 
 /**
  * Returns remote IPv4 address
@@ -7,16 +8,21 @@
  * uuid String 
  * returns inline_response_200_33
  **/
-exports.getTcpClientRemoteIpv4Address = function(uuid) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "tcp-client-interface-1-0:ipv-4-address" : "10.118.125.157"
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
+exports.getTcpClientRemoteIpv4Address = function(url) {
+  return new Promise(async function (resolve, reject) {
+    try {
+      var value = await fileOperation.readFromDatabaseAsync(url);
+      var response = {};
+      response['application/json'] = {
+        "tcp-client-interface-1-0:ipv-4-address": value
+      };
+      if (Object.keys(response).length > 0) {
+        resolve(response[Object.keys(response)[0]]);
+      } else {
+        resolve();
+      }
+    } catch (error) {
+      reject();
     }
   });
 }
@@ -28,16 +34,21 @@ exports.getTcpClientRemoteIpv4Address = function(uuid) {
  * uuid String 
  * returns inline_response_200_34
  **/
-exports.getTcpClientRemotePort = function(uuid) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "tcp-client-interface-1-0:remote-port" : 1000
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
+exports.getTcpClientRemotePort = function(url) {
+  return new Promise(async function (resolve, reject) {
+    try {
+      var value = await fileOperation.readFromDatabaseAsync(url);
+      var response = {};
+      response['application/json'] = {
+        "tcp-client-interface-1-0:remote-port": value
+      };
+      if (Object.keys(response).length > 0) {
+        resolve(response[Object.keys(response)[0]]);
+      } else {
+        resolve();
+      }
+    } catch (error) {
+      reject();
     }
   });
 }
@@ -50,9 +61,15 @@ exports.getTcpClientRemotePort = function(uuid) {
  * uuid String 
  * no response value expected for this operation
  **/
-exports.putTcpClientRemoteIpv4Address = function(body,uuid) {
-  return new Promise(function(resolve, reject) {
-    resolve();
+exports.putTcpClientRemoteIpv4Address = function(url, body) {
+  return new Promise(async function (resolve, reject) {
+    try {
+      console.log(body);
+      await fileOperation.writeToDatabaseAsync(url, body, false);
+      resolve();
+    } catch (error) {
+      reject();
+    }
   });
 }
 
@@ -64,9 +81,14 @@ exports.putTcpClientRemoteIpv4Address = function(body,uuid) {
  * uuid String 
  * no response value expected for this operation
  **/
-exports.putTcpClientRemotePort = function(body,uuid) {
-  return new Promise(function(resolve, reject) {
-    resolve();
+exports.putTcpClientRemotePort = function(url, body) {
+  return new Promise(async function (resolve, reject) {
+    try {
+      await fileOperation.writeToDatabaseAsync(url, body, false);
+      resolve();
+    } catch (error) {
+      reject();
+    }
   });
 }
 
