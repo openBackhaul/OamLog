@@ -19,7 +19,7 @@ module.exports.embedYourself = async function embedYourself(req, res, next, body
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
       })
       .catch(async function (response) {
-        responseBodyToDocument = responseBody;
+        responseBodyToDocument = response;
         responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
         let responseHeader = await restResponseHeader.createResponseHeader(xCorrelator, startTime, req.url);
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
@@ -41,7 +41,7 @@ module.exports.endSubscription = async function endSubscription(req, res, next, 
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
       })
       .catch(async function (response) {
-        responseBodyToDocument = responseBody;
+        responseBodyToDocument = response;
         responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
         let responseHeader = await restResponseHeader.createResponseHeader(xCorrelator, startTime, req.url);
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
@@ -63,7 +63,7 @@ module.exports.informAboutApplication = async function informAboutApplication(re
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
       })
       .catch(async function (response) {
-        responseBodyToDocument = responseBody;
+        responseBodyToDocument = response;
         responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
         let responseHeader = await restResponseHeader.createResponseHeader(xCorrelator, startTime, req.url);
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
@@ -85,7 +85,7 @@ module.exports.informAboutApplicationInGenericRepresentation = async function in
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
       })
       .catch(async function (response) {
-        responseBodyToDocument = responseBody;
+        responseBodyToDocument = response;
         responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
         let responseHeader = await restResponseHeader.createResponseHeader(xCorrelator, startTime, req.url);
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
@@ -107,7 +107,7 @@ module.exports.informAboutReleaseHistory = async function informAboutReleaseHist
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
       })
       .catch(async function (response) {
-        responseBodyToDocument = responseBody;
+        responseBodyToDocument = response;
         responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
         let responseHeader = await restResponseHeader.createResponseHeader(xCorrelator, startTime, req.url);
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
@@ -129,7 +129,7 @@ module.exports.informAboutReleaseHistoryInGenericRepresentation = async function
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
       })
       .catch(async function (response) {
-        responseBodyToDocument = responseBody;
+        responseBodyToDocument = response;
         responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
         let responseHeader = await restResponseHeader.createResponseHeader(xCorrelator, startTime, req.url);
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
@@ -151,7 +151,7 @@ module.exports.inquireOamRequestApprovals = async function inquireOamRequestAppr
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
       })
       .catch(async function (response) {
-        responseBodyToDocument = responseBody;
+        responseBodyToDocument = response;
         responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
         let responseHeader = await restResponseHeader.createResponseHeader(xCorrelator, startTime, req.url);
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
@@ -173,7 +173,7 @@ module.exports.listLtpsAndFcs = async function listLtpsAndFcs(req, res, next, us
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
       })
       .catch(async function (response) {
-        responseBodyToDocument = responseBody;
+        responseBodyToDocument = response;
         responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
         let responseHeader = await restResponseHeader.createResponseHeader(xCorrelator, startTime, req.url);
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
@@ -195,7 +195,7 @@ module.exports.redirectOamRequestInformation = async function redirectOamRequest
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
       })
       .catch(async function (response) {
-        responseBodyToDocument = responseBody;
+        responseBodyToDocument = response;
         responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
         let responseHeader = await restResponseHeader.createResponseHeader(xCorrelator, startTime, req.url);
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
@@ -217,7 +217,7 @@ module.exports.redirectServiceRequestInformation = async function redirectServic
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
       })
       .catch(async function (response) {
-        responseBodyToDocument = responseBody;
+        responseBodyToDocument = response;
         responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
         let responseHeader = await restResponseHeader.createResponseHeader(xCorrelator, startTime, req.url);
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
@@ -239,7 +239,7 @@ module.exports.redirectTopologyChangeInformation = async function redirectTopolo
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
       })
       .catch(async function (response) {
-        responseBodyToDocument = responseBody;
+        responseBodyToDocument = response;
         responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
         let responseHeader = await restResponseHeader.createResponseHeader(xCorrelator, startTime, req.url);
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
@@ -261,7 +261,7 @@ module.exports.registerYourself = async function registerYourself(req, res, next
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
       })
       .catch(async function (response) {
-        responseBodyToDocument = responseBody;
+        responseBodyToDocument = response;
         responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
         let responseHeader = await restResponseHeader.createResponseHeader(xCorrelator, startTime, req.url);
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
@@ -283,7 +283,7 @@ module.exports.updateClient = async function updateClient(req, res, next, body, 
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
       })
       .catch(async function (response) {
-        responseBodyToDocument = responseBody;
+        responseBodyToDocument = response;
         responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
         let responseHeader = await restResponseHeader.createResponseHeader(xCorrelator, startTime, req.url);
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
@@ -305,7 +305,7 @@ module.exports.updateOperationClient = async function updateOperationClient(req,
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
       })
       .catch(async function (response) {
-        responseBodyToDocument = responseBody;
+        responseBodyToDocument = response;
         responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
         let responseHeader = await restResponseHeader.createResponseHeader(xCorrelator, startTime, req.url);
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
@@ -327,7 +327,7 @@ module.exports.updateOperationKey = async function updateOperationKey(req, res, 
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
       })
       .catch(async function (response) {
-        responseBodyToDocument = responseBody;
+        responseBodyToDocument = response;
         responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
         let responseHeader = await restResponseHeader.createResponseHeader(xCorrelator, startTime, req.url);
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
