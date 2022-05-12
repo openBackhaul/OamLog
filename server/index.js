@@ -6,11 +6,34 @@ var http = require('http');
 var oas3Tools = require('oas3-tools');
 var serverPort = 3003;
 
+var authorizingService = require('onf-core-model-ap-bs/basicServices/AuthorizingService');
+const operationServerInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/OperationServerInterface');
+
+async function validateOperationKey(request, scopes, securitySchema) {
+    const operationUuid = await operationServerInterface.getOperationServerUuidAsync(request.url);
+    const operationKeyFromLoadfile = await operationServerInterface.getOperationKeyAsync(operationUuid);
+    const isAuthorized = operationKeyFromLoadfile === request.headers['operation-key'];
+    return isAuthorized;
+}
+
+async function validateBasicAuth(request, scopes, schema) {
+    const isAuthorized = await authorizingService.isAuthorized(request.headers.authorization, request.method);
+    return isAuthorized;
+}
+
 // swaggerRouter configuration
 var options = {
     routing: {
         controllers: path.join(__dirname, './controllers')
     },
+    openApiValidator: {
+        validateSecurity: {
+            handlers: {
+                apiKeyAuth: validateOperationKey,
+                basicAuth: validateBasicAuth
+            }
+        }
+    }
 };
 
 var expressAppConfig = oas3Tools.expressAppConfig(path.join(__dirname, 'api/openapi.yaml'), options);
