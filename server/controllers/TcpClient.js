@@ -1,7 +1,6 @@
 'use strict';
 
 var TcpClient = require('../service/TcpClientService');
-var authorizingService = require('onf-core-model-ap-bs/basicServices/AuthorizingService');
 var responseBuilder = require('onf-core-model-ap/applicationPattern/rest/server/ResponseBuilder');
 var responseCodeEnum = require('onf-core-model-ap/applicationPattern/rest/server/ResponseCode');
 var oamLogService = require('onf-core-model-ap-bs/basicServices/OamLogService');
@@ -33,7 +32,7 @@ module.exports.getTcpClientRemotePort = async function getTcpClientRemotePort (r
 };
 
 module.exports.putTcpClientRemoteIpv4Address = async function putTcpClientRemoteIpv4Address (req, res, next, body, uuid) {
-  let responseCode = responseCodeEnum.code.OK;
+  let responseCode = responseCodeEnum.code.NO_CONTENT;
     await TcpClient.putTcpClientRemoteIpv4Address(req.url, body)
       .then(function (response) {
         responseBuilder.buildResponse(res, responseCode, response);
@@ -46,7 +45,7 @@ module.exports.putTcpClientRemoteIpv4Address = async function putTcpClientRemote
 };
 
 module.exports.putTcpClientRemotePort = async function putTcpClientRemotePort (req, res, next, body, uuid) {
-  let responseCode = responseCodeEnum.code.OK;
+  let responseCode = responseCodeEnum.code.NO_CONTENT;
     await TcpClient.putTcpClientRemotePort(req.url, body)
       .then(function (response) {
         responseBuilder.buildResponse(res, responseCode, response);

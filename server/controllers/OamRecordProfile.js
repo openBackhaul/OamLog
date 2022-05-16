@@ -1,7 +1,6 @@
 'use strict';
 
 var OamRecordProfile = require('../service/OamRecordProfileService');
-var authorizingService = require('onf-core-model-ap-bs/basicServices/AuthorizingService');
 var responseBuilder = require('onf-core-model-ap/applicationPattern/rest/server/ResponseBuilder');
 var responseCodeEnum = require('onf-core-model-ap/applicationPattern/rest/server/ResponseCode');
 var oamLogService = require('onf-core-model-ap-bs/basicServices/OamLogService');
