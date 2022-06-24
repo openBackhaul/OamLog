@@ -6,7 +6,7 @@
 - 1.0.0-tsi.d.t : Defintion to be used within the Transport SDN Introduction at Telefonica Germany
 
 ### Services
-- [OamLog_0.0.2_tsi.211217.1745+services.1](./OamLog_0.0.2_tsi.211217.1745+services.1.xlsx)
+- [OamLog+services](./OamLog+services.yaml)
 
 ### Forwardings
 - [OamLog_0.0.2_tsi.211217.1745+forwardings.1](./OamLog_0.0.2_tsi.211217.1745+forwardings.1.xlsx)
