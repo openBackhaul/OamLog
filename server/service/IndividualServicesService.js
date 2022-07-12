@@ -444,7 +444,7 @@ exports.startApplicationInGenericRepresentation = function (user, originator, xC
        ****************************************************************************************/
       let consequentActionList = [];
 
-      let protocol = "https";
+      let protocol = "http";
       let applicationAddress = await tcpServerInterface.getLocalAddress();
       let applicationPort = await tcpServerInterface.getLocalPort();
       let baseUrl = protocol + "://" + applicationAddress + ":" + applicationPort;
