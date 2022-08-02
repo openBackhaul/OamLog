@@ -16,7 +16,7 @@
     "connect": "^3.2.0",
     "js-yaml": "^3.3.0",
     "oas3-tools": "^2.2.3",
-    "onf-core-model-ap-bs": "0.0.9",
-    "onf-core-model-ap": "0.0.9"
+    "onf-core-model-ap-bs": "1.0.0",
+    "onf-core-model-ap": "1.0.0"
   }
 }

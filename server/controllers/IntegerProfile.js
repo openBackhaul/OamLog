@@ -3,7 +3,7 @@
 var IntegerProfile = require('../service/IntegerProfileService');
 var responseBuilder = require('onf-core-model-ap/applicationPattern/rest/server/ResponseBuilder');
 var responseCodeEnum = require('onf-core-model-ap/applicationPattern/rest/server/ResponseCode');
-var oamLogService = require('onf-core-model-ap-bs/basicServices/OamLogService');
+var oamLogService = require('onf-core-model-ap/applicationPattern/services/OamLogService');
 
 module.exports.getIntegerProfileIntegerName = async function getIntegerProfileIntegerName (req, res, next) {
   let responseCode = responseCodeEnum.code.OK;
