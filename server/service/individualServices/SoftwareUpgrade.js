@@ -26,6 +26,7 @@ const OamRecordProfile = require('onf-core-model-ap/applicationPattern/onfModel/
  * @param {String} xCorrelator UUID for the service execution flow that allows to correlate requests and responses
  * @param {String} traceIndicator Sequence of request numbers along the flow
  * @param {String} customerJourney Holds information supporting customer’s journey to which the execution applies
+ * @returns {Promise} Promise is resolved if the operation succeeded else the Promise is rejected
  * **/
 exports.upgradeSoftwareVersion = async function (isdataTransferRequired, user, xCorrelator, traceIndicator, customerJourney) {
     return new Promise(async function (resolve, reject) {
