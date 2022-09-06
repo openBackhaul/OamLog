@@ -586,16 +586,8 @@ function forwardRequest(forwardingKindName, attributeList, user, xCorrelator, tr
         try {
             let forwardingConstructInstance = await ForwardingDomain.getForwardingConstructForTheForwardingNameAsync(forwardingKindName);
             let operationClientUuid = (getFcPortOutputLogicalTerminationPointList(forwardingConstructInstance))[0];
-            let operationKey = await OperationClientInterface.getOperationKeyAsync(
-                operationClientUuid);
-            let operationName = await OperationClientInterface.getOperationNameAsync(
-                operationClientUuid);
-            let remoteIpAndPort = await OperationClientInterface.getTcpIpAddressAndPortAsyncAsync(
-                operationClientUuid);
             let result = await eventDispatcher.dispatchEvent(
-                remoteIpAndPort,
-                operationName,
-                operationKey,
+                operationClientUuid,
                 attributeList,
                 user,
                 xCorrelator,
