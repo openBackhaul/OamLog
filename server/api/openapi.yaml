@@ -15827,7 +15827,7 @@ paths:
         style: simple
         explode: false
         schema:
-          pattern: "^ol-0-0-1-oam-record-p-\\d{4}$"
+          pattern: "^ol-0-0-1-oam-record-p-\\d{6}$"
           type: string
           example: ol-0-0-1-oam-record-p-000000
       responses:
