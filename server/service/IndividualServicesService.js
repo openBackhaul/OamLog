@@ -548,8 +548,6 @@ function getAllApplicationList() {
         }
       }
       for (let j = 0; j < httpClientUuidList.length; j++) {
-        console.log(j)
-        console.log(httpClientUuidList.length)
         let httpClientUuid = httpClientUuidList[j];
         let applicationName = await httpClientInterface.getApplicationNameAsync(httpClientUuid);
         let applicationReleaseNumber = await httpClientInterface.getReleaseNumberAsync(httpClientUuid);
