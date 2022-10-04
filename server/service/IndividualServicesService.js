@@ -16,6 +16,7 @@ const tcpServerInterface = require('onf-core-model-ap/applicationPattern/onfMode
 const operationServerInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/OperationServerInterface');
 const operationClientInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/OperationClientInterface');
 const httpClientInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/HttpClientInterface');
+const FcPort = require("onf-core-model-ap/applicationPattern/onfModel/models/FcPort");
 
 const onfAttributeFormatter = require('onf-core-model-ap/applicationPattern/onfModel/utility/OnfAttributeFormatter');
 const consequentAction = require('onf-core-model-ap/applicationPattern/rest/server/responseBody/ConsequentAction');
@@ -506,6 +507,7 @@ function getAllApplicationList() {
     let clientApplicationList = [];
     let httpClientUuidList = [];
     let LogicalTerminationPointlist;
+    const FcportValue ='NewApplicationCausesRequestForOamRequestInformation';
     try {
 
       /** 
@@ -534,14 +536,14 @@ function getAllApplicationList() {
       };
 
 
-      let ForwardConstructName = await ForwardingDomain.getForwardingConstructForTheForwardingNameAsync("NewApplicationCausesRequestForOamRequestInformation")
+      let ForwardConstructName = await ForwardingDomain.getForwardingConstructForTheForwardingNameAsync(FcportValue)
       let ForwardConstructUuid = ForwardConstructName[onfAttributes.GLOBAL_CLASS.UUID]
 
       let ListofUuid = await ForwardingConstruct.getFcPortListAsync(ForwardConstructUuid)
       for (let i = 0; i < ListofUuid.length; i++) {
         let PortDirection = ListofUuid[i][[onfAttributes.FC_PORT.PORT_DIRECTION]]
 
-        if (PortDirection === "core-model-1-4:PORT_DIRECTION_TYPE_OUTPUT") {
+        if (PortDirection === FcPort.portDirectionEnum.OUTPUT) {
           LogicalTerminationPointlist = ListofUuid[i][onfAttributes.CONTROL_CONSTRUCT.LOGICAL_TERMINATION_POINT]
           let httpClientUuid = await logicalTerminationPoint.getServerLtpListAsync(LogicalTerminationPointlist)
           httpClientUuidList.push(httpClientUuid[0]);
