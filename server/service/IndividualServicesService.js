@@ -507,7 +507,7 @@ function getAllApplicationList() {
     let clientApplicationList = [];
     let httpClientUuidList = [];
     let LogicalTerminationPointlist;
-    const FcportValue ='NewApplicationCausesRequestForOamRequestInformation';
+    const forwardingName ='NewApplicationCausesRequestForOamRequestInformation';
     try {
 
       /** 
@@ -536,7 +536,7 @@ function getAllApplicationList() {
       };
 
 
-      let ForwardConstructName = await ForwardingDomain.getForwardingConstructForTheForwardingNameAsync(FcportValue)
+      let ForwardConstructName = await ForwardingDomain.getForwardingConstructForTheForwardingNameAsync(forwardingName)
       let ForwardConstructUuid = ForwardConstructName[onfAttributes.GLOBAL_CLASS.UUID]
 
       let ListofUuid = await ForwardingConstruct.getFcPortListAsync(ForwardConstructUuid)
