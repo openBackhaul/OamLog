@@ -30,7 +30,7 @@
 							"oam-record-profile-1-0:oam-record-profile-pac": {
 								"oam-record-profile-capability": {
 									"application-name": "CurrentController",
-									"release-number": "0.0.1"
+									"release-number": "0.0.1",
 									"method": "oam-record-profile-1-0:METHOD_TYPE_GET",
 									"resource": "/core-model-1-4:control-construct/profile-collection/profile=string-p-1000/string-profile-1-0:string-profile-pac/string-profile-configuration/string-value",
 									"stringified-body": "",
