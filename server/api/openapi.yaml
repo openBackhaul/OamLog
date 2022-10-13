@@ -19464,7 +19464,7 @@ components:
         datatype:
           type: string
           enum:
-          - String
+          - string
       example: null
     inline_response_200_inputvaluelist:
       required:
