@@ -4,6 +4,7 @@
 		"dummyUrl": "ping.openBackhaul.com",
 		"application": {
 			"serverUrl": "https://8dd40774-944e-429f-94ce-9306f1fe85b7.mock.pstmn.io",
+			"userName": " *** your name *** ",
 			"authorizationCode": " *** your code *** ",
 			"operationKey": " *** your key *** ",
 			"core-model-1-4:control-construct": {
