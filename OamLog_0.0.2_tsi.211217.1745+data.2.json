@@ -26,7 +26,7 @@
 							}
 						},
 						{
-							"uuid": "oam-record-p-000000",
+							"uuid": "ol-0-0-1-oam-record-p-000000",
 							"profile-name": "oam-record-profile-1-0:PROFILE_NAME_TYPE_OAM_RECORD_PROFILE",
 							"oam-record-profile-1-0:oam-record-profile-pac": {
 								"oam-record-profile-capability": {
