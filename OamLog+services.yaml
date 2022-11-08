@@ -30,6 +30,8 @@ servers:
           uuid: ol-1-0-0-op-s-1000
     service:
       basic:
+        - service-name: /v1/start-application-in-generic-representation
+          uuid: ol-1-0-0-op-s-2000
         - service-name: /v1/inform-about-application
           uuid: ol-1-0-0-op-s-2001
         - service-name: /v1/inform-about-application-in-generic-representation
@@ -39,8 +41,6 @@ servers:
         - service-name: /v1/inform-about-release-history-in-generic-representation
           uuid: ol-1-0-0-op-s-2004
       individual:
-        - service-name: /v1/start-application-in-generic-representation
-          uuid: ol-1-0-0-op-s-3000
         - service-name: /v1/regard-application
           uuid: ol-1-0-0-op-s-3001
         - service-name: /v1/disregard-application
