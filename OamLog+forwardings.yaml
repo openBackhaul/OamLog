@@ -503,7 +503,7 @@ forwardings:
           uuid: ol-1-0-0-op-s-is-001
     consequent-requests:
       - client-name: RegistryOffice:://v1/redirect-oam-request-information
-        uuid: ol-1-0-0-op-c-im-cc-1-0-0-000
+        uuid: ol-1-0-0-op-c-im-ro-1-0-0-000
       - client-name: TypeApprovalRegister:://v1/redirect-oam-request-information
         uuid: ol-1-0-0-op-c-im-tar-1-0-0-000
       - client-name: ExecutionAndTraceLog:://v1/redirect-oam-request-information
