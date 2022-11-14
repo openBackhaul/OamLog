@@ -802,11 +802,6 @@
             "uuid": "ol-1-0-0-http-c-0010",
             "ltp-direction": "core-model-1-4:TERMINATION_DIRECTION_SINK",
             "client-ltp": [
-              "ol-1-0-0-op-c-0010",
-              "ol-1-0-0-op-c-0011",
-              "ol-1-0-0-op-c-0012",
-              "ol-1-0-0-op-c-0013",
-              "ol-1-0-0-op-c-0014",
               "ol-1-0-0-op-c-1010",
               "ol-1-0-0-op-c-bs-nr-1-0-0-000"
             ],
