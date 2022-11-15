@@ -99,8 +99,6 @@ clients:
             uuid: ol-1-0-0-op-c-1010
       service:
         basic:
-          - service-name: /v1/record-oam-request
-            uuid: ol-1-0-0-op-c-bs-nr-1-0-0-000
         individual:
 
   - http-client:
@@ -204,13 +202,13 @@ clients:
     operation-clients:
       own-oam:
         basic:
-          - service-name: /v1/approve-oam-request
-            uuid: ol-1-0-0-op-c-0060
         individual:
           - service-name: /v1/redirect-oam-request-information
             uuid: ol-1-0-0-op-c-im-aa-1-0-0-000
       service:
         basic:
+          - service-name: /v1/approve-oam-request
+            uuid: ol-1-0-0-op-c-bs-aa-1-0-0-000
         individual:
 
   - http-client:
