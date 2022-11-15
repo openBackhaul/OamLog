@@ -30,6 +30,8 @@ servers:
           uuid: ol-1-0-0-op-s-1000
     service:
       basic:
+        - service-name: /v1/start-application-in-generic-representation
+          uuid: ol-1-0-0-op-s-2000
         - service-name: /v1/inform-about-application
           uuid: ol-1-0-0-op-s-2001
         - service-name: /v1/inform-about-application-in-generic-representation
@@ -39,8 +41,6 @@ servers:
         - service-name: /v1/inform-about-release-history-in-generic-representation
           uuid: ol-1-0-0-op-s-2004
       individual:
-        - service-name: /v1/start-application-in-generic-representation
-          uuid: ol-1-0-0-op-s-3000
         - service-name: /v1/regard-application
           uuid: ol-1-0-0-op-s-3001
         - service-name: /v1/disregard-application
@@ -61,7 +61,6 @@ servers:
     own-ip-address: 10.118.125.157
     own-tcp-port: 1003
     uuid: ol-1-0-0-tcp-s-0000
-
 
 
 clients:
@@ -98,10 +97,10 @@ clients:
         individual:
           - service-name: /v1/regard-application
             uuid: ol-1-0-0-op-c-1010
-          - service-name: /v1/record-oam-request
-            uuid: ol-1-0-0-op-c-1011
       service:
         basic:
+          - service-name: /v1/record-oam-request
+            uuid: ol-1-0-0-op-c-bs-nr-1-0-0-000
         individual:
 
   - http-client:
@@ -124,17 +123,17 @@ clients:
           - service-name: /v1/relay-operation-update
             uuid: ol-1-0-0-op-c-0023
         individual:
+          - service-name: /v1/notify-approvals
+            uuid: ol-1-0-0-op-c-im-ro-1-0-0-000
+          - service-name: /v1/notify-withdrawn-approvals
+            uuid: ol-1-0-0-op-c-im-ro-1-0-0-001
+          - service-name: /v1/end-subscription
+            uuid: ol-1-0-0-op-c-im-ro-1-0-0-002
+          - service-name: /v1/redirect-oam-request-information
+            uuid: ol-1-0-0-op-c-im-ro-1-0-0-004
       service:
         basic:
-          - service-name: /v1/redirect-oam-request-information
-            uuid: ol-1-0-0-op-c-2020
         individual:
-          - service-name: /v1/notify-approvals
-            uuid: ol-1-0-0-op-c-3020
-          - service-name: /v1/notify-withdrawn-approvals
-            uuid: ol-1-0-0-op-c-3021
-          - service-name: /v1/end-subscription
-            uuid: ol-1-0-0-op-c-3022
 
   - http-client:
       application-name: TypeApprovalRegister
@@ -148,10 +147,10 @@ clients:
       own-oam:
         basic:
         individual:
+          - service-name: /v1/redirect-oam-request-information
+            uuid: ol-1-0-0-op-c-im-tar-1-0-0-000
       service:
         basic:
-          - service-name: /v1/redirect-oam-request-information
-            uuid: ol-1-0-0-op-c-2030
         individual:
 
   - http-client:
@@ -165,13 +164,13 @@ clients:
     operation-clients:
       own-oam:
         basic:
-          - service-name: /v1/record-service-request
-            uuid: ol-1-0-0-op-c-0040
         individual:
+          - service-name: /v1/redirect-oam-request-information
+            uuid: ol-1-0-0-op-c-im-eatl-1-0-0-000
       service:
         basic:
-          - service-name: /v1/redirect-oam-request-information
-            uuid: ol-1-0-0-op-c-2040
+          - service-name: /v1/record-service-request
+            uuid: ol-1-0-0-op-c-bs-eatl-1-0-0-000
         individual:
 
   - http-client:
@@ -185,13 +184,13 @@ clients:
     operation-clients:
       own-oam:
         basic:
-          - service-name: /v1/record-oam-request
-            uuid: ol-1-0-0-op-c-0050
         individual:
+          - service-name: /v1/redirect-oam-request-information
+            uuid: ol-1-0-0-op-c-im-ol-1-0-0-000
       service:
         basic:
-          - service-name: /v1/redirect-oam-request-information
-            uuid: ol-1-0-0-op-c-2050
+          - service-name: /v1/record-oam-request
+            uuid: ol-1-0-0-op-c-bs-ol-1-0-0-000
         individual:
 
   - http-client:
@@ -208,10 +207,10 @@ clients:
           - service-name: /v1/approve-oam-request
             uuid: ol-1-0-0-op-c-0060
         individual:
+          - service-name: /v1/redirect-oam-request-information
+            uuid: ol-1-0-0-op-c-im-aa-1-0-0-000
       service:
         basic:
-          - service-name: /v1/redirect-oam-request-information
-            uuid: ol-1-0-0-op-c-2060
         individual:
 
   - http-client:
@@ -238,10 +237,10 @@ clients:
           - service-name: /v1/delete-fc-port
             uuid: ol-1-0-0-op-c-0075
         individual:
+          - service-name: /v1/redirect-oam-request-information
+            uuid: ol-1-0-0-op-c-im-alt-1-0-0-000
       service:
         basic:
-          - service-name: /v1/redirect-oam-request-information
-            uuid: ol-1-0-0-op-c-2070
         individual:
 
   - http-client:
@@ -256,10 +255,10 @@ clients:
       own-oam:
         basic:
         individual:
+          - service-name: /v1/redirect-oam-request-information
+            uuid: ol-1-0-0-op-c-im-okm-1-0-0-000
       service:
         basic:
-          - service-name: /v1/redirect-oam-request-information
-            uuid: ol-1-0-0-op-c-2080
         individual:
 
   - http-client:
@@ -274,8 +273,8 @@ clients:
       own-oam:
         basic:
         individual:
+          - service-name: /v1/redirect-oam-request-information
+            uuid: ol-1-0-0-op-c-im-cc-1-0-0-000
       service:
         basic:
-          - service-name: /v1/redirect-oam-request-information
-            uuid: ol-1-0-0-op-c-2300
         individual:
