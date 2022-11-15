@@ -148,21 +148,6 @@ forwardings:
       - client-name: NewRelease:://v1/regard-application
         uuid: ol-1-0-0-op-c-im-nr-1-0-0-000
 
-  - forwarding-name: PromptForBequeathingDataCausesTransferOfListOfRecords
-    uuid: ol-1-0-0-op-fc-im-111
-    forwarding-type: InvariantProcessSnippet
-    management-requests:
-      operation-client-update:
-      fc-port-update:
-      fc-port-deletion:
-      operation-client-deletion:
-    initiating-requests:
-      - server-name: /v1/bequeath-your-data-and-die
-        uuid: ol-1-0-0-op-s-im-000
-    consequent-requests:
-      - client-name: NewRelease:://v1/record-oam-request
-        uuid: ol-1-0-0-op-c-bs-nr-1-0-0-000
-
   - forwarding-name: PromptForBequeathingDataCausesRObeingRequestedToNotifyApprovalsOfNewApplicationsToNewRelease
     uuid: ol-1-0-0-op-fc-im-112
     forwarding-type: InvariantProcessSnippet
