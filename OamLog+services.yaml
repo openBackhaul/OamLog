@@ -131,7 +131,7 @@ clients:
         individual:
           - service-name: /v1/regard-application
             uuid: ol-1-0-0-op-c-1010
-                  ol-1-0-0-op-c-im-ne-1-0-0-000
+                  ol-1-0-0-op-c-im-nr-1-0-0-000
       service:
         basic:
         individual:
