@@ -40,6 +40,8 @@ servers:
           uuid: ol-1-0-0-op-s-2003
         - service-name: /v1/inform-about-release-history-in-generic-representation
           uuid: ol-1-0-0-op-s-2004
+        - service-name: /docs
+          uuid: ol-2-0-0-op-s-bs-005
       individual:
         - service-name: /v1/regard-application
           uuid: ol-1-0-0-op-s-3001
