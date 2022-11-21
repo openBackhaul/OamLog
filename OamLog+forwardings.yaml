@@ -1,5 +1,4 @@
 forwardings:
-
   - forwarding-name: PromptForRegisteringCausesRegistrationRequest
     uuid: ol-1-0-0-op-fc-bm-000
     forwarding-type: InvariantProcessSnippet
@@ -95,7 +94,7 @@ forwardings:
         uuid: ol-1-0-0-op-s-is-006
     consequent-requests:
       - client-name: ExecutionAndTraceLog://v1/record-service-request
-        uuid: ol-1-0-0-op-c-bs-ol-1-0-0-000
+        uuid: ol-1-0-0-op-c-bs-eatl-1-0-0-000
 
   - forwarding-name: OamRequestCausesLoggingRequest
     uuid: ol-1-0-0-op-fc-bm-003
@@ -484,8 +483,8 @@ forwardings:
         - server-name: /v1/disregard-application
           uuid: ol-1-0-0-op-s-is-002
     initiating-requests:
-        - server-name: /v1/regard-application
-          uuid: ol-1-0-0-op-s-is-001
+      - server-name: /v1/regard-application
+        uuid: ol-1-0-0-op-s-is-001
     consequent-requests:
       - client-name: RegistryOffice:://v1/redirect-oam-request-information
         uuid: ol-1-0-0-op-c-im-ro-1-0-0-004
