@@ -1003,7 +1003,7 @@
             ]
           },
           {
-            "uuid": "ol-1-0-0-op-c-im-ne-1-0-0-000",
+            "uuid": "ol-1-0-0-op-c-im-nr-1-0-0-000",
             "ltp-direction": "core-model-1-4:TERMINATION_DIRECTION_SINK",
             "client-ltp": [
             ],
@@ -1031,7 +1031,7 @@
             "uuid": "ol-1-0-0-http-c-im-nr-1-0-0-000",
             "ltp-direction": "core-model-1-4:TERMINATION_DIRECTION_SINK",
             "client-ltp": [
-              "ol-1-0-0-op-c-im-ne-1-0-0-000"
+              "ol-1-0-0-op-c-im-nr-1-0-0-000"
             ],
             "server-ltp": [
               "ol-1-0-0-tcp-c-im-nr-1-0-0-000"
@@ -2357,7 +2357,7 @@
                   {
                     "local-id": "200",
                     "port-direction": "core-model-1-4:PORT_DIRECTION_TYPE_OUTPUT",
-                    "logical-termination-point": "ol-1-0-0-op-c-im-ne-1-0-0-000"
+                    "logical-termination-point": "ol-1-0-0-op-c-im-nr-1-0-0-000"
                   }
                 ]
               },
