@@ -1,5 +1,4 @@
 forwardings:
-
   - forwarding-name: PromptForRegisteringCausesRegistrationRequest
     uuid: ol-1-0-0-op-fc-bm-000
     forwarding-type: InvariantProcessSnippet
@@ -484,8 +483,8 @@ forwardings:
         - server-name: /v1/disregard-application
           uuid: ol-1-0-0-op-s-is-002
     initiating-requests:
-        - server-name: /v1/regard-application
-          uuid: ol-1-0-0-op-s-is-001
+      - server-name: /v1/regard-application
+        uuid: ol-1-0-0-op-s-is-001
     consequent-requests:
       - client-name: RegistryOffice:://v1/redirect-oam-request-information
         uuid: ol-1-0-0-op-c-im-ro-1-0-0-004
