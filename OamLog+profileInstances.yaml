@@ -112,7 +112,7 @@ profile-instances:
     capability:
       operation-name: '/v1/inform-about-release-history-in-generic-representation'
       field-name-reference: '/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-http-s-bm-000/layer-protocol=0/http-server-interface-1-0:http-server-interface-pac/http-server-interface-capability/release-list=0/release-number'
-      description: 'List of registered application names and release numbers'
+      description: 'Represents the first entry in the list of releases'
       datatype: string
     configuration:
       value-reference: '/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-http-s-bm-000/layer-protocol=0/http-server-interface-1-0:http-server-interface-pac/http-server-interface-capability/release-list=0/changes'
@@ -122,7 +122,7 @@ profile-instances:
     capability:
       operation-name: '/v1/inform-about-release-history-in-generic-representation'
       field-name-reference: '/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-http-s-bm-000/layer-protocol=0/http-server-interface-1-0:http-server-interface-pac/http-server-interface-capability/release-list=1/release-number'
-      description: 'List of registered application names and release numbers'
+      description: 'List of release numbers and changes'
       datatype: string
     configuration:
       value-reference: '/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-http-s-bm-000/layer-protocol=0/http-server-interface-1-0:http-server-interface-pac/http-server-interface-capability/release-list=1/changes'

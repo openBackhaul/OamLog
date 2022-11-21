@@ -221,7 +221,7 @@
                   "field-name": {
                     "field-name-reference": "/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-http-s-bm-000/layer-protocol=0/http-server-interface-1-0:http-server-interface-pac/http-server-interface-capability/release-list=0/release-number"
                   },
-                  "description": "List of registered application names and release numbers",
+                  "description": "Represents the first entry in the list of releases",
                   "datatype": "string"
                 },
                 "response-profile-configuration": {
@@ -240,7 +240,7 @@
                   "field-name": {
                     "field-name-reference": "/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-http-s-bm-000/layer-protocol=0/http-server-interface-1-0:http-server-interface-pac/http-server-interface-capability/release-list=1/release-number"
                   },
-                  "description": "List of registered application names and release numbers",
+                  "description": "List of release numbers and changes",
                   "datatype": "string"
                 },
                 "response-profile-configuration": {
@@ -677,6 +677,30 @@
             ]
           },
           {
+            "uuid": "ol-2-0-0-op-s-bs-005",
+            "ltp-direction": "core-model-1-4:TERMINATION_DIRECTION_SOURCE",
+            "client-ltp": [
+            ],
+            "server-ltp": [
+              "ol-2-0-0-http-s-bm-000"
+            ],
+            "layer-protocol": [
+              {
+                "local-id": "0",
+                "layer-protocol-name": "operation-server-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_OPERATION_LAYER",
+                "operation-server-interface-1-0:operation-server-interface-pac": {
+                  "operation-server-interface-capability": {
+                    "operation-name": "/docs"
+                  },
+                  "operation-server-interface-configuration": {
+                    "life-cycle-state": "operation-server-interface-1-0:LIFE_CYCLE_STATE_TYPE_EXPERIMENTAL",
+                    "operation-key": "n.a."
+                  }
+                }
+              }
+            ]
+          },
+          {
             "uuid": "ol-1-0-0-op-s-3001",
             "ltp-direction": "core-model-1-4:TERMINATION_DIRECTION_SOURCE",
             "client-ltp": [
@@ -840,6 +864,7 @@
               "ol-1-0-0-op-s-2002",
               "ol-1-0-0-op-s-2003",
               "ol-1-0-0-op-s-2004",
+              "ol-2-0-0-op-s-bs-005",
               "ol-1-0-0-op-s-2000",
               "ol-1-0-0-op-s-3001",
               "ol-1-0-0-op-s-3002",
