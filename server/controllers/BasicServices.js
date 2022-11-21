@@ -230,7 +230,7 @@ module.exports.redirectServiceRequestInformation = async function redirectServic
 module.exports.redirectTopologyChangeInformation = async function redirectTopologyChangeInformation(req, res, next, body, user, originator, xCorrelator, traceIndicator, customerJourney) {
   try {
     let startTime = process.hrtime();
-    let responseCode = responseCodeEnum.code.NO_CONTENT;
+    let responseCode = responseCodeEnum.code.OK;
     let responseBodyToDocument = {};
     await BasicServices.redirectTopologyChangeInformation(body, user, originator, xCorrelator, traceIndicator, customerJourney, req.url)
       .then(async function (responseBody) {
