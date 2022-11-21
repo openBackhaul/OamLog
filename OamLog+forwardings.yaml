@@ -95,7 +95,7 @@ forwardings:
         uuid: ol-1-0-0-op-s-is-006
     consequent-requests:
       - client-name: ExecutionAndTraceLog://v1/record-service-request
-        uuid: ol-1-0-0-op-c-bs-ol-1-0-0-000
+        uuid: ol-1-0-0-op-c-bs-eatl-1-0-0-000
 
   - forwarding-name: OamRequestCausesLoggingRequest
     uuid: ol-1-0-0-op-fc-bm-003
