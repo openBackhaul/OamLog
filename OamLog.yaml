@@ -162,7 +162,7 @@ paths:
                           type: string
                           description: >
                             'Name of application that shall be requested for OaM request notifications
-                            from [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-capability/application-name]'
+                            from [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/application-name]'
                         application-release-number:
                           type: string
                           description: >
@@ -823,7 +823,7 @@ paths:
                   minLength: 3
                   description: >
                     'Name of application that shall be requested for OaM request notifications
-                    find or create [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-capability/application-name]'
+                    find or create [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/application-name]'
                 release-number:
                   type: string
                   pattern: '^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{1,2})$'
@@ -1046,7 +1046,7 @@ paths:
                   type: string
                   description: >
                     'Name of application that shall no longer be requested for OaM request notifications
-                    find in [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-capability/application-name]'
+                    find in [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/application-name]'
                 release-number:
                   type: string
                   pattern: '^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{1,2})$'
@@ -1135,7 +1135,7 @@ paths:
                     application-name:
                       type: string
                       description: >
-                        'from [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-capability/application-name]'
+                        'from [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/application-name]'
                     release-number:
                       type: string
                       description: >
