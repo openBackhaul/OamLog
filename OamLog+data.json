@@ -1303,8 +1303,7 @@
                                 "operation-client-interface-1-0:operation-client-interface-pac": {
                                     "operation-client-interface-configuration": {
                                         "operation-name": "/v1/redirect-oam-request-information",
-                                        "operation-key": "Operation key not yet provided.",
-                                        "detailed-logging-is-on": "false"
+                                        "operation-key": "Operation key not yet provided."
                                     },
                                     "operation-client-interface-status": {
                                         "operational-state": "operation-client-interface-1-0:OPERATIONAL_STATE_TYPE_NOT_YET_DEFINED",
