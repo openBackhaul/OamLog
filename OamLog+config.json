@@ -2089,7 +2089,7 @@
         ],
         "forwarding-domain": [
           {
-            "uuid": "ol-1-0-0-op-fd-0000",
+            "uuid": "ol-1-0-0-op-fd-000",
             "forwarding-construct": [
               {
                 "uuid": "ol-2-0-0-op-fc-bm-000",
