@@ -8,6 +8,7 @@
       "authorizationCode": " *** your code *** ",
       "operationKey": " *** your key *** ",
       "core-model-1-4:control-construct": {
+        "uuid": "ol-2-0-0",
         "profile-collection": {
           "profile": [
             {
