@@ -1679,7 +1679,15 @@ components:
                 type: string
                 description: >
                   'Request that shall be called, when button gets pressed
-                  from [/core-model-1-4:control-construct/profile-collection/profile=ol-2-0-0-action-p-*/action-profile-1-0:action-profile-pac/action-profile-configuration/request]'
+                  from
+                  [{/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-tcp-s-bm-*/layer-protocol=0/tcp-server-interface-1-0:tcp-server-interface-pac/tcp-server-interface-configuration/local-protocol}]
+                  ://
+                  [{/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-tcp-s-bm-*/layer-protocol=0/tcp-server-interface-1-0:tcp-server-interface-pac/tcp-server-interface-configuration/local-address/ipv-4-address}
+                  or
+                  {/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-tcp-s-bm-*/layer-protocol=0/tcp-server-interface-1-0:tcp-server-interface-pac/tcp-server-interface-configuration/local-address/domain-name}]
+                  :
+                  [{/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-tcp-s-bm-*/layer-protocol=0/tcp-server-interface-1-0:tcp-server-interface-pac/tcp-server-interface-configuration/local-port}]
+                  [{/core-model-1-4:control-construct/profile-collection/profile=ol-2-0-0-action-p-*/action-profile-1-0:action-profile-pac/action-profile-configuration/consequent-operation-reference}]'
               input-value-list:
                 type: array
                 items:
