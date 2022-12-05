@@ -274,12 +274,12 @@ clients:
   - http-client:
       application-name: CurrentController
       release-number: 1.0.0
-      uuid: ol-2-0-0-http-c-im-okm-1-0-0-000
+      uuid: ol-2-0-0-http-c-im-cc-1-0-0-000
     tcp-client:
       remote-protocol: http
       ip-address: 1.1.4.1
       tcp-port: 4001
-      uuid: ol-2-0-0-tcp-c-im-okm-1-0-0-000
+      uuid: ol-2-0-0-tcp-c-im-cc-1-0-0-000
     operation-clients:
       own-oam:
         basic:
