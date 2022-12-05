@@ -74,8 +74,8 @@ clients:
       uuid: ol-2-0-0-http-c-bm-or-1-0-0-000
     tcp-client:
       remote-protocol: http
-      ip-address: 10.118.125.157
-      tcp-port: 1003
+      ip-address: 1.1.3.4
+      tcp-port: 3004
       uuid: ol-2-0-0-tcp-c-bm-or-1-0-0-000
     operation-clients:
       own-oam:
@@ -93,8 +93,8 @@ clients:
       uuid: ol-2-0-0-http-c-im-nr-2-0-0-000
     tcp-client:
       remote-protocol: http
-      ip-address: 10.118.125.157
-      tcp-port: 1003
+      ip-address: 1.1.3.11
+      tcp-port: 3011
       uuid: ol-2-0-0-tcp-c-im-nr-2-0-0-000
     operation-clients:
       own-oam:
@@ -112,8 +112,8 @@ clients:
       uuid: ol-2-0-0-http-c-bm-ro-2-0-0-000
     tcp-client:
       remote-protocol: http
-      ip-address: 10.118.125.157
-      tcp-port: 1000
+      ip-address: 1.1.3.8
+      tcp-port: 3008
       uuid: ol-2-0-0-tcp-c-bm-ro-2-0-0-000
     operation-clients:
       own-oam:
@@ -145,8 +145,8 @@ clients:
       uuid: ol-2-0-0-http-c-im-tar-1-0-0-000
     tcp-client:
       remote-protocol: http
-      ip-address: 10.118.125.157
-      tcp-port: 1001
+      ip-address: 1.1.3.2
+      tcp-port: 3002
       uuid: ol-2-0-0-tcp-c-im-tar-1-0-0-000
     operation-clients:
       own-oam:
@@ -164,8 +164,8 @@ clients:
       uuid: ol-2-0-0-http-c-im-eatl-1-0-0-000
     tcp-client:
       remote-protocol: http
-      ip-address: 10.118.125.157
-      tcp-port: 1002
+      ip-address: 1.1.3.3
+      tcp-port: 3003
       uuid: ol-2-0-0-tcp-c-im-eatl-1-0-0-000
     operation-clients:
       own-oam:
@@ -185,8 +185,8 @@ clients:
       uuid: ol-2-0-0-http-c-im-ol-2-0-0-000
     tcp-client:
       remote-protocol: http
-      ip-address: 10.118.125.157
-      tcp-port: 1003
+      ip-address: 1.1.3.4
+      tcp-port: 3004
       uuid: ol-2-0-0-tcp-c-im-ol-2-0-0-000
     operation-clients:
       own-oam:
@@ -206,8 +206,8 @@ clients:
       uuid: ol-2-0-0-http-c-im-aa-1-0-0-000
     tcp-client:
       remote-protocol: http
-      ip-address: 10.118.125.157
-      tcp-port: 1004
+      ip-address: 1.1.3.5
+      tcp-port: 3005
       uuid: ol-2-0-0-tcp-c-im-aa-1-0-0-000
     operation-clients:
       own-oam:
@@ -227,8 +227,8 @@ clients:
       uuid: ol-2-0-0-http-c-bm-alt-1-0-0-000
     tcp-client:
       remote-protocol: http
-      ip-address: 10.118.125.157
-      tcp-port: 1005
+      ip-address: 1.1.3.6
+      tcp-port: 3006
       uuid: ol-2-0-0-tcp-c-bm-alt-1-0-0-000
     operation-clients:
       own-oam:
@@ -258,8 +258,8 @@ clients:
       uuid: ol-2-0-0-http-c-im-okm-1-0-0-000
     tcp-client:
       remote-protocol: http
-      ip-address: 10.118.125.157
-      tcp-port: 1006
+      ip-address: 1.1.3.7
+      tcp-port: 3007
       uuid: ol-2-0-0-tcp-c-im-okm-1-0-0-000
     operation-clients:
       own-oam:
@@ -277,8 +277,8 @@ clients:
       uuid: ol-2-0-0-http-c-im-okm-1-0-0-000
     tcp-client:
       remote-protocol: http
-      ip-address: 10.118.125.186
-      tcp-port: 2000
+      ip-address: 1.1.4.1
+      tcp-port: 4001
       uuid: ol-2-0-0-tcp-c-im-okm-1-0-0-000
     operation-clients:
       own-oam:
