@@ -185,8 +185,8 @@ clients:
       uuid: ol-2-0-0-http-c-im-ol-2-0-0-000
     tcp-client:
       remote-protocol: http
-      ip-address: 1.1.3.4
-      tcp-port: 3004
+      ip-address: 1.1.3.11
+      tcp-port: 3011
       uuid: ol-2-0-0-tcp-c-im-ol-2-0-0-000
     operation-clients:
       own-oam:
