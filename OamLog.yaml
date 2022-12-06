@@ -1246,7 +1246,7 @@ paths:
                 release-number: '1.0.0'
                 method: 'PUT'
                 resource: '/core-model-1-4:control-construct/profile-collection/profile=string-p-1000/string-profile-1-0:string-profile-pac/string-profile-configuration/string-value'
-                stringified-body: '{"string-profile-1-0:string-value":"1.1.4.1:8443"}'
+                stringified-body: '{"string-profile-1-0:string-value":"1.1.4.1:4001"}'
                 response-code: 204
                 user-name: 'Max Mustermann'
                 timestamp: '2010-11-20T14:00:00+01:02'
@@ -1430,7 +1430,7 @@ paths:
                     release-number: '1.0.0'
                     method: 'PUT'
                     resource: '/core-model-1-4:control-construct/profile-collection/profile=string-p-1000/string-profile-1-0:string-profile-pac/string-profile-configuration/string-value'
-                    stringified-body: '{"string-profile-1-0:string-value":"1.1.4.1:8443"}'
+                    stringified-body: '{"string-profile-1-0:string-value":"1.1.4.1:4001"}'
                     response-code: 204
                     user-name: 'Max Mustermann'
                     timestamp: '2010-11-20T14:00:00+01:02'
