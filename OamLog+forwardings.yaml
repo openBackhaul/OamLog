@@ -249,25 +249,6 @@ forwardings:
       - client-name: RegistryOffice://v1/relay-operation-update
         uuid: ol-2-0-0-op-c-bm-ro-2-0-0-003
 
-  - forwarding-name: PromptForRedirectingTopologyInformationCausesSendingAnInitialStateToALT
-    uuid: ol-2-0-0-op-fc-bm-005
-    forwarding-type: InvariantProcessSnippet
-    management-requests:
-      operation-client-update:
-        - server-name: /v1/redirect-topology-change-information
-          uuid: ol-2-0-0-op-s-bm-009
-      fc-port-update:
-        - server-name: /v1/redirect-topology-change-information
-          uuid: ol-2-0-0-op-s-bm-009
-      fc-port-deletion:
-      operation-client-deletion:
-    initiating-requests:
-      - server-name: /v1/redirect-topology-change-information
-        uuid: ol-2-0-0-op-s-bm-009
-    consequent-requests:
-      - client-name: ApplicationLayerTopology://v1/update-all-ltps-and-fcs
-        uuid: ol-2-0-0-op-c-bm-alt-1-0-0-000
-
   - forwarding-name: ServiceRequestCausesLtpUpdateRequest
     uuid: ol-2-0-0-op-fc-bm-006
     forwarding-type: InvariantProcessSnippet
