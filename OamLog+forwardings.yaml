@@ -1,26 +1,25 @@
 forwardings:
-
   - forwarding-name: PromptForRegisteringCausesRegistrationRequest
-    uuid: ol-1-0-0-op-fc-bm-000
+    uuid: ol-2-0-0-op-fc-bm-000
     forwarding-type: InvariantProcessSnippet
     management-requests:
       operation-client-update:
         - server-name: /v1/register-yourself
-          uuid: ol-1-0-0-op-s-bm-000
+          uuid: ol-2-0-0-op-s-bm-000
       fc-port-update:
         - server-name: /v1/register-yourself
-          uuid: ol-1-0-0-op-s-bm-000
+          uuid: ol-2-0-0-op-s-bm-000
       fc-port-deletion:
       operation-client-deletion:
     initiating-requests:
       - server-name: /v1/register-yourself
-        uuid: ol-1-0-0-op-s-bm-000
+        uuid: ol-2-0-0-op-s-bm-000
     consequent-requests:
       - client-name: RegistryOffice://v1/register-application
-        uuid: ol-1-0-0-op-c-bm-ro-1-0-0-000
+        uuid: ol-2-0-0-op-c-bm-ro-2-0-0-000
 
   - forwarding-name: PromptForEmbeddingCausesRequestForBequeathingData
-    uuid: ol-1-0-0-op-fc-bm-001
+    uuid: ol-2-0-0-op-fc-bm-001
     forwarding-type: InvariantProcessSnippet
     management-requests:
       operation-client-update:
@@ -29,112 +28,112 @@ forwardings:
       operation-client-deletion:
     initiating-requests:
       - server-name: /v1/embed-yourself
-        uuid: ol-1-0-0-op-s-bm-001
+        uuid: ol-2-0-0-op-s-bm-001
     consequent-requests:
       - client-name: OldRelease://v1/bequeath-your-data-and-die
-        uuid: ol-1-0-0-op-c-bm-or-1-0-0-000
+        uuid: ol-2-0-0-op-c-bm-or-1-0-0-000
 
   - forwarding-name: ServiceRequestCausesLoggingRequest
-    uuid: ol-1-0-0-op-fc-bm-002
+    uuid: ol-2-0-0-op-fc-bm-002
     forwarding-type: InvariantProcessSnippet
     management-requests:
       operation-client-update:
         - server-name: /v1/redirect-service-request-information
-          uuid: ol-1-0-0-op-s-bm-002
+          uuid: ol-2-0-0-op-s-bm-002
       fc-port-update:
         - server-name: /v1/redirect-service-request-information
-          uuid: ol-1-0-0-op-s-bm-002
+          uuid: ol-2-0-0-op-s-bm-002
       fc-port-deletion:
       operation-client-deletion:
     initiating-requests:
       - server-name: /v1/register-yourself
-        uuid: ol-1-0-0-op-s-bm-000
+        uuid: ol-2-0-0-op-s-bm-000
       - server-name: /v1/embed-yourself
-        uuid: ol-1-0-0-op-s-bm-001
+        uuid: ol-2-0-0-op-s-bm-001
       - server-name: /v1/redirect-service-request-information
-        uuid: ol-1-0-0-op-s-bm-002
+        uuid: ol-2-0-0-op-s-bm-002
       - server-name: /v1/redirect-oam-request-information
-        uuid: ol-1-0-0-op-s-bm-003
+        uuid: ol-2-0-0-op-s-bm-003
       - server-name: /v1/end-subscription
-        uuid: ol-1-0-0-op-s-bm-004
+        uuid: ol-2-0-0-op-s-bm-004
       - server-name: /v1/inquire-oam-request-approvals
-        uuid: ol-1-0-0-op-s-bm-005
+        uuid: ol-2-0-0-op-s-bm-005
       - server-name: /v1/update-client
-        uuid: ol-1-0-0-op-s-bm-007
+        uuid: ol-2-0-0-op-s-bm-007
       - server-name: /v1/list-ltps-and-fcs
-        uuid: ol-1-0-0-op-s-bm-008
+        uuid: ol-2-0-0-op-s-bm-008
       - server-name: /v1/redirect-topology-change-information
-        uuid: ol-1-0-0-op-s-bm-009
+        uuid: ol-2-0-0-op-s-bm-009
       - server-name: /v1/update-operation-key
-        uuid: ol-1-0-0-op-s-bm-010
+        uuid: ol-2-0-0-op-s-bm-010
       - server-name: /v1/update-operation-client
-        uuid: ol-1-0-0-op-s-bm-011
+        uuid: ol-2-0-0-op-s-bm-011
       - server-name: /v1/bequeath-your-data-and-die
-        uuid: ol-1-0-0-op-s-im-000
+        uuid: ol-2-0-0-op-s-im-000
       - server-name: /v1/start-application-in-generic-representation
-        uuid: ol-1-0-0-op-s-bs-000
+        uuid: ol-2-0-0-op-s-bs-000
       - server-name: /v1/inform-about-application
-        uuid: ol-1-0-0-op-s-bs-001
+        uuid: ol-2-0-0-op-s-bs-001
       - server-name: /v1/inform-about-application-in-generic-representation
-        uuid: ol-1-0-0-op-s-bs-002
+        uuid: ol-2-0-0-op-s-bs-002
       - server-name: /v1/inform-about-release-history
-        uuid: ol-1-0-0-op-s-bs-003
+        uuid: ol-2-0-0-op-s-bs-003
       - server-name: /v1/inform-about-release-history-in-generic-representation
-        uuid: ol-1-0-0-op-s-bs-004
+        uuid: ol-2-0-0-op-s-bs-004
       - service-name: /v1/regard-application
-        uuid: ol-1-0-0-op-s-is-001
+        uuid: ol-2-0-0-op-s-is-001
       - service-name: /v1/disregard-application
-        uuid: ol-1-0-0-op-s-is-002
+        uuid: ol-2-0-0-op-s-is-002
       - service-name: /v1/list-applications
-        uuid: ol-1-0-0-op-s-is-003
+        uuid: ol-2-0-0-op-s-is-003
       - service-name: /v1/record-oam-request
-        uuid: ol-1-0-0-op-s-is-004
+        uuid: ol-2-0-0-op-s-is-004
       - service-name: /v1/list-records
-        uuid: ol-1-0-0-op-s-is-005
+        uuid: ol-2-0-0-op-s-is-005
       - service-name: /v1/list-records-of-application
-        uuid: ol-1-0-0-op-s-is-006
+        uuid: ol-2-0-0-op-s-is-006
     consequent-requests:
       - client-name: ExecutionAndTraceLog://v1/record-service-request
-        uuid: ol-1-0-0-op-c-bs-ol-1-0-0-000
+        uuid: ol-2-0-0-op-c-bs-eatl-1-0-0-000
 
   - forwarding-name: OamRequestCausesLoggingRequest
-    uuid: ol-1-0-0-op-fc-bm-003
+    uuid: ol-2-0-0-op-fc-bm-003
     forwarding-type: InvariantProcessSnippet
     management-requests:
       operation-client-update:
         - server-name: /v1/redirect-oam-request-information
-          uuid: ol-1-0-0-op-s-bm-003
+          uuid: ol-2-0-0-op-s-bm-003
       fc-port-update:
         - server-name: /v1/redirect-oam-request-information
-          uuid: ol-1-0-0-op-s-bm-003
+          uuid: ol-2-0-0-op-s-bm-003
       fc-port-deletion:
       operation-client-deletion:
     initiating-requests:
       # [all oam requests]
     consequent-requests:
       - client-name: OamLog://v1/record-oam-request
-        uuid: ol-1-0-0-op-c-bs-ol-1-0-0-000
+        uuid: ol-2-0-0-op-c-bs-ol-2-0-0-000
 
   - forwarding-name: OamRequestCausesInquiryForAuthentication
-    uuid: ol-1-0-0-op-fc-bm-004
+    uuid: ol-2-0-0-op-fc-bm-004
     forwarding-type: InvariantProcessSnippet
     management-requests:
       operation-client-update:
         - server-name: /v1/inquire-oam-request-approvals
-          uuid: ol-1-0-0-op-s-bm-005
+          uuid: ol-2-0-0-op-s-bm-005
       fc-port-update:
         - server-name: /v1/inquire-oam-request-approvals
-          uuid: ol-1-0-0-op-s-bm-005
+          uuid: ol-2-0-0-op-s-bm-005
       fc-port-deletion:
       operation-client-deletion:
     initiating-requests:
       # [all oam requests]
     consequent-requests:
       - client-name: AdministratorAdministration://v1/approve-oam-request
-        uuid: ol-1-0-0-op-c-bs-aa-1-0-0-000
+        uuid: ol-2-0-0-op-c-bs-aa-1-0-0-000
 
   - forwarding-name: PromptForBequeathingDataCausesTransferOfListOfApplications
-    uuid: ol-1-0-0-op-fc-im-110
+    uuid: ol-2-0-0-op-fc-im-110
     forwarding-type: InvariantProcessSnippet
     management-requests:
       operation-client-update:
@@ -143,13 +142,13 @@ forwardings:
       operation-client-deletion:
     initiating-requests:
       - server-name: /v1/bequeath-your-data-and-die
-        uuid: ol-1-0-0-op-s-im-000
+        uuid: ol-2-0-0-op-s-im-000
     consequent-requests:
       - client-name: NewRelease:://v1/regard-application
-        uuid: ol-1-0-0-op-c-im-nr-1-0-0-000
+        uuid: ol-2-0-0-op-c-im-nr-2-0-0-000
 
   - forwarding-name: PromptForBequeathingDataCausesRObeingRequestedToNotifyApprovalsOfNewApplicationsToNewRelease
-    uuid: ol-1-0-0-op-fc-im-112
+    uuid: ol-2-0-0-op-fc-im-112
     forwarding-type: InvariantProcessSnippet
     management-requests:
       operation-client-update:
@@ -158,13 +157,13 @@ forwardings:
       operation-client-deletion:
     initiating-requests:
       - server-name: /v1/bequeath-your-data-and-die
-        uuid: ol-1-0-0-op-s-im-000
+        uuid: ol-2-0-0-op-s-im-000
     consequent-requests:
       - client-name: RegistryOffice:://v1/notify-approvals
-        uuid: ol-1-0-0-op-c-im-ro-1-0-0-000
+        uuid: ol-2-0-0-op-c-im-ro-2-0-0-000
 
   - forwarding-name: PromptForBequeathingDataCausesRObeingRequestedToNotifyWithdrawnApprovalsToNewRelease
-    uuid: ol-1-0-0-op-fc-im-113
+    uuid: ol-2-0-0-op-fc-im-113
     forwarding-type: InvariantProcessSnippet
     management-requests:
       operation-client-update:
@@ -173,13 +172,13 @@ forwardings:
       operation-client-deletion:
     initiating-requests:
       - server-name: /v1/bequeath-your-data-and-die
-        uuid: ol-1-0-0-op-s-im-000
+        uuid: ol-2-0-0-op-s-im-000
     consequent-requests:
       - client-name: RegistryOffice:://v1/notify-withdrawn-approvals
-        uuid: ol-1-0-0-op-c-im-ro-1-0-0-001
+        uuid: ol-2-0-0-op-c-im-ro-2-0-0-001
 
   - forwarding-name: PromptForBequeathingDataCausesRObeingRequestedToStopNotificationsToOldRelease
-    uuid: ol-1-0-0-op-fc-im-114
+    uuid: ol-2-0-0-op-fc-im-114
     forwarding-type: InvariantProcessSnippet
     management-requests:
       operation-client-update:
@@ -188,318 +187,297 @@ forwardings:
       operation-client-deletion:
     initiating-requests:
       - server-name: /v1/bequeath-your-data-and-die
-        uuid: ol-1-0-0-op-s-im-000
+        uuid: ol-2-0-0-op-s-im-000
     consequent-requests:
       - client-name: RegistryOffice:://v1/end-subscription
-        uuid: ol-1-0-0-op-c-im-ro-1-0-0-002
+        uuid: ol-2-0-0-op-c-im-ro-2-0-0-002
 
   - forwarding-name: PromptForBequeathingDataCausesRequestForBroadcastingInfoAboutServerReplacement
-    uuid: ol-1-0-0-op-fc-bm-105
+    uuid: ol-2-0-0-op-fc-bm-105
     forwarding-type: InvariantProcessSnippet
     management-requests:
       operation-client-update:
         - server-name: /v1/embed-yourself
-          uuid: ol-1-0-0-op-s-bm-001
+          uuid: ol-2-0-0-op-s-bm-001
       fc-port-update:
         - server-name: /v1/embed-yourself
-          uuid: ol-1-0-0-op-s-bm-001
+          uuid: ol-2-0-0-op-s-bm-001
       fc-port-deletion:
       operation-client-deletion:
     initiating-requests:
       - server-name: /v1/bequeath-your-data-and-die
-        uuid: ol-1-0-0-op-s-im-000
+        uuid: ol-2-0-0-op-s-im-000
     consequent-requests:
       - client-name: RegistryOffice://v1/relay-server-replacement
-        uuid: ol-1-0-0-op-c-bm-ro-1-0-0-001
+        uuid: ol-2-0-0-op-c-bm-ro-2-0-0-001
 
   - forwarding-name: PromptForBequeathingDataCausesRequestForDeregisteringOfOldRelease
-    uuid: ol-1-0-0-op-fc-bm-106
+    uuid: ol-2-0-0-op-fc-bm-106
     forwarding-type: InvariantProcessSnippet
     management-requests:
       operation-client-update:
         - server-name: /v1/embed-yourself
-          uuid: ol-1-0-0-op-s-bm-001
+          uuid: ol-2-0-0-op-s-bm-001
       fc-port-update:
         - server-name: /v1/embed-yourself
-          uuid: ol-1-0-0-op-s-bm-001
+          uuid: ol-2-0-0-op-s-bm-001
       fc-port-deletion:
       operation-client-deletion:
     initiating-requests:
       - server-name: /v1/bequeath-your-data-and-die
-        uuid: ol-1-0-0-op-s-im-000
+        uuid: ol-2-0-0-op-s-im-000
     consequent-requests:
       - client-name: RegistryOffice://v1/deregister-application
-        uuid: ol-1-0-0-op-c-bm-ro-1-0-0-002
+        uuid: ol-2-0-0-op-c-bm-ro-2-0-0-002
 
   - forwarding-name: PromptingNewReleaseForUpdatingServerCausesRequestForBroadcastingInfoAboutBackwardCompatibleUpdateOfOperation
-    uuid: ol-1-0-0-op-fc-bm-107
+    uuid: ol-2-0-0-op-fc-bm-107
     forwarding-type: InvariantProcessSnippet
     management-requests:
       operation-client-update:
         - server-name: /v1/embed-yourself
-          uuid: ol-1-0-0-op-s-bm-001
+          uuid: ol-2-0-0-op-s-bm-001
       fc-port-update:
         - server-name: /v1/embed-yourself
-          uuid: ol-1-0-0-op-s-bm-001
+          uuid: ol-2-0-0-op-s-bm-001
       fc-port-deletion:
       operation-client-deletion:
     initiating-requests:
       - server-name: /v1/update-client
-        uuid: ol-1-0-0-op-s-bm-007
+        uuid: ol-2-0-0-op-s-bm-007
     consequent-requests:
       - client-name: RegistryOffice://v1/relay-operation-update
-        uuid: ol-1-0-0-op-c-bm-ro-1-0-0-003
-
-  - forwarding-name: PromptForRedirectingTopologyInformationCausesSendingAnInitialStateToALT
-    uuid: ol-1-0-0-op-fc-bm-005
-    forwarding-type: InvariantProcessSnippet
-    management-requests:
-      operation-client-update:
-        - server-name: /v1/redirect-topology-change-information
-          uuid: ol-1-0-0-op-s-bm-009
-      fc-port-update:
-        - server-name: /v1/redirect-topology-change-information
-          uuid: ol-1-0-0-op-s-bm-009
-      fc-port-deletion:
-      operation-client-deletion:
-    initiating-requests:
-      - server-name: /v1/redirect-topology-change-information
-        uuid: ol-1-0-0-op-s-bm-009
-    consequent-requests:
-      - client-name: ApplicationLayerTopology://v1/update-all-ltps-and-fcs
-        uuid: ol-1-0-0-op-c-bm-alt-1-0-0-000
+        uuid: ol-2-0-0-op-c-bm-ro-2-0-0-003
 
   - forwarding-name: ServiceRequestCausesLtpUpdateRequest
-    uuid: ol-1-0-0-op-fc-bm-006
+    uuid: ol-2-0-0-op-fc-bm-006
     forwarding-type: InvariantProcessSnippet
     management-requests:
       operation-client-update:
         - server-name: /v1/redirect-topology-change-information
-          uuid: ol-1-0-0-op-s-bm-009
+          uuid: ol-2-0-0-op-s-bm-009
       fc-port-update:
         - server-name: /v1/redirect-topology-change-information
-          uuid: ol-1-0-0-op-s-bm-009
+          uuid: ol-2-0-0-op-s-bm-009
       fc-port-deletion:
       operation-client-deletion:
     initiating-requests:
       - server-name: /v1/register-yourself
-        uuid: ol-1-0-0-op-s-bm-000
+        uuid: ol-2-0-0-op-s-bm-000
       - server-name: /v1/embed-yourself
-        uuid: ol-1-0-0-op-s-bm-001
+        uuid: ol-2-0-0-op-s-bm-001
       - server-name: /v1/redirect-service-request-information
-        uuid: ol-1-0-0-op-s-bm-002
+        uuid: ol-2-0-0-op-s-bm-002
       - server-name: /v1/redirect-oam-request-information
-        uuid: ol-1-0-0-op-s-bm-003
+        uuid: ol-2-0-0-op-s-bm-003
       - server-name: /v1/inquire-oam-request-approvals
-        uuid: ol-1-0-0-op-s-bm-005
+        uuid: ol-2-0-0-op-s-bm-005
       - server-name: /v1/update-client
-        uuid: ol-1-0-0-op-s-bm-007
+        uuid: ol-2-0-0-op-s-bm-007
       - server-name: /v1/redirect-topology-change-information
-        uuid: ol-1-0-0-op-s-bm-009
-      - server-name: /v1/update-operation-key
-        uuid: ol-1-0-0-op-s-bm-010
+        uuid: ol-2-0-0-op-s-bm-009
       - server-name: /v1/update-operation-client
-        uuid: ol-1-0-0-op-s-bm-011
+        uuid: ol-2-0-0-op-s-bm-011
       - server-name: /v1/bequeath-your-data-and-die
-        uuid: ol-1-0-0-op-s-im-000
+        uuid: ol-2-0-0-op-s-im-000
       - service-name: /v1/regard-application
-        uuid: ol-1-0-0-op-s-is-001
+        uuid: ol-2-0-0-op-s-is-001
     consequent-requests:
       - client-name: ApplicationLayerTopology://v1/update-ltp
-        uuid: ol-1-0-0-op-c-bm-alt-1-0-0-001
+        uuid: ol-2-0-0-op-c-bm-alt-1-0-0-001
 
   - forwarding-name: ServiceRequestCausesLtpDeletionRequest
-    uuid: ol-1-0-0-op-fc-bm-007
+    uuid: ol-2-0-0-op-fc-bm-007
     forwarding-type: InvariantProcessSnippet
     management-requests:
       operation-client-update:
         - server-name: /v1/redirect-topology-change-information
-          uuid: ol-1-0-0-op-s-bm-009
+          uuid: ol-2-0-0-op-s-bm-009
       fc-port-update:
         - server-name: /v1/redirect-topology-change-information
-          uuid: ol-1-0-0-op-s-bm-009
+          uuid: ol-2-0-0-op-s-bm-009
       fc-port-deletion:
       operation-client-deletion:
     initiating-requests:
       - service-name: /v1/disregard-application
-        uuid: ol-1-0-0-op-s-is-002
+        uuid: ol-2-0-0-op-s-is-002
     consequent-requests:
       - client-name: ApplicationLayerTopology://v1/delete-ltp-and-dependents
-        uuid: ol-1-0-0-op-c-bm-alt-1-0-0-002
+        uuid: ol-2-0-0-op-c-bm-alt-1-0-0-002
 
   - forwarding-name: ServiceRequestCausesFcUpdateRequest
-    uuid: ol-1-0-0-op-fc-bm-008
+    uuid: ol-2-0-0-op-fc-bm-008
     forwarding-type: InvariantProcessSnippet
     management-requests:
       operation-client-update:
         - server-name: /v1/redirect-topology-change-information
-          uuid: ol-1-0-0-op-s-bm-009
+          uuid: ol-2-0-0-op-s-bm-009
       fc-port-update:
         - server-name: /v1/redirect-topology-change-information
-          uuid: ol-1-0-0-op-s-bm-009
+          uuid: ol-2-0-0-op-s-bm-009
       fc-port-deletion:
       operation-client-deletion:
     initiating-requests:
       - service-name: /v1/regard-application
-        uuid: ol-1-0-0-op-s-is-001
+        uuid: ol-2-0-0-op-s-is-001
     consequent-requests:
       - client-name: ApplicationLayerTopology://v1/update-fc
-        uuid: ol-1-0-0-op-c-bm-alt-1-0-0-003
+        uuid: ol-2-0-0-op-c-bm-alt-1-0-0-003
 
   - forwarding-name: ServiceRequestCausesFcPortUpdateRequest
-    uuid: ol-1-0-0-op-fc-bm-009
+    uuid: ol-2-0-0-op-fc-bm-009
     forwarding-type: InvariantProcessSnippet
     management-requests:
       operation-client-update:
         - server-name: /v1/redirect-topology-change-information
-          uuid: ol-1-0-0-op-s-bm-009
+          uuid: ol-2-0-0-op-s-bm-009
       fc-port-update:
         - server-name: /v1/redirect-topology-change-information
-          uuid: ol-1-0-0-op-s-bm-009
+          uuid: ol-2-0-0-op-s-bm-009
       fc-port-deletion:
       operation-client-deletion:
     initiating-requests:
     consequent-requests:
       - client-name: ApplicationLayerTopology://v1/update-fc-port
-        uuid: ol-1-0-0-op-c-bm-alt-1-0-0-004
+        uuid: ol-2-0-0-op-c-bm-alt-1-0-0-004
 
   - forwarding-name: ServiceRequestCausesFcPortDeletionRequest
-    uuid: ol-1-0-0-op-fc-bm-010
+    uuid: ol-2-0-0-op-fc-bm-010
     forwarding-type: InvariantProcessSnippet
     management-requests:
       operation-client-update:
         - server-name: /v1/redirect-topology-change-information
-          uuid: ol-1-0-0-op-s-bm-009
+          uuid: ol-2-0-0-op-s-bm-009
       fc-port-update:
         - server-name: /v1/redirect-topology-change-information
-          uuid: ol-1-0-0-op-s-bm-009
+          uuid: ol-2-0-0-op-s-bm-009
       fc-port-deletion:
       operation-client-deletion:
     initiating-requests:
       - server-name: /v1/end-subscription
-        uuid: ol-1-0-0-op-s-bm-004
+        uuid: ol-2-0-0-op-s-bm-004
     consequent-requests:
       - client-name: ApplicationLayerTopology://v1/delete-fc-port
-        uuid: ol-1-0-0-op-c-bm-alt-1-0-0-005
+        uuid: ol-2-0-0-op-c-bm-alt-1-0-0-005
 
   - forwarding-name: OamRequestCausesLtpUpdateRequest
-    uuid: ol-1-0-0-op-fc-bm-011
+    uuid: ol-2-0-0-op-fc-bm-011
     forwarding-type: InvariantProcessSnippet
     management-requests:
       operation-client-update:
         - server-name: /v1/redirect-topology-change-information
-          uuid: ol-1-0-0-op-s-bm-009
+          uuid: ol-2-0-0-op-s-bm-009
       fc-port-update:
         - server-name: /v1/redirect-topology-change-information
-          uuid: ol-1-0-0-op-s-bm-009
+          uuid: ol-2-0-0-op-s-bm-009
       fc-port-deletion:
       operation-client-deletion:
     initiating-requests:
     consequent-requests:
       - client-name: ApplicationLayerTopology://v1/update-ltp
-        uuid: ol-1-0-0-op-c-bm-alt-1-0-0-001
+        uuid: ol-2-0-0-op-c-bm-alt-1-0-0-001
 
   - forwarding-name: OamRequestCausesLtpDeletionRequest
-    uuid: ol-1-0-0-op-fc-bm-012
+    uuid: ol-2-0-0-op-fc-bm-012
     forwarding-type: InvariantProcessSnippet
     management-requests:
       operation-client-update:
         - server-name: /v1/redirect-topology-change-information
-          uuid: ol-1-0-0-op-s-bm-009
+          uuid: ol-2-0-0-op-s-bm-009
       fc-port-update:
         - server-name: /v1/redirect-topology-change-information
-          uuid: ol-1-0-0-op-s-bm-009
+          uuid: ol-2-0-0-op-s-bm-009
       fc-port-deletion:
       operation-client-deletion:
     initiating-requests:
     consequent-requests:
       - client-name: ApplicationLayerTopology://v1/delete-ltp-and-dependents
-        uuid: ol-1-0-0-op-c-bm-alt-1-0-0-002
+        uuid: ol-2-0-0-op-c-bm-alt-1-0-0-002
 
   - forwarding-name: OamRequestCausesFcUpdateRequest
-    uuid: ol-1-0-0-op-fc-bm-013
+    uuid: ol-2-0-0-op-fc-bm-013
     forwarding-type: InvariantProcessSnippet
     management-requests:
       operation-client-update:
         - server-name: /v1/redirect-topology-change-information
-          uuid: ol-1-0-0-op-s-bm-009
+          uuid: ol-2-0-0-op-s-bm-009
       fc-port-update:
         - server-name: /v1/redirect-topology-change-information
-          uuid: ol-1-0-0-op-s-bm-009
+          uuid: ol-2-0-0-op-s-bm-009
       fc-port-deletion:
       operation-client-deletion:
     initiating-requests:
     consequent-requests:
       - client-name: ApplicationLayerTopology://v1/update-fc
-        uuid: ol-1-0-0-op-c-bm-alt-1-0-0-003
+        uuid: ol-2-0-0-op-c-bm-alt-1-0-0-003
 
   - forwarding-name: OamRequestCausesFcPortUpdateRequest
-    uuid: ol-1-0-0-op-fc-bm-014
+    uuid: ol-2-0-0-op-fc-bm-014
     forwarding-type: InvariantProcessSnippet
     management-requests:
       operation-client-update:
         - server-name: /v1/redirect-topology-change-information
-          uuid: ol-1-0-0-op-s-bm-009
+          uuid: ol-2-0-0-op-s-bm-009
       fc-port-update:
         - server-name: /v1/redirect-topology-change-information
-          uuid: ol-1-0-0-op-s-bm-009
+          uuid: ol-2-0-0-op-s-bm-009
       fc-port-deletion:
       operation-client-deletion:
     initiating-requests:
     consequent-requests:
       - client-name: ApplicationLayerTopology://v1/update-fc-port
-        uuid: ol-1-0-0-op-c-bm-alt-1-0-0-004
+        uuid: ol-2-0-0-op-c-bm-alt-1-0-0-004
 
   - forwarding-name: OamRequestCausesFcPortDeletionRequest
-    uuid: ol-1-0-0-op-fc-bm-015
+    uuid: ol-2-0-0-op-fc-bm-015
     forwarding-type: InvariantProcessSnippet
     management-requests:
       operation-client-update:
         - server-name: /v1/redirect-topology-change-information
-          uuid: ol-1-0-0-op-s-bm-009
+          uuid: ol-2-0-0-op-s-bm-009
       fc-port-update:
         - server-name: /v1/redirect-topology-change-information
-          uuid: ol-1-0-0-op-s-bm-009
+          uuid: ol-2-0-0-op-s-bm-009
       fc-port-deletion:
       operation-client-deletion:
     initiating-requests:
     consequent-requests:
       - client-name: ApplicationLayerTopology://v1/delete-fc-port
-        uuid: ol-1-0-0-op-c-bm-alt-1-0-0-005
+        uuid: ol-2-0-0-op-c-bm-alt-1-0-0-005
 
   - forwarding-name: NewApplicationCausesRequestForOamRequestInformation
-    uuid: ol-1-0-0-op-fc-is-000
+    uuid: ol-2-0-0-op-fc-is-000
     forwarding-type: ProcessSnippet
     management-requests:
       operation-client-update:
         - server-name: /v1/regard-application
-          uuid: ol-1-0-0-op-s-is-001
+          uuid: ol-2-0-0-op-s-is-001
       fc-port-update:
         - server-name: /v1/regard-application
-          uuid: ol-1-0-0-op-s-is-001
+          uuid: ol-2-0-0-op-s-is-001
       fc-port-deletion:
         - server-name: /v1/disregard-application
-          uuid: ol-1-0-0-op-s-is-002
+          uuid: ol-2-0-0-op-s-is-002
       operation-client-deletion:
         - server-name: /v1/disregard-application
-          uuid: ol-1-0-0-op-s-is-002
+          uuid: ol-2-0-0-op-s-is-002
     initiating-requests:
-        - server-name: /v1/regard-application
-          uuid: ol-1-0-0-op-s-is-001
+      - server-name: /v1/regard-application
+        uuid: ol-2-0-0-op-s-is-001
     consequent-requests:
       - client-name: RegistryOffice:://v1/redirect-oam-request-information
-        uuid: ol-1-0-0-op-c-im-ro-1-0-0-004
+        uuid: ol-2-0-0-op-c-im-ro-2-0-0-004
       - client-name: TypeApprovalRegister:://v1/redirect-oam-request-information
-        uuid: ol-1-0-0-op-c-im-tar-1-0-0-000
+        uuid: ol-2-0-0-op-c-im-tar-1-0-0-004
       - client-name: ExecutionAndTraceLog:://v1/redirect-oam-request-information
-        uuid: ol-1-0-0-op-c-im-eatl-1-0-0-000
+        uuid: ol-2-0-0-op-c-im-eatl-1-0-0-004
       - client-name: OamLog:://v1/redirect-oam-request-information
-        uuid: ol-1-0-0-op-c-im-ol-1-0-0-000
+        uuid: ol-2-0-0-op-c-im-ol-2-0-0-004
       - client-name: AdministratorAdministration:://v1/redirect-oam-request-information
-        uuid: ol-1-0-0-op-c-im-aa-1-0-0-000
+        uuid: ol-2-0-0-op-c-im-aa-1-0-0-004
       - client-name: ApplicationLayerTopology:://v1/redirect-oam-request-information
-        uuid: ol-1-0-0-op-c-im-alt-1-0-0-000
+        uuid: ol-2-0-0-op-c-im-alt-1-0-0-004
       - client-name: OperationKeyManagement:://v1/redirect-oam-request-information
-        uuid: ol-1-0-0-op-c-im-okm-1-0-0-000
+        uuid: ol-2-0-0-op-c-im-okm-1-0-0-004
       - client-name: CurrentController:://v1/redirect-oam-request-information
-        uuid: ol-1-0-0-op-c-im-cc-1-0-0-000
+        uuid: ol-2-0-0-op-c-im-cc-1-0-0-004
