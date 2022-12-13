@@ -1309,6 +1309,25 @@ paths:
         - IndividualServices
       security:
         - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - latest-record
+                - number-of-records
+              properties:
+                latest-record:
+                  type: integer
+                  description: 'Youngest record to be returned.'
+                number-of-records:
+                  type: integer
+                  description: 'Maximum number of records to be returned.'
+              example:
+                latest-record: 0
+                number-of-records: 80
       responses:
         '200':
           description: 'List of recorded OaM requests provided'
@@ -1316,7 +1335,6 @@ paths:
             application/json:
               schema:
                 type: array
-                uniqueItems: true
                 items:
                   $ref: '#/components/schemas/OamRequestRecord'
                   description: 'from elasticsearch'
@@ -1401,10 +1419,22 @@ paths:
               type: object
               required:
                 - application-name
+                - latest-match
+                - number-of-records
               properties:
                 application-name:
                   type: string
                   example: 'CurrentController'
+                latest-match:
+                  type: integer
+                  description: 'Youngest record, which is matching the filter criteria, to be returned.'
+                number-of-records:
+                  type: integer
+                  description: 'Maximum number of records to be returned.'
+              example:
+                application-name: 'CurrentController'
+                latest-match: 0
+                number-of-records: 80
       responses:
         '200':
           description: 'List of OaM request records of the same application provided'
@@ -1412,7 +1442,6 @@ paths:
             application/json:
               schema:
                 type: array
-                uniqueItems: true
                 items:
                   $ref: '#/components/schemas/OamRequestRecord'
                   description: >
