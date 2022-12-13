@@ -1172,11 +1172,11 @@ paths:
                       port: 3008
                     - application-name: 'TypeApprovalRegister'
                       release-number: '1.0.0'
-                      protocol: 'HTTPS'
+                      protocol: 'HTTP'
                       address:
                         ip-address:
-                          ipv-4-address: '1.2.3.9'
-                      port: 3209
+                          ipv-4-address: '1.1.3.2'
+                      port: 3002
           headers:
             x-correlator:
               schema:
