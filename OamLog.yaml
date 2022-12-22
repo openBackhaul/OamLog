@@ -389,7 +389,7 @@ paths:
                         subscriber-application:
                           type: string
                           description: >
-                            'Own application name
+                            'Future application name
                             from [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-http-c-nr-2-0-0-000/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/application-name]'
                         subscriber-release-number:
                           type: string
@@ -508,7 +508,7 @@ paths:
                         subscriber-release-number:
                           type: string
                           description: >
-                            'Old release number
+                            'Own release number
                             from [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-http-s-000/layer-protocol=0/http-server-interface-1-0:http-server-interface-pac/http-server-interface-capability/release-number]'
                         subscription:
                           type: string
@@ -516,7 +516,8 @@ paths:
                             'Name of operation that had been addressed for starting getting notifications
                             from [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-op-c-im-ro-2-0-0-000/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]
                             and
-                            from  [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-op-c-im-ro-2-0-0-001/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]'
+                            from  [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-op-c-im-ro-2-0-0-001/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]
+                            in two separate, sequential requests.'
                       example:
                         subscriber-application: 'OamLog'
                         subscriber-release-number: '2.0.0'
@@ -595,7 +596,7 @@ paths:
                         old-release-number:
                           type: string
                           description: >
-                            'Old release number
+                            'Own release number
                             from [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-http-s-000/layer-protocol=0/http-server-interface-1-0:http-server-interface-pac/http-server-interface-capability/release-number]'
                         new-release-number:
                           type: string
