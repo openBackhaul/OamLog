@@ -272,7 +272,7 @@ paths:
                         subscriber-application:
                           type: string
                           description: >
-                            'Application Name of NewRelease
+                            'Future application name
                             from [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-http-c-nr-2-0-0-000/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/application-name]'
                         subscriber-release-number:
                           type: string
@@ -309,7 +309,7 @@ paths:
                         subscriber-port:
                           type: integer
                           description: >
-                            'Future port
+                            'TCP port of application that wants to receive notifications about new approvals
                             from [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-tcp-c-nr-2-0-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port]'
                       example:
                         subscriber-application: 'OamLog'
@@ -415,18 +415,18 @@ paths:
                                 ipv-4-address:
                                   type: string
                                   description: >
-                                    'IP address of the application that wants to receive notifications about withdrawn approvals
+                                    'IPv4 address of application that wants to receive notifications about withdrawn approvals
                                     from [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-tcp-c-nr-2-0-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/ip-address/ipv-4-address]'
                             domain-name:
                               type: string
                               pattern: '^([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}$'
                               description: >
-                                'Domain name of the application that wants to receive notifications about withdrawn approvals
+                                'Domain name of application that wants to receive notifications about withdrawn approvals
                                 from [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-tcp-c-nr-2-0-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/domain-name]'
                         subscriber-port:
                           type: integer
                           description: >
-                            'TCP port of the application that wants to receive notifications about withdrawn approvals
+                            'TCP port of application that wants to receive notifications about withdrawn approvals
                             from [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-tcp-c-nr-2-0-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port]'
                       example:
                         subscriber-application: 'OamLog'
@@ -520,7 +520,7 @@ paths:
                             in two separate, sequential requests.'
                       example:
                         subscriber-application: 'OamLog'
-                        subscriber-release-number: '2.0.0'
+                        subscriber-release-number: '1.0.0'
                         subscription: '/v1/notify-approvals'
               responses:
                 '204':
@@ -581,68 +581,70 @@ paths:
                     schema:
                       type: object
                       required:
-                        - application-name
-                        - old-release-number
-                        - new-release-number
-                        - new-protocol
-                        - new-address
-                        - new-port
+                        - current-application-name
+                        - current-release-number
+                        - future-application-name
+                        - future-release-number
+                        - future-protocol
+                        - future-address
+                        - future-port
                       properties:
-                        application-name:
+                        current-application-name:
                           type: string
                           description: >
                             'Own application name
                             from [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-http-s-000/layer-protocol=0/http-server-interface-1-0:http-server-interface-pac/http-server-interface-capability/application-name]'
-                        old-release-number:
+                        current-release-number:
                           type: string
                           description: >
                             'Own release number
                             from [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-http-s-000/layer-protocol=0/http-server-interface-1-0:http-server-interface-pac/http-server-interface-capability/release-number]'
-                        new-release-number:
+                        future-application-name:
                           type: string
                           description: >
-                            'Future release number
+                            'Future name of the application that has updated connection data
+                            from [/core-model-1-4:control-construct/logical-termination-point=eatl-2-0-0-http-c-nr-2-0-0-000/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/application-name]'
+                        future-release-number:
+                          type: string
+                          description: >
+                            'Future release number of the application that has updated connection data
                             from [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-http-c-nr-2-0-0-000/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/release-number]'
-                        new-protocol:
+                        future-protocol:
                           type: string
                           description: >
-                            'Future protocol to be used
+                            'Protocol to be used in future for addressing the application that has updated connection data
                             from [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-tcp-c-nr-2-0-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-protocol]'
-                        new-address:
+                        future-address:
                           type: object
-                          minProperties: 1
-                          maxProperties: 1
-                          additionalProperties: false
                           properties:
                             ip-address:
                               type: object
-                              minProperties: 1
-                              additionalProperties: false
                               properties:
                                 ipv-4-address:
                                   type: string
                                   description: >
-                                    'Future IPv4 address
+                                    'Future IPv4 address of the application that has updated connection data
                                     from [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-tcp-c-nr-2-0-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/ip-address/ipv-4-address]'
                             domain-name:
                               type: string
                               description: >
-                                'Future domain name
+                                'Future domain name of the application that has updated connection data
                                 from [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-tcp-c-nr-2-0-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/domain-name]'
-                        new-port:
+                        future-port:
                           type: integer
                           description: >
-                            'Future port
+                            'Future port of the application that has updated connection data
                             from [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-tcp-c-nr-2-0-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port]'
                       example:
-                        application-name: 'RegistryOffice'
-                        old-release-number: '1.0.0'
-                        new-release-number: '2.0.0'
-                        new-protocol: 'HTTP'
-                        new-address:
+                        current-application-name: 'OamLog'
+                        current-release-number: '1.0.0'
+                        future-application-name: 'OamLog'
+                        future-release-number: '2.0.0'
+                        future-protocol: 'HTTP'
+                        future-address:
                           ip-address:
-                            ipv-4-address: '1.1.3.8'
-                        new-port: 3008
+                            ipv-4-address: '1.1.3.10'
+                        future-port: 3010
               responses:
                 '204':
                   description: 'Will broadcast server replacement'
@@ -806,8 +808,8 @@ paths:
                             'Name of the replacing operation
                             from [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-op-s-*/layer-protocol=0/operation-server-interface-1-0:operation-server-interface-pac/operation-server-interface-capability/operation-name]'
                       example:
-                        application-name: 'AdministratorAdministration'
-                        release-number: '1.0.0'
+                        application-name: 'OamLog'
+                        release-number: '2.0.0'
                         old-operation-name: '/v1/regard-application'
                         new-operation-name: '/v2/regard-application'
               responses:
