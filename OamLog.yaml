@@ -272,7 +272,7 @@ paths:
                         subscriber-application:
                           type: string
                           description: >
-                            'Own application name
+                            'Application Name of NewRelease
                             from [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-0-http-c-nr-2-0-0-000/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/application-name]'
                         subscriber-release-number:
                           type: string
