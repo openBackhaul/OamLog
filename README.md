@@ -1,38 +1,21 @@
 # OamLog
-- List of records about OAM activities
-- Thorsten Heinze (Thorsten.Heinze@openBackhaul.com)
 
-### ServiceList
-- [OamLog+services](./OamLog+services.yaml)
+### Location
+The OamLog is part of the TinyApplicationController.  
+The TinyApplicationController is for managing the REST microservices of the application layer.  
 
-### ProfileList and ProfileInstanceList
-- to be provided
-- to be provided
+### Description
+Every application that belongs to the application layer sends a record about every processed OaM request to the OamLog.  
+The OamLog stores these records into an ElasticSearch database.  
+Filtering OaM records for activities on a specific application is supported.  
 
-### ForwardingList
-- [OamLog+forwardings](./OamLog+forwardings.yaml)
+### Relevance
+The OamLog is core element of the application layer running in the live network at Telefonica Germany.  
 
-### Open API specification (Swagger)
-- [OamLog](OamLog.yaml)
-
-### CONFIGfile (JSON)
-- to be provided
-
-### Test Cases (Postman Export) and Data File
-- [OamLog+testcases](./OamLog%2Btestcases.json)
-- [OamLog+data](./OamLog+data.json)
-
-### NodeJS Implementation
-- to be provided
-
-### Publication
-- No official publication planned
-
-### Aspired Classification
-- Live Network
-
-### Open Issue List
-- [OamLog/issues](../../issues)
+### Resources
+- [Specification](./spec/)
+- [TestSuite](./testing/)
+- [Implementation](./server/)
 
 ### Comments
-This application is part of the TinyApplicationController for managing the REST applications forming the MBH SDN application layer at Telefonica Germany.
+./.
