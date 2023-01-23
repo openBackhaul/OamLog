@@ -229,21 +229,6 @@
                   }
                 }
               }
-            },
-            {
-              "uuid": "ol-2-0-0-integer-p-000",
-              "profile-name": "integer-profile-1-0:PROFILE_NAME_TYPE_INTEGER_PROFILE",
-              "integer-profile-1-0:integer-profile-pac": {
-                "integer-profile-capability": {
-                  "integer-name": "maximumNumberOfEntries",
-                  "unit": "records",
-                  "minimum": 0,
-                  "maximum": 1000000
-                },
-                "integer-profile-configuration": {
-                  "integer-value": 1000000
-                }
-              }
             }
           ]
         },
