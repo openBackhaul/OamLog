@@ -135,7 +135,7 @@ exports.disregardApplication = function (body, user, originator, xCorrelator, tr
        * Setting up required local variables from the request body
        ****************************************************************************************/
       let applicationName = body["application-name"];
-      let applicationReleaseNumber = body["application-release-number"];
+      let applicationReleaseNumber = body["release-number"];
 
       /****************************************************************************************
        * Prepare logicalTerminatinPointConfigurationInput object to 
