@@ -510,31 +510,6 @@ function getAllApplicationList() {
     const forwardingName ='NewApplicationCausesRequestForOamRequestInformation';
     try {
 
-      /** 
-       * This class instantiate objects that holds the application name , release number, 
-       * IpAddress and port information of the registered client applications
-       */
-      let clientApplicationInformation = class ClientApplicationInformation {
-        applicationName;
-        applicationReleaseNumber;
-        applicationAddress;
-        applicationPort;
-
-        /**
-         * @constructor 
-         * @param {String} applicationName name of the client application.
-         * @param {String} applicationReleaseNumber release number of the application.
-         * @param {String} applicationAddress ip address of the application.
-         * @param {String} applicationPort port of the application.
-         **/
-        constructor(applicationName, applicationReleaseNumber, applicationAddress, applicationPort) {
-          this.applicationName = applicationName;
-          this.applicationReleaseNumber = applicationReleaseNumber;
-          this.applicationAddress = applicationAddress;
-          this.applicationPort = applicationPort;
-        }
-      };
-
 
       let ForwardConstructName = await ForwardingDomain.getForwardingConstructForTheForwardingNameAsync(forwardingName)
       let ForwardConstructUuid = ForwardConstructName[onfAttributes.GLOBAL_CLASS.UUID]
@@ -557,8 +532,15 @@ function getAllApplicationList() {
         let tcpClientUuid = serverLtp[0];
         let applicationAddress = await tcpClientInterface.getRemoteAddressAsync(tcpClientUuid);
         let applicationPort = await tcpClientInterface.getRemotePortAsync(tcpClientUuid);
-        let clientApplication = new clientApplicationInformation(applicationName, applicationReleaseNumber, applicationAddress, applicationPort);
-        clientApplicationList.push(clientApplication);
+        let applicationProtocol = await tcpClientInterface.getRemoteProtocolAsync(tcpClientUuid);
+        let application = {};
+       application.applicationName = applicationName,
+       application.releaseNumber = applicationReleaseNumber,
+       application.protocol = applicationProtocol,
+       application.address = applicationAddress,
+       application.port = applicationPort,
+
+       clientApplicationList.push(application);
       }
       resolve(clientApplicationList);
     } catch (error) {
