@@ -46,7 +46,7 @@ module.exports.getOperationServerOperationName = async function getOperationServ
 
 module.exports.putOperationServerLifeCycleState = async function putOperationServerLifeCycleState (req, res, next, body, uuid) {
   let responseCode = responseCodeEnum.code.NO_CONTENT;
-    await OperationServer.putOperationServerLifeCycleState(req.url,body)
+    await OperationServer.putOperationServerLifeCycleState(req.url,body,uuid)
       .then(function (response) {
         responseBuilder.buildResponse(res, responseCode, response);
       })

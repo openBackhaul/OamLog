@@ -1,7 +1,8 @@
 'use strict';
 
 var fileOperation = require('onf-core-model-ap/applicationPattern/databaseDriver/JSONDriver');
-
+const prepareForwardingAutomation = require('./individualServices/PrepareForwardingAutomation');
+const ForwardingAutomationService = require('onf-core-model-ap/applicationPattern/onfModel/services/ForwardingConstructAutomationServices');
 /**
  * Returns detailed logging configuration.
  *
@@ -141,12 +142,12 @@ exports.getOperationClientOperationalState = function(url) {
  **/
 exports.putOperationClientDetailedLoggingIsOn = function(url, body) {
   return new Promise(async function (resolve, reject) {
-    try {
-      await fileOperation.writeToDatabaseAsync(url, body, false);
-      resolve();
-    } catch (error) {
-      reject();
-    }
+      try {
+        await fileOperation.writeToDatabaseAsync(url, body, false);
+        resolve();
+      } catch (error) {
+        reject();
+      }
   });
 }
 
@@ -177,10 +178,23 @@ exports.putOperationClientOperationKey = function(url, body) {
  * uuid String 
  * no response value expected for this operation
  **/
-exports.putOperationClientOperationName = function(url,body) {
+exports.putOperationClientOperationName = function(url,body,uuid) {
   return new Promise(async function (resolve, reject) {
     try {
-      await fileOperation.writeToDatabaseAsync(url, body, false);
+      let isUpdated = await fileOperation.writeToDatabaseAsync(url, body, false);
+
+ 
+      /****************************************************************************************
+       * Prepare attributes to automate forwarding-construct
+       ****************************************************************************************/
+      if(isUpdated){
+        let forwardingAutomationInputList = await prepareForwardingAutomation.OAMLayerRequest(
+          uuid
+        );
+        ForwardingAutomationService.automateForwardingConstructWithoutInputAsync(
+          forwardingAutomationInputList
+        );
+      }      
       resolve();
     } catch (error) {
       reject();
