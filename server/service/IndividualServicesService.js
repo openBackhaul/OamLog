@@ -39,6 +39,7 @@ const OamRecordProfile = require('onf-core-model-ap/applicationPattern/onfModel/
 
 const softwareUpgrade = require('./individualServices/SoftwareUpgrade');
 const TcpServerInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/TcpServerInterface');
+const individualServicesOperationsMapping = require('./individualServices/IndividualServicesOperationsMapping');
 /**
  * Initiates process of embedding a new release
  *
