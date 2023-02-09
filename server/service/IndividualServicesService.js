@@ -521,7 +521,7 @@ function getAllApplicationList() {
 }
 
 
-var resolveHttpClient = exports.resolveHttpClientLtpUuidFromForwardingName = function (forwardingName) {
+var resolveHttpClient = exports.resolveHttpClientLtpUuidFromForwardingName = function () {
   return new Promise(async function (resolve, reject) {
     try {
       let uuidList = {};
