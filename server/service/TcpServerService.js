@@ -9,14 +9,14 @@ const ForwardingAutomationService = require('onf-core-model-ap/applicationPatter
  * uuid String 
  * returns inline_response_200_19
  **/
-exports.getTcpServerLocalAddress = function(url) {
-  return new Promise(async function(resolve, reject) {
+exports.getTcpServerLocalAddress = function (url) {
+  return new Promise(async function (resolve, reject) {
     var response = {};
     var value = await fileOperation.readFromDatabaseAsync(url);
     response['application/json'] = {
-  "tcp-server-interface-1-0:local-address" : value
-  
-};
+      "tcp-server-interface-1-0:local-address": value
+
+    };
     if (Object.keys(response).length > 0) {
       resolve(response[Object.keys(response)[0]]);
     } else {
@@ -60,7 +60,7 @@ exports.getTcpServerLocalPort = function (url) {
  * uuid String 
  * no response value expected for this operation
  **/
-exports.putTcpServerLocalAddress = function (url, body,uuid) {
+exports.putTcpServerLocalAddress = function (url, body, uuid) {
   return new Promise(async function (resolve, reject) {
     try {
       let isUpdated = await fileOperation.writeToDatabaseAsync(url, body, false);
@@ -91,35 +91,35 @@ exports.putTcpServerLocalAddress = function (url, body,uuid) {
  * uuid String 
  * no response value expected for this operation
  **/
-exports.putTcpServerLocalPort = function (url, body,uuid) {
+exports.putTcpServerLocalPort = function (url, body, uuid) {
   return new Promise(async function (resolve, reject) {
     try {
       let isUpdated = await fileOperation.writeToDatabaseAsync(url, body, false);
 
- 
+
 
       /****************************************************************************************
        * Prepare attributes to automate forwarding-construct
        ****************************************************************************************/
-      if(isUpdated){
+      if (isUpdated) {
         let forwardingAutomationInputList = await prepareForwardingAutomation.OAMLayerRequest(
           uuid
         );
         ForwardingAutomationService.automateForwardingConstructWithoutInputAsync(
           forwardingAutomationInputList
         );
-      }      
+      }
       resolve();
-    } catch (error) {}
+    } catch (error) { }
     reject();
   });
 }
 
-exports.getTcpServerLocalProtocol = function(url) {
-  return new Promise(async function(resolve, reject) {
+exports.getTcpServerLocalProtocol = function (url) {
+  return new Promise(async function (resolve, reject) {
     try {
       var value = await fileOperation.readFromDatabaseAsync(url);
-    
+
       var response = {};
       response['application/json'] = {
         "tcp-server-interface-1-0:local-protocol": value
@@ -137,75 +137,75 @@ exports.getTcpServerLocalProtocol = function(url) {
 
 
 
-exports.putTcpServerLocalProtocol = function(url,body,uuid) {
-  return new Promise(async function(resolve, reject) {
-  
+exports.putTcpServerLocalProtocol = function (url, body, uuid) {
+  return new Promise(async function (resolve, reject) {
+
     try {
-      
 
-        let isUpdated = await fileOperation.writeToDatabaseAsync(url, body, false);
-  
-        /****************************************************************************************
-  
-         * Prepare attributes to automate forwarding-construct
-  
-         ****************************************************************************************/
-  
-        if (isUpdated) {
-  
-          let forwardingAutomationInputList = await prepareForwardingAutomation.OAMLayerRequest(
-  
-            uuid
-  
-          );
-  
-          ForwardingAutomationService.automateForwardingConstructWithoutInputAsync(
-  
-            forwardingAutomationInputList
-          );
-        }
-  
-        resolve();
-      } catch (error) {
-        reject();
+
+      let isUpdated = await fileOperation.writeToDatabaseAsync(url, body, false);
+
+      /****************************************************************************************
+ 
+       * Prepare attributes to automate forwarding-construct
+ 
+       ****************************************************************************************/
+
+      if (isUpdated) {
+
+        let forwardingAutomationInputList = await prepareForwardingAutomation.OAMLayerRequest(
+
+          uuid
+
+        );
+
+        ForwardingAutomationService.automateForwardingConstructWithoutInputAsync(
+
+          forwardingAutomationInputList
+        );
       }
-    });
-  }
+
+      resolve();
+    } catch (error) {
+      reject();
+    }
+  });
+}
 
 
 
-exports.putTcpServerDescription = function(url,body,uuid) {
-  return new Promise(async function(resolve, reject) {
+exports.putTcpServerDescription = function (url, body, uuid) {
+  return new Promise(async function (resolve, reject) {
     try {
       let isUpdated = await fileOperation.writeToDatabaseAsync(url, body, false);
 
- 
+
 
       /****************************************************************************************
        * Prepare attributes to automate forwarding-construct
        ****************************************************************************************/
-      if(isUpdated){
+      if (isUpdated) {
         let forwardingAutomationInputList = await prepareForwardingAutomation.OAMLayerRequest(
           uuid
         );
         ForwardingAutomationService.automateForwardingConstructWithoutInputAsync(
           forwardingAutomationInputList
         );
-      }      
+      }
       resolve();
-    } catch (error) {}
+    } catch (error) { }
     reject();
   });
 }
 
 
-exports.getTcpServerDescription = function(url) {
-  return new Promise(async function(resolve, reject) {
+exports.getTcpServerDescription = function (url) {
+  return new Promise(async function (resolve, reject) {
     var response = {};
     var value = await fileOperation.readFromDatabaseAsync(url);
     response['application/json'] = {
-  "tcp-server-interface-1-0:description" : "tcp-server-interface-1-0:"+value
-};
+      "tcp-server-interface-1-0:description": value
+    };
     if (Object.keys(response).length > 0) {
       resolve(response[Object.keys(response)[0]]);
     } else {

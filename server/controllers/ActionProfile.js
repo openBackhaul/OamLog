@@ -1,6 +1,6 @@
 'use strict';
 
-var utils = require('../utils/writer.js');
+
 var ActionProfile = require('../service/ActionProfileService');
 var responseBuilder = require('onf-core-model-ap/applicationPattern/rest/server/ResponseBuilder');
 var responseCodeEnum = require('onf-core-model-ap/applicationPattern/rest/server/ResponseCode');
