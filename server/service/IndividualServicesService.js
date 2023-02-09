@@ -359,22 +359,33 @@ exports.regardApplication = function (body, user, originator, xCorrelator, trace
       let applicationName = body["application-name"];
       let releaseNumber = body["release-number"];
       
-      let oamRequestOperation = "/v1/redirect-oam-request-information";
-     
+      
       /****************************************************************************************
        * Prepare logicalTerminatinPointConfigurationInput object to 
        * configure logical-termination-point
        ****************************************************************************************/
 
-    
+      let tcpServerList = [
+        {
+          protocol : body["protocol"],
+          address : body["address"],
+          port : body["port"]
+      }
+      ];
+      let oamRequestOperation = "/v1/redirect-oam-request-information";
+      let operationNamesByAttributes = new Map();
+      operationNamesByAttributes.set("redirect-oam-request-information", oamRequestOperation);
+      
       let logicalTerminatinPointConfigurationInput = new LogicalTerminatinPointConfigurationInput(
         applicationName,
         releaseNumber,
-        applicationAddress,
-        applicationPort,
-        operationList
+        tcpServerList,
+        operationServerName,
+        operationNamesByAttributes,
+        individualServicesOperationsMapping.individualServicesOperationsMapping
       );
-      let logicalTerminationPointconfigurationStatus = await LogicalTerminationPointService.createOrUpdateApplicationInformationAsync(
+      
+      let logicalTerminationPointconfigurationStatus = await LogicalTerminationPointService.findOrCreateApplicationInformationAsync(
         logicalTerminatinPointConfigurationInput
       );
 
