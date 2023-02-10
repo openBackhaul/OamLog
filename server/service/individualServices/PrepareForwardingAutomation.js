@@ -29,6 +29,7 @@ exports.regardApplication = function (logicalTerminationPointconfigurationStatus
             redirectOamRequestRequestBody.oamLogOperation = await operationServerInterface.getOperationNameAsync("ol-2-0-1-op-s-is-004");
             redirectOamRequestRequestBody.oamLogAddress = await tcpServerInterface.getLocalAddress();
             redirectOamRequestRequestBody.oamLogPort = await tcpServerInterface.getLocalPort();
+            redirectOamRequestRequestBody.oamLogProtocol = await tcpServerInterface.getLocalProtocol();
             redirectOamRequestRequestBody = onfFormatter.modifyJsonObjectKeysToKebabCase(redirectOamRequestRequestBody);
             let forwardingAutomation = new forwardingConstructAutomationInput(
                 redirectOamRequestForwardingName,
