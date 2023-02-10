@@ -1,7 +1,7 @@
 'use strict';
 
-const LogicalTerminatinPointConfigurationInput = require('onf-core-model-ap/applicationPattern/onfModel/services/models/logicalTerminationPoint/ConfigurationInput');
-const LogicalTerminationPointService = require('onf-core-model-ap/applicationPattern/onfModel/services/LogicalTerminationPointServices');
+const LogicalTerminatinPointConfigurationInput = require('onf-core-model-ap/applicationPattern/onfModel/services/models/logicalTerminationPoint/ConfigurationInputWithMapping');
+const LogicalTerminationPointService = require('onf-core-model-ap/applicationPattern/onfModel/services/LogicalTerminationPointWithMappingServices');
 const LogicalTerminationPointConfigurationStatus = require('onf-core-model-ap/applicationPattern/onfModel/services/models/logicalTerminationPoint/ConfigurationStatus');
 const layerProtocol = require('onf-core-model-ap/applicationPattern/onfModel/models/LayerProtocol');
 
@@ -39,6 +39,7 @@ const OamRecordProfile = require('onf-core-model-ap/applicationPattern/onfModel/
 
 const softwareUpgrade = require('./individualServices/SoftwareUpgrade');
 const TcpServerInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/TcpServerInterface');
+const individualServicesOperationsMapping = require('./individualServices/IndividualServicesOperationsMapping');
 /**
  * Initiates process of embedding a new release
  *
@@ -359,22 +360,30 @@ exports.regardApplication = function (body, user, originator, xCorrelator, trace
       let releaseNumber = body["application-release-number"];
       let applicationAddress = body["application-address"];
       let applicationPort = body["application-port"];
-      let oamRequestOperation = "/v1/redirect-oam-request-information";
-
+      
       /****************************************************************************************
        * Prepare logicalTerminatinPointConfigurationInput object to 
        * configure logical-termination-point
        ****************************************************************************************/
 
-      let operationList = [
-        oamRequestOperation
+      let tcpServerList = [
+        {
+          protocol : body["protocol"],
+          address : body["address"],
+          port : body["port"]
+      }
       ];
+      let oamRequestOperation = "/v1/redirect-oam-request-information";
+      let operationNamesByAttributes = new Map();
+      operationNamesByAttributes.set("redirect-oam-request-information", oamRequestOperation);
+
       let logicalTerminatinPointConfigurationInput = new LogicalTerminatinPointConfigurationInput(
         applicationName,
         releaseNumber,
-        applicationAddress,
-        applicationPort,
-        operationList
+        tcpServerList,
+        operationServerName,
+        operationNamesByAttributes,
+        individualServicesOperationsMapping.individualServicesOperationsMapping
       );
       let logicalTerminationPointconfigurationStatus = await LogicalTerminationPointService.findOrCreateApplicationInformationAsync(
         logicalTerminatinPointConfigurationInput
