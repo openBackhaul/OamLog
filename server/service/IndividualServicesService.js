@@ -1,7 +1,7 @@
 'use strict';
 
-const LogicalTerminatinPointConfigurationInput = require('onf-core-model-ap/applicationPattern/onfModel/services/models/logicalTerminationPoint/ConfigurationInput');
-const LogicalTerminationPointService = require('onf-core-model-ap/applicationPattern/onfModel/services/LogicalTerminationPointServices');
+const LogicalTerminatinPointConfigurationInput = require('onf-core-model-ap/applicationPattern/onfModel/services/models/logicalTerminationPoint/ConfigurationInputWithMapping');
+const LogicalTerminationPointService = require('onf-core-model-ap/applicationPattern/onfModel/services/LogicalTerminationPointWithMappingServices');
 const LogicalTerminationPointConfigurationStatus = require('onf-core-model-ap/applicationPattern/onfModel/services/models/logicalTerminationPoint/ConfigurationStatus');
 const layerProtocol = require('onf-core-model-ap/applicationPattern/onfModel/models/LayerProtocol');
 
@@ -40,6 +40,7 @@ const individualServicesOperationsMapping = require('./individualServices/Indivi
 
 const softwareUpgrade = require('./individualServices/SoftwareUpgrade');
 const TcpServerInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/TcpServerInterface');
+const individualServicesOperationsMapping = require('./individualServices/IndividualServicesOperationsMapping');
 /**
  * Initiates process of embedding a new release
  *
@@ -359,7 +360,6 @@ exports.regardApplication = function (body, user, originator, xCorrelator, trace
       let applicationName = body["application-name"];
       let releaseNumber = body["release-number"];
       
-      
       /****************************************************************************************
        * Prepare logicalTerminatinPointConfigurationInput object to 
        * configure logical-termination-point
@@ -375,7 +375,7 @@ exports.regardApplication = function (body, user, originator, xCorrelator, trace
       let oamRequestOperation = "/v1/redirect-oam-request-information";
       let operationNamesByAttributes = new Map();
       operationNamesByAttributes.set("redirect-oam-request-information", oamRequestOperation);
-      
+
       let logicalTerminatinPointConfigurationInput = new LogicalTerminatinPointConfigurationInput(
         applicationName,
         releaseNumber,
