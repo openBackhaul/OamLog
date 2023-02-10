@@ -36,6 +36,7 @@ const serviceRecordProfile = require('onf-core-model-ap/applicationPattern/onfMo
 const ProfileCollection = require('onf-core-model-ap/applicationPattern/onfModel/models/ProfileCollection');
 const Profile = require('onf-core-model-ap/applicationPattern/onfModel/models/Profile');
 const OamRecordProfile = require('onf-core-model-ap/applicationPattern/onfModel/models/profile/OamRecordProfile');
+const individualServicesOperationsMapping = require('./individualServices/IndividualServicesOperationsMapping');
 
 const softwareUpgrade = require('./individualServices/SoftwareUpgrade');
 const TcpServerInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/TcpServerInterface');
@@ -357,9 +358,7 @@ exports.regardApplication = function (body, user, originator, xCorrelator, trace
        * Setting up required local variables from the request body
        ****************************************************************************************/
       let applicationName = body["application-name"];
-      let releaseNumber = body["application-release-number"];
-      let applicationAddress = body["application-address"];
-      let applicationPort = body["application-port"];
+      let releaseNumber = body["release-number"];
       
       /****************************************************************************************
        * Prepare logicalTerminatinPointConfigurationInput object to 
@@ -385,6 +384,7 @@ exports.regardApplication = function (body, user, originator, xCorrelator, trace
         operationNamesByAttributes,
         individualServicesOperationsMapping.individualServicesOperationsMapping
       );
+      
       let logicalTerminationPointconfigurationStatus = await LogicalTerminationPointService.findOrCreateApplicationInformationAsync(
         logicalTerminatinPointConfigurationInput
       );
@@ -434,7 +434,6 @@ exports.regardApplication = function (body, user, originator, xCorrelator, trace
     }
   });
 }
-
 
 
 /****************************************************************************************
