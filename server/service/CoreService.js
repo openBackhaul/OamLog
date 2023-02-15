@@ -2,6 +2,7 @@
 
 var fileOperation = require('onf-core-model-ap/applicationPattern/databaseDriver/JSONDriver');
 
+const { elasticsearchService } = require('onf-core-model-ap/applicationPattern/services/ElasticsearchService');
 /**
  * Returns entire data tree
  *
@@ -13,7 +14,7 @@ exports.getControlConstruct = function() {
       var value = await fileOperation.readFromDatabaseAsync("core-model-1-4:control-construct");
       var response = {};
       response['application/json'] = {
-        "core-model-1-4:control-construct": value
+        "core-model-1-4:control-construct": await elasticsearchService.updateControlConstructWithServicePolicy(value)
       };
       if (Object.keys(response).length > 0) {
         resolve(response[Object.keys(response)[0]]);
