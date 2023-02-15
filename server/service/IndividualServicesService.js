@@ -2,19 +2,14 @@
 
 const LogicalTerminatinPointConfigurationInput = require('onf-core-model-ap/applicationPattern/onfModel/services/models/logicalTerminationPoint/ConfigurationInputWithMapping');
 const LogicalTerminationPointService = require('onf-core-model-ap/applicationPattern/onfModel/services/LogicalTerminationPointWithMappingServices');
-const LogicalTerminationPointConfigurationStatus = require('onf-core-model-ap/applicationPattern/onfModel/services/models/logicalTerminationPoint/ConfigurationStatus');
-const layerProtocol = require('onf-core-model-ap/applicationPattern/onfModel/models/LayerProtocol');
 
 const ForwardingConfigurationService = require('onf-core-model-ap/applicationPattern/onfModel/services/ForwardingConstructConfigurationServices');
 const ForwardingAutomationService = require('onf-core-model-ap/applicationPattern/onfModel/services/ForwardingConstructAutomationServices');
 const prepareForwardingConfiguration = require('./individualServices/PrepareForwardingConfiguration');
 const prepareForwardingAutomation = require('./individualServices/PrepareForwardingAutomation');
-const ConfigurationStatus = require('onf-core-model-ap/applicationPattern/onfModel/services/models/ConfigurationStatus');
 
 const httpServerInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/HttpServerInterface');
 const tcpServerInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/TcpServerInterface');
-const operationServerInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/OperationServerInterface');
-const operationClientInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/OperationClientInterface');
 const httpClientInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/HttpClientInterface');
 const FcPort = require("onf-core-model-ap/applicationPattern/onfModel/models/FcPort");
 
@@ -22,25 +17,20 @@ const onfAttributeFormatter = require('onf-core-model-ap/applicationPattern/onfM
 const consequentAction = require('onf-core-model-ap/applicationPattern/rest/server/responseBody/ConsequentAction');
 const responseValue = require('onf-core-model-ap/applicationPattern/rest/server/responseBody/ResponseValue');
 
-const onfPaths = require('onf-core-model-ap/applicationPattern/onfModel/constants/OnfPaths');
 const onfAttributes = require('onf-core-model-ap/applicationPattern/onfModel/constants/OnfAttributes');
 
-
-const fileOperation = require('onf-core-model-ap/applicationPattern/databaseDriver/JSONDriver');
 const logicalTerminationPoint = require('onf-core-model-ap/applicationPattern/onfModel/models/LogicalTerminationPoint');
 const tcpClientInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/TcpClientInterface');
 const ForwardingDomain = require('onf-core-model-ap/applicationPattern/onfModel/models/ForwardingDomain');
 const ForwardingConstruct = require('onf-core-model-ap/applicationPattern/onfModel/models/ForwardingConstruct');
 
-const serviceRecordProfile = require('onf-core-model-ap/applicationPattern/onfModel/models/profile/ServiceRecordProfile');
-const ProfileCollection = require('onf-core-model-ap/applicationPattern/onfModel/models/ProfileCollection');
-const Profile = require('onf-core-model-ap/applicationPattern/onfModel/models/Profile');
 const OamRecordProfile = require('onf-core-model-ap/applicationPattern/onfModel/models/profile/OamRecordProfile');
 const individualServicesOperationsMapping = require('./individualServices/IndividualServicesOperationsMapping');
 
 const softwareUpgrade = require('./individualServices/SoftwareUpgrade');
-const TcpServerInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/TcpServerInterface');
 const individualServicesOperationsMapping = require('./individualServices/IndividualServicesOperationsMapping');
+const { getIndexAliasAsync, createResultArray, elasticsearchService } = require('onf-core-model-ap/applicationPattern/services/ElasticsearchService');
+
 /**
  * Initiates process of embedding a new release
  *
@@ -273,29 +263,27 @@ exports.listApplications = function (user, originator, xCorrelator, traceIndicat
  **/
 exports.listRecords = function (user, originator, xCorrelator, traceIndicator, customerJourney) {
   return new Promise(async function (resolve, reject) {
-    let response = {};
+    let numberOfRecords = body["number-of-records"];
+    let latest = body["latest-record"];
+    let indexAlias = await getIndexAliasAsync();
     try {
-      /****************************************************************************************
-       * Preparing response body
-       ****************************************************************************************/
-      let oamRecordProfileList = await OamRecordProfile.getlistOfRecordedOamRequestsAsync();
-
-      /****************************************************************************************
-       * Setting 'application/json' response body
-       ****************************************************************************************/
-      response['application/json'] = oamRecordProfileList;
+      let client = await elasticsearchService.getClient();
+      const result = await client.search({
+        index: indexAlias,
+        from: latest,
+        size: numberOfRecords,
+        body: {
+          query: {
+            match_all: {}
+          }
+        }
+      });
+      resolve(createResultArray(result));
     } catch (error) {
       console.log(error);
     }
-    if (Object.keys(response).length > 0) {
-      resolve(response[Object.keys(response)[0]]);
-    } else {
-      resolve();
-    }
   });
 }
-
-
 /**
  * Provides list of OaM request records belonging to the same application
  *
@@ -309,28 +297,27 @@ exports.listRecords = function (user, originator, xCorrelator, traceIndicator, c
  **/
 exports.listRecordsOfApplication = function (body, user, originator, xCorrelator, traceIndicator, customerJourney) {
   return new Promise(async function (resolve, reject) {
-    let response = {};
+    let numberOfRecords = body["number-of-records"];
+    let latest = body["latest-match"];
+    let desiredApplicationName = body["application-name"];
+    let indexAlias = await getIndexAliasAsync();
     try {
-      /****************************************************************************************
-       * Setting up required local variables from the request body
-       ****************************************************************************************/
-      let applicationName = body["application-name"];
-      /****************************************************************************************
-       * Preparing response body
-       ****************************************************************************************/
-      let oamRecordProfileList = await OamRecordProfile.getRecordsListForApplicationAsync(applicationName);
-
-      /****************************************************************************************
-       * Setting 'application/json' response body
-       ****************************************************************************************/
-      response['application/json'] = oamRecordProfileList;
+      let client = await elasticsearchService.getClient(false);
+      const result = await client.search({
+        index: indexAlias,
+        from: latest,
+        size: numberOfRecords,
+        body: {
+          query: {
+            term: {
+              "application-name": desiredApplicationName
+            }
+          }
+        }
+      });
+      resolve(createResultArray(result));
     } catch (error) {
       console.log(error);
-    }
-    if (Object.keys(response).length > 0) {
-      resolve(response[Object.keys(response)[0]]);
-    } else {
-      resolve();
     }
   });
 }
@@ -350,23 +337,17 @@ exports.listRecordsOfApplication = function (body, user, originator, xCorrelator
 exports.recordOamRequest = async function (body, user, originator, xCorrelator, traceIndicator, customerJourney) {
   return new Promise(async function (resolve, reject) {
     try {
-      /****************************************************************************************
-       * Setting up required local variables from the request body
-       ****************************************************************************************/
-
-      let oamRecord = body;
-
-      /********************************************************************************      
-       * create oam record profile and include it to the profile-collection
-       *******************************************************************************/
-
-      let oamProfile = await OamRecordProfile.createProfileAsync(oamRecord);
-      if (oamProfile) {
-        await ProfileCollection.addProfileAsync(oamProfile);
+      let indexAlias = await getIndexAliasAsync();
+      let client = await elasticsearchService.getClient(false);
+      let response = await client.index({
+        index: indexAlias,
+        body: body
+      });
+      if (response.body.result == 'created' || response.body.result == 'updated') {
+        resolve();
       }
-      resolve();
+      reject();
     } catch (error) {
-      console.log(error);
       reject(error);
     }
   });
@@ -393,7 +374,7 @@ exports.regardApplication = function (body, user, originator, xCorrelator, trace
        ****************************************************************************************/
       let applicationName = body["application-name"];
       let releaseNumber = body["release-number"];
-      
+
       /****************************************************************************************
        * Prepare logicalTerminatinPointConfigurationInput object to 
        * configure logical-termination-point
@@ -401,10 +382,10 @@ exports.regardApplication = function (body, user, originator, xCorrelator, trace
 
       let tcpServerList = [
         {
-          protocol : body["protocol"],
-          address : body["address"],
-          port : body["port"]
-      }
+          protocol: body["protocol"],
+          address: body["address"],
+          port: body["port"]
+        }
       ];
       let oamRequestOperation = "/v1/redirect-oam-request-information";
       let operationNamesByAttributes = new Map();
@@ -418,7 +399,7 @@ exports.regardApplication = function (body, user, originator, xCorrelator, trace
         operationNamesByAttributes,
         individualServicesOperationsMapping.individualServicesOperationsMapping
       );
-      
+
       let logicalTerminationPointconfigurationStatus = await LogicalTerminationPointService.findOrCreateApplicationInformationAsync(
         logicalTerminatinPointConfigurationInput
       );
