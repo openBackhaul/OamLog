@@ -69,12 +69,12 @@ module.exports.listApplications = async function listApplications(req, res, next
   } catch (error) {}
 };
 
-module.exports.listRecords = async function listRecords(req, res, next, user, originator, xCorrelator, traceIndicator, customerJourney) {
+module.exports.listRecords = async function listRecords(req, res, next, body, user, originator, xCorrelator, traceIndicator, customerJourney) {
   try {
     let startTime = process.hrtime();
     let responseCode = responseCodeEnum.code.OK;
     let responseBodyToDocument = {};
-    await IndividualServices.listRecords(user, originator, xCorrelator, traceIndicator, customerJourney, req.url)
+    await IndividualServices.listRecords(body, user, originator, xCorrelator, traceIndicator, customerJourney, req.url)
       .then(async function (responseBody) {
         responseBodyToDocument = responseBody;
         let responseHeader = await restResponseHeader.createResponseHeader(xCorrelator, startTime, req.url);
