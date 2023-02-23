@@ -28,7 +28,6 @@ const OamRecordProfile = require('onf-core-model-ap/applicationPattern/onfModel/
 const individualServicesOperationsMapping = require('./individualServices/IndividualServicesOperationsMapping');
 
 const softwareUpgrade = require('./individualServices/SoftwareUpgrade');
-const individualServicesOperationsMapping = require('./individualServices/IndividualServicesOperationsMapping');
 const { getIndexAliasAsync, createResultArray, elasticsearchService } = require('onf-core-model-ap/applicationPattern/services/ElasticsearchService');
 
 /**
