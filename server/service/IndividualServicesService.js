@@ -25,10 +25,9 @@ const ForwardingDomain = require('onf-core-model-ap/applicationPattern/onfModel/
 const ForwardingConstruct = require('onf-core-model-ap/applicationPattern/onfModel/models/ForwardingConstruct');
 
 const OamRecordProfile = require('onf-core-model-ap/applicationPattern/onfModel/models/profile/OamRecordProfile');
-const individualServicesOperationsMapping = require('./individualServices/IndividualServicesOperationsMapping');
+const individualServicesOperationsMapping = require('./individualServices/individualServicesOperationsMapping');
 
 const softwareUpgrade = require('./individualServices/SoftwareUpgrade');
-const individualServicesOperationsMapping = require('./individualServices/IndividualServicesOperationsMapping');
 const { getIndexAliasAsync, createResultArray, elasticsearchService } = require('onf-core-model-ap/applicationPattern/services/ElasticsearchService');
 
 /**
