@@ -22681,6 +22681,7 @@ components:
               - profile-name
               - uuid
               type: object
+              additionalProperties: false
               properties:
                 uuid:
                   type: string
