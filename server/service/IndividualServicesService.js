@@ -16,7 +16,7 @@ const FcPort = require("onf-core-model-ap/applicationPattern/onfModel/models/FcP
 const onfAttributeFormatter = require('onf-core-model-ap/applicationPattern/onfModel/utility/OnfAttributeFormatter');
 const consequentAction = require('onf-core-model-ap/applicationPattern/rest/server/responseBody/ConsequentAction');
 const responseValue = require('onf-core-model-ap/applicationPattern/rest/server/responseBody/ResponseValue');
-
+const ConfigurationStatus = require('onf-core-model-ap/applicationPattern/onfModel/services/models/ConfigurationStatus');
 const onfAttributes = require('onf-core-model-ap/applicationPattern/onfModel/constants/OnfAttributes');
 
 const logicalTerminationPoint = require('onf-core-model-ap/applicationPattern/onfModel/models/LogicalTerminationPoint');
@@ -59,6 +59,7 @@ exports.bequeathYourDataAndDie = function (body, user, originator, xCorrelator, 
        * Prepare logicalTerminatinPointConfigurationInput object to 
        * configure logical-termination-point
        ****************************************************************************************/
+      let isdataTransferRequired = true;
       let newReleaseHttpClientLtpUuid = httpClientUuidList.httpClientUuid;
       let newReleaseTcpClientUuid = httpClientUuidList.tcpClientUuid;
       let currentNewReleaseApplicationName = await httpClientInterface.getApplicationNameAsync(newReleaseHttpClientLtpUuid);
@@ -86,7 +87,6 @@ exports.bequeathYourDataAndDie = function (body, user, originator, xCorrelator, 
 
         }
 
-
         if (protocol != currentNewReleaseRemoteProtocol) {
           update.isProtocolUpdated = await tcpClientInterface.setRemoteProtocolAsync(newReleaseTcpClientUuid, protocol);
         }
@@ -97,7 +97,6 @@ exports.bequeathYourDataAndDie = function (body, user, originator, xCorrelator, 
           update.isPortUpdated = await tcpClientInterface.setRemotePortAsync(newReleaseTcpClientUuid, port);
         }
 
-        let isdataTransferRequired = true;
         let serverAddress = await tcpServerInterface.getLocalAddressOfTheProtocol(protocol);
         let serverPort = await tcpServerInterface.getLocalPortOfTheProtocol(protocol);
         if (address === serverAddress && port === serverPort) {
@@ -260,7 +259,7 @@ exports.listApplications = function (user, originator, xCorrelator, traceIndicat
  * customerJourney String Holds information supporting customer’s journey to which the execution applies
  * returns List
  **/
-exports.listRecords = function (user, originator, xCorrelator, traceIndicator, customerJourney) {
+exports.listRecords = function (body,user, originator, xCorrelator, traceIndicator, customerJourney) {
   return new Promise(async function (resolve, reject) {
     let numberOfRecords = body["number-of-records"];
     let latest = body["latest-record"];
