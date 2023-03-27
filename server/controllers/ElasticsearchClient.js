@@ -5,9 +5,9 @@ var responseBuilder = require('onf-core-model-ap/applicationPattern/rest/server/
 var responseCodeEnum = require('onf-core-model-ap/applicationPattern/rest/server/ResponseCode');
 var oamLogService = require('onf-core-model-ap/applicationPattern/services/OamLogService');
 
-module.exports.getElasticsearchClientApiKey = async function getElasticsearchClientApiKey (req, res, next, uuid) {
+module.exports.getElasticsearchClientApiKey = function getElasticsearchClientApiKey (req, res, next, uuid) {
   let responseCode = responseCodeEnum.code.OK;
-  await ElasticsearchClient.getElasticsearchClientApiKey(req.url)
+  ElasticsearchClient.getElasticsearchClientApiKey(req.url)
     .then(function (response) {
       responseBuilder.buildResponse(res, responseCode, response);
     })
@@ -18,9 +18,9 @@ module.exports.getElasticsearchClientApiKey = async function getElasticsearchCli
   oamLogService.recordOamRequest(req.url, req.body, responseCode, req.headers.authorization, req.method);
 };
 
-module.exports.getElasticsearchClientIndexAlias = async function getElasticsearchClientIndexAlias (req, res, next, uuid) {
+module.exports.getElasticsearchClientIndexAlias = function getElasticsearchClientIndexAlias (req, res, next, uuid) {
   let responseCode = responseCodeEnum.code.OK;
-  await ElasticsearchClient.getElasticsearchClientIndexAlias(req.url)
+  ElasticsearchClient.getElasticsearchClientIndexAlias(req.url)
     .then(function (response) {
       responseBuilder.buildResponse(res, responseCode, response);
     })
@@ -31,9 +31,9 @@ module.exports.getElasticsearchClientIndexAlias = async function getElasticsearc
   oamLogService.recordOamRequest(req.url, req.body, responseCode, req.headers.authorization, req.method);
 };
 
-module.exports.getElasticsearchClientLifeCycleState = async function getElasticsearchClientLifeCycleState (req, res, next, uuid) {
+module.exports.getElasticsearchClientLifeCycleState = function getElasticsearchClientLifeCycleState (req, res, next, uuid) {
   let responseCode = responseCodeEnum.code.OK;
-  await ElasticsearchClient.getElasticsearchClientLifeCycleState(req.url)
+  ElasticsearchClient.getElasticsearchClientLifeCycleState(req.url)
     .then(function (response) {
       responseBuilder.buildResponse(res, responseCode, response);
     })
@@ -44,9 +44,9 @@ module.exports.getElasticsearchClientLifeCycleState = async function getElastics
   oamLogService.recordOamRequest(req.url, req.body, responseCode, req.headers.authorization, req.method);
 };
 
-module.exports.getElasticsearchClientOperationalState = async function getElasticsearchClientOperationalState (req, res, next, uuid) {
+module.exports.getElasticsearchClientOperationalState = function getElasticsearchClientOperationalState (req, res, next, uuid) {
   let responseCode = responseCodeEnum.code.OK;
-  await ElasticsearchClient.getElasticsearchClientOperationalState(req.url, uuid)
+  ElasticsearchClient.getElasticsearchClientOperationalState(uuid)
     .then(function (response) {
       responseBuilder.buildResponse(res, responseCode, response);
     })
@@ -57,9 +57,9 @@ module.exports.getElasticsearchClientOperationalState = async function getElasti
   oamLogService.recordOamRequest(req.url, req.body, responseCode, req.headers.authorization, req.method);
 };
 
-module.exports.getElasticsearchClientServiceRecordsPolicy = async function getElasticsearchClientServiceRecordsPolicy (req, res, next, uuid) {
+module.exports.getElasticsearchClientServiceRecordsPolicy = function getElasticsearchClientServiceRecordsPolicy (req, res, next, uuid) {
   let responseCode = responseCodeEnum.code.OK;
-  await ElasticsearchClient.getElasticsearchClientServiceRecordsPolicy(uuid)
+  ElasticsearchClient.getElasticsearchClientServiceRecordsPolicy(uuid)
   .then(function (response) {
     responseBuilder.buildResponse(res, responseCode, response);
   })
@@ -70,9 +70,9 @@ module.exports.getElasticsearchClientServiceRecordsPolicy = async function getEl
   oamLogService.recordOamRequest(req.url, req.body, responseCode, req.headers.authorization, req.method);
 };
 
-module.exports.putElasticsearchClientApiKey = async function putElasticsearchClientApiKey (req, res, next, body, uuid) {
+module.exports.putElasticsearchClientApiKey = function putElasticsearchClientApiKey (req, res, next, body, uuid) {
   let responseCode = responseCodeEnum.code.NO_CONTENT;
-  await ElasticsearchClient.putElasticsearchClientApiKey(req.url, body, uuid)
+  ElasticsearchClient.putElasticsearchClientApiKey(req.url, body, uuid)
     .then(function (response) {
       responseBuilder.buildResponse(res, responseCode, response);
     })
@@ -83,9 +83,9 @@ module.exports.putElasticsearchClientApiKey = async function putElasticsearchCli
   oamLogService.recordOamRequest(req.url, req.body, responseCode, req.headers.authorization, req.method);
 };
 
-module.exports.putElasticsearchClientIndexAlias = async function putElasticsearchClientIndexAlias (req, res, next, body, uuid) {
+module.exports.putElasticsearchClientIndexAlias = function putElasticsearchClientIndexAlias (req, res, next, body, uuid) {
   let responseCode = responseCodeEnum.code.NO_CONTENT;
-  await ElasticsearchClient.putElasticsearchClientIndexAlias(req.url, body, uuid)
+  ElasticsearchClient.putElasticsearchClientIndexAlias(req.url, body, uuid)
     .then(function (response) {
       responseBuilder.buildResponse(res, responseCode, response);
     })
@@ -96,9 +96,9 @@ module.exports.putElasticsearchClientIndexAlias = async function putElasticsearc
   oamLogService.recordOamRequest(req.url, req.body, responseCode, req.headers.authorization, req.method);
 };
 
-module.exports.putElasticsearchClientServiceRecordsPolicy = async function putElasticsearchClientServiceRecordsPolicy (req, res, next, body, uuid) {
+module.exports.putElasticsearchClientServiceRecordsPolicy = function putElasticsearchClientServiceRecordsPolicy (req, res, next, body, uuid) {
   let responseCode = responseCodeEnum.code.NO_CONTENT;
-  await ElasticsearchClient.putElasticsearchClientServiceRecordsPolicy(uuid, body)
+  ElasticsearchClient.putElasticsearchClientServiceRecordsPolicy(uuid, body)
     .then(function (response) {
       responseBuilder.buildResponse(res, responseCode, response);
     })
