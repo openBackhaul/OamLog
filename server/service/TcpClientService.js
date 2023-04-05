@@ -90,7 +90,7 @@ exports.putTcpClientRemoteAddress = function (body, uuid) {
     try {
       let oldValue = await tcpClientInterface.getRemoteAddressAsync(uuid);
       let newValue = body["tcp-client-interface-1-0:remote-address"];
-      if (oldValue !== newValue) {
+        if (JSON.stringify(oldValue) !== JSON.stringify(newValue)) {
         let isUpdated = await tcpClientInterface.setRemoteAddressAsync(uuid, newValue);
         if (isUpdated) {
           let forwardingAutomationInputList = await prepareForwardingAutomation.OAMLayerRequest(
@@ -152,7 +152,8 @@ exports.putTcpClientRemoteProtocol = function (body, uuid) {
     try {
       let oldValue = await tcpClientInterface.getRemoteProtocolAsync(uuid);
       let newValue = body["tcp-client-interface-1-0:remote-protocol"];
-      if (oldValue !== newValue) {
+      let value = tcpClientInterface.getProtocolFromProtocolEnum(oldValue)[1]
+      if (value !== newValue) {
         let isUpdated = await tcpClientInterface.setRemoteProtocolAsync(uuid, newValue);
         if (isUpdated) {
           let forwardingAutomationInputList = await prepareForwardingAutomation.OAMLayerRequest(

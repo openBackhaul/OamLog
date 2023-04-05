@@ -3,13 +3,14 @@
 var fileOperation = require('onf-core-model-ap/applicationPattern/databaseDriver/JSONDriver');
 const prepareForwardingAutomation = require('./individualServices/PrepareForwardingAutomation');
 const ForwardingAutomationService = require('onf-core-model-ap/applicationPattern/onfModel/services/ForwardingConstructAutomationServices');
+const OperationServerService = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/OperationServerInterface')
 /**
  * Returns the configured life cycle state of the operation
  *
  * uuid String 
  * returns inline_response_200_15
  **/
-exports.getOperationServerLifeCycleState = function(url) {
+exports.getOperationServerLifeCycleState = function (url) {
   return new Promise(async function (resolve, reject) {
     try {
       var value = await fileOperation.readFromDatabaseAsync(url);
@@ -35,7 +36,7 @@ exports.getOperationServerLifeCycleState = function(url) {
  * uuid String 
  * returns inline_response_200_16
  **/
-exports.getOperationServerOperationKey = function(url) {
+exports.getOperationServerOperationKey = function (url) {
   return new Promise(async function (resolve, reject) {
     try {
       var value = await fileOperation.readFromDatabaseAsync(url);
@@ -61,7 +62,7 @@ exports.getOperationServerOperationKey = function(url) {
  * uuid String 
  * returns inline_response_200_14
  **/
-exports.getOperationServerOperationName = function(url) {
+exports.getOperationServerOperationName = function (url) {
   return new Promise(async function (resolve, reject) {
     try {
       var value = await fileOperation.readFromDatabaseAsync(url);
@@ -88,27 +89,40 @@ exports.getOperationServerOperationName = function(url) {
  * uuid String 
  * no response value expected for this operation
  **/
-exports.putOperationServerLifeCycleState = function(url, body, uuid) {
+exports.putOperationServerLifeCycleState = function (url, body, uuid) {
   return new Promise(async function (resolve, reject) {
     try {
-      let isUpdated = await fileOperation.writeToDatabaseAsync(url, body, false);
+      let value
+      let oldValue = await OperationServerService.getLifeCycleState(uuid)
+      let remoteServerLifeCycleState = [];
+      let remoteLifeCycleStateEnum = OperationServerService.OperationServerInterfacePac.OperationServerInterfaceConfiguration.lifeCycleStateEnum;
+      for (let remoteLifeCycleStateEnumKey in remoteLifeCycleStateEnum) {
+        if (remoteLifeCycleStateEnum[remoteLifeCycleStateEnumKey] == oldValue || remoteLifeCycleStateEnumKey == oldValue) {
+          remoteServerLifeCycleState = [remoteLifeCycleStateEnumKey, remoteLifeCycleStateEnum[remoteLifeCycleStateEnumKey]];
+        }
+      }
+      value = remoteServerLifeCycleState[1]
+      let newValue = body["operation-server-interface-1-0:life-cycle-state"];
+      if (value !== newValue) {
+        let isUpdated = await fileOperation.writeToDatabaseAsync(url, body, false);
 
-      /****************************************************************************************
-       * Prepare attributes to automate forwarding-construct
-       ****************************************************************************************/
-      if(isUpdated){
-        let forwardingAutomationInputList = await prepareForwardingAutomation.OAMLayerRequest(
-          uuid
-        );
-        ForwardingAutomationService.automateForwardingConstructWithoutInputAsync(
-          forwardingAutomationInputList
-        );
-      }      
-      resolve();
-    } catch (error) {
-      reject();
-    }
-  });
+        /****************************************************************************************
+         * Prepare attributes to automate forwarding-construct
+         ****************************************************************************************/
+        if (isUpdated) {
+          let forwardingAutomationInputList = await prepareForwardingAutomation.OAMLayerRequest(
+            uuid
+          );
+          ForwardingAutomationService.automateForwardingConstructWithoutInputAsync(
+            forwardingAutomationInputList
+          );
+        }
+      }
+        resolve();
+      } catch (error) {
+        reject();
+      }
+    });
 }
 
 
@@ -119,7 +133,7 @@ exports.putOperationServerLifeCycleState = function(url, body, uuid) {
  * uuid String 
  * no response value expected for this operation
  **/
-exports.putOperationServerOperationKey = function(url, body) {
+exports.putOperationServerOperationKey = function (url, body) {
   return new Promise(async function (resolve, reject) {
     try {
       await fileOperation.writeToDatabaseAsync(url, body, false);

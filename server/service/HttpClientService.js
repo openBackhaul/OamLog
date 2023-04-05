@@ -2,6 +2,7 @@
 var fileOperation = require('onf-core-model-ap/applicationPattern/databaseDriver/JSONDriver');
 const prepareForwardingAutomation = require('./individualServices/PrepareForwardingAutomation');
 const ForwardingAutomationService = require('onf-core-model-ap/applicationPattern/onfModel/services/ForwardingConstructAutomationServices');
+const httpClientServer = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/HttpClientInterface')
 /**
  * Returns name of application to be addressed
  *
@@ -21,7 +22,7 @@ exports.getHttpClientApplicationName = function (url) {
       } else {
         resolve();
       }
-    } catch (error) {}
+    } catch (error) { }
     reject();
   });
 }
@@ -46,7 +47,7 @@ exports.getHttpClientReleaseNumber = function (url) {
       } else {
         resolve();
       }
-    } catch (error) {}
+    } catch (error) { }
     reject();
   });
 }
@@ -59,47 +60,55 @@ exports.getHttpClientReleaseNumber = function (url) {
  * uuid String 
  * no response value expected for this operation
  **/
-exports.putHttpClientReleaseNumber = function (body, url,uuid) {
+exports.putHttpClientReleaseNumber = function (body, url, uuid) {
   return new Promise(async function (resolve, reject) {
-    try{
-    let isUpdated = await fileOperation.writeToDatabaseAsync(url, body, false);
-      /****************************************************************************************
-       * Prepare attributes to automate forwarding-construct
-       ****************************************************************************************/
-      if(isUpdated){
-        let forwardingAutomationInputList = await prepareForwardingAutomation.OAMLayerRequest(
-          uuid
-        );
-        ForwardingAutomationService.automateForwardingConstructWithoutInputAsync(
-          forwardingAutomationInputList
-        );
-      }      
+    try {
+      let oldValue = await httpClientServer.getReleaseNumberAsync(uuid);
+      let newValue = body["http-client-interface-1-0:release-number"];
+      if (oldValue !== newValue) {
+        let isUpdated = await fileOperation.writeToDatabaseAsync(url, body, false);
+        /****************************************************************************************
+         * Prepare attributes to automate forwarding-construct
+         ****************************************************************************************/
+        if (isUpdated) {
+          let forwardingAutomationInputList = await prepareForwardingAutomation.OAMLayerRequest(
+            uuid
+          );
+          ForwardingAutomationService.automateForwardingConstructWithoutInputAsync(
+            forwardingAutomationInputList
+          );
+        }
+      }
       resolve();
-    } catch (error) {}
+    } catch (error) { }
     reject();
-    
+
   });
 }
 
 
 
-exports.putHttpClientApplicationName = function(body,url,uuid) {
-  return new Promise(async function(resolve, reject) {
+exports.putHttpClientApplicationName = function (body, url, uuid) {
+  return new Promise(async function (resolve, reject) {
     try {
-      let isUpdated = await fileOperation.writeToDatabaseAsync(url, body, false);
-      /****************************************************************************************
-       * Prepare attributes to automate forwarding-construct
-       ****************************************************************************************/
-      if(isUpdated){
-        let forwardingAutomationInputList = await prepareForwardingAutomation.OAMLayerRequest(
-          uuid
-        );
-        ForwardingAutomationService.automateForwardingConstructWithoutInputAsync(
-          forwardingAutomationInputList
-        );
-      }      
+      let oldValue = await httpClientServer.getApplicationNameAsync(uuid);
+      let newValue = body["http-client-interface-1-0:application-name"];
+      if (oldValue !== newValue) {
+        let isUpdated = await fileOperation.writeToDatabaseAsync(url, body, false);
+        /****************************************************************************************
+         * Prepare attributes to automate forwarding-construct
+         ****************************************************************************************/
+        if (isUpdated) {
+          let forwardingAutomationInputList = await prepareForwardingAutomation.OAMLayerRequest(
+            uuid
+          );
+          ForwardingAutomationService.automateForwardingConstructWithoutInputAsync(
+            forwardingAutomationInputList
+          );
+        }
+      }
       resolve();
-    } catch (error) {}
+    } catch (error) { }
     reject();
   });
 }
