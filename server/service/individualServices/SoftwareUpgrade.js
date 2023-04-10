@@ -318,6 +318,7 @@ async function PromptForBequeathingDataCausesRObeingRequestedToStopNotifications
     return new Promise(async function (resolve, reject) {
         try {
             let result = true;
+            let forwardingKindNameOfTheBequeathOperation ="PromptForBequeathingDataCausesRObeingRequestedToStopNotificationsToOldRelease"
             let forwardingKindNameOfTheNotifyApprovals = "PromptForBequeathingDataCausesRObeingRequestedToNotifyApprovalsOfNewApplicationsToNewRelease";
             let forwardingKindNameOfTheNotifyWithdrawnApprovals = "PromptForBequeathingDataCausesRObeingRequestedToNotifyWithdrawnApprovalsToNewRelease";
 
@@ -329,7 +330,7 @@ async function PromptForBequeathingDataCausesRObeingRequestedToStopNotifications
                     let requestBody = {};
                     requestBody.subscriberApplication = await httpServerInterface.getApplicationNameAsync();
                     requestBody.subscriberReleaseNumber = await httpServerInterface.getReleaseNumberAsync();
-                    requestBody.subscription = subscriptionName;
+                    requestBody.subscription = subscriptionName.toString();
 
                     requestBody = onfAttributeFormatter.modifyJsonObjectKeysToKebabCase(requestBody);
                     result = await forwardRequest(
