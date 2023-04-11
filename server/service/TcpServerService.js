@@ -63,18 +63,22 @@ exports.getTcpServerLocalPort = function (url) {
 exports.putTcpServerLocalAddress = function (url, body, uuid) {
   return new Promise(async function (resolve, reject) {
     try {
-      let isUpdated = await fileOperation.writeToDatabaseAsync(url, body, false);
+      let oldValue = await tcpServerInterface.getLocalAddress();
+      let newValue = body["tcp-server-interface-1-0:local-address"];
+      if (JSON.stringify(oldValue) != JSON.stringify(newValue)) {
+        let isUpdated = await fileOperation.writeToDatabaseAsync(url, body, false);
 
-      /****************************************************************************************
-       * Prepare attributes to automate forwarding-construct
-       ****************************************************************************************/
-      if (isUpdated) {
-        let forwardingAutomationInputList = await prepareForwardingAutomation.OAMLayerRequest(
-          uuid
-        );
-        ForwardingAutomationService.automateForwardingConstructWithoutInputAsync(
-          forwardingAutomationInputList
-        );
+        /****************************************************************************************
+         * Prepare attributes to automate forwarding-construct
+         ****************************************************************************************/
+        if (isUpdated) {
+          let forwardingAutomationInputList = await prepareForwardingAutomation.OAMLayerRequest(
+            uuid
+          );
+          ForwardingAutomationService.automateForwardingConstructWithoutInputAsync(
+            forwardingAutomationInputList
+          );
+        }
       }
       resolve();
     } catch (error) {
@@ -94,20 +98,22 @@ exports.putTcpServerLocalAddress = function (url, body, uuid) {
 exports.putTcpServerLocalPort = function (url, body, uuid) {
   return new Promise(async function (resolve, reject) {
     try {
-      let isUpdated = await fileOperation.writeToDatabaseAsync(url, body, false);
+      let oldValue = await tcpServerInterface.getLocalPort();
+      let newValue = body["tcp-server-interface-1-0:local-port"];
+      if (oldValue !== newValue) {
+        let isUpdated = await fileOperation.writeToDatabaseAsync(url, body, false);
 
-
-
-      /****************************************************************************************
-       * Prepare attributes to automate forwarding-construct
-       ****************************************************************************************/
-      if (isUpdated) {
-        let forwardingAutomationInputList = await prepareForwardingAutomation.OAMLayerRequest(
-          uuid
-        );
-        ForwardingAutomationService.automateForwardingConstructWithoutInputAsync(
-          forwardingAutomationInputList
-        );
+        /****************************************************************************************
+         * Prepare attributes to automate forwarding-construct
+         ****************************************************************************************/
+        if (isUpdated) {
+          let forwardingAutomationInputList = await prepareForwardingAutomation.OAMLayerRequest(
+            uuid
+          );
+          ForwardingAutomationService.automateForwardingConstructWithoutInputAsync(
+            forwardingAutomationInputList
+          );
+        }
       }
       resolve();
     } catch (error) { }
@@ -141,30 +147,30 @@ exports.putTcpServerLocalProtocol = function (url, body, uuid) {
   return new Promise(async function (resolve, reject) {
 
     try {
+      let oldValue = await tcpServerInterface.getLocalProtocol()
+      let newValue = body["tcp-server-interface-1-0:local-protocol"];
+      let value = tcpServerInterface.getProtocolFromProtocolEnum(oldValue)[1]
+      if (value !== newValue) {
 
+        let isUpdated = await fileOperation.writeToDatabaseAsync(url, body, false);
 
-      let isUpdated = await fileOperation.writeToDatabaseAsync(url, body, false);
+        /****************************************************************************************
+   
+         * Prepare attributes to automate forwarding-construct
+   
+         ****************************************************************************************/
 
-      /****************************************************************************************
- 
-       * Prepare attributes to automate forwarding-construct
- 
-       ****************************************************************************************/
+        if (isUpdated) {
 
-      if (isUpdated) {
+          let forwardingAutomationInputList = await prepareForwardingAutomation.OAMLayerRequest(
+            uuid
+          );
+          ForwardingAutomationService.automateForwardingConstructWithoutInputAsync(
 
-        let forwardingAutomationInputList = await prepareForwardingAutomation.OAMLayerRequest(
-
-          uuid
-
-        );
-
-        ForwardingAutomationService.automateForwardingConstructWithoutInputAsync(
-
-          forwardingAutomationInputList
-        );
+            forwardingAutomationInputList
+          );
+        }
       }
-
       resolve();
     } catch (error) {
       reject();
