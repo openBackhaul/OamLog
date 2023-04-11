@@ -93,14 +93,14 @@ exports.putOperationServerLifeCycleState = function (url, body, uuid) {
   return new Promise(async function (resolve, reject) {
     try {
       let oldValue = await OperationServerService.getLifeCycleState(uuid)
-      let remoteServerLifeCycleState = [];
+      let remoteServerLifeCycleState 
       let remoteLifeCycleStateEnum = OperationServerService.OperationServerInterfacePac.OperationServerInterfaceConfiguration.lifeCycleStateEnum;
       for (let remoteLifeCycleStateEnumKey in remoteLifeCycleStateEnum) {
         if (remoteLifeCycleStateEnumKey == oldValue) {
-          remoteServerLifeCycleState = [remoteLifeCycleStateEnum[remoteLifeCycleStateEnumKey]];
+          remoteServerLifeCycleState = remoteLifeCycleStateEnum[remoteLifeCycleStateEnumKey];
         }
       }
-     let value = remoteServerLifeCycleState[0]
+     let value = remoteServerLifeCycleState;
       let newValue = body["operation-server-interface-1-0:life-cycle-state"];
       if (value !== newValue) {
         let isUpdated = await fileOperation.writeToDatabaseAsync(url, body, false);
