@@ -318,12 +318,13 @@ async function PromptForBequeathingDataCausesRObeingRequestedToStopNotifications
     return new Promise(async function (resolve, reject) {
         try {
             let result = true;
+            let forwardingKindNameOfTheBequeathOperation ="PromptForBequeathingDataCausesRObeingRequestedToStopNotificationsToOldRelease"
             let forwardingKindNameOfTheNotifyApprovals = "PromptForBequeathingDataCausesRObeingRequestedToNotifyApprovalsOfNewApplicationsToNewRelease";
             let forwardingKindNameOfTheNotifyWithdrawnApprovals = "PromptForBequeathingDataCausesRObeingRequestedToNotifyWithdrawnApprovalsToNewRelease";
 
             let listOfOperationToBeUnsubscribed = [];
-            listOfOperationToBeUnsubscribed.push(await getOperationNamesOutOfForwardingKindNameAsync(forwardingKindNameOfTheNotifyApprovals));
-            listOfOperationToBeUnsubscribed.push(await getOperationNamesOutOfForwardingKindNameAsync(forwardingKindNameOfTheNotifyWithdrawnApprovals));
+            listOfOperationToBeUnsubscribed.push((await getOperationNamesOutOfForwardingKindNameAsync(forwardingKindNameOfTheNotifyApprovals))[0]);
+            listOfOperationToBeUnsubscribed.push((await getOperationNamesOutOfForwardingKindNameAsync(forwardingKindNameOfTheNotifyWithdrawnApprovals))[0]);
             try {
                 for (let subscriptionName of listOfOperationToBeUnsubscribed) {
                     let requestBody = {};
