@@ -74,10 +74,10 @@ module.exports.listRecords = async function listRecords(req, res, next, body, us
     let startTime = process.hrtime();
     let responseCode = responseCodeEnum.code.OK;
     let responseBodyToDocument = {};
-    await IndividualServices.listRecords(body, user, originator, xCorrelator, traceIndicator, customerJourney, req.url)
+    await IndividualServices.listRecords(body)
       .then(async function (responseBody) {
-        responseBodyToDocument = responseBody;
-        let responseHeader = await restResponseHeader.createResponseHeader(xCorrelator, startTime, req.url);
+        responseBodyToDocument = responseBody.response;
+        let responseHeader = await restResponseHeader.createResponseHeader(xCorrelator, startTime, req.url, responseBody.took);
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
       })
       .catch(async function (responseBody) {
@@ -95,10 +95,10 @@ module.exports.listRecordsOfApplication = async function listRecordsOfApplicatio
     let startTime = process.hrtime();
     let responseCode = responseCodeEnum.code.OK;
     let responseBodyToDocument = {};
-    await IndividualServices.listRecordsOfApplication(body, user, originator, xCorrelator, traceIndicator, customerJourney, req.url)
+    await IndividualServices.listRecordsOfApplication(body)
       .then(async function (responseBody) {
-        responseBodyToDocument = responseBody;
-        let responseHeader = await restResponseHeader.createResponseHeader(xCorrelator, startTime, req.url);
+        responseBodyToDocument = responseBody.response;
+        let responseHeader = await restResponseHeader.createResponseHeader(xCorrelator, startTime, req.url, responseBody.took);
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
       })
       .catch(async function (responseBody) {
@@ -115,11 +115,10 @@ module.exports.recordOamRequest = async function recordOamRequest(req, res, next
   try {
     let startTime = process.hrtime();
     let responseCode = responseCodeEnum.code.NO_CONTENT;
-    let responseBodyToDocument = {};
-    await IndividualServices.recordOamRequest(body, user, originator, xCorrelator, traceIndicator, customerJourney, req.url)
+    let responseBodyToDocument = undefined;
+    await IndividualServices.recordOamRequest(body)
       .then(async function (responseBody) {
-        responseBodyToDocument = responseBody;
-        let responseHeader = await restResponseHeader.createResponseHeader(xCorrelator, startTime, req.url);
+        let responseHeader = await restResponseHeader.createResponseHeader(xCorrelator, startTime, req.url, responseBody.took);
         restResponseBuilder.buildResponse(res, responseCode, responseBody, responseHeader);
       })
       .catch(async function (responseBody) {
