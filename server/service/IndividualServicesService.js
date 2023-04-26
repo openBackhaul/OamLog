@@ -249,72 +249,53 @@ exports.listApplications = function (user, originator, xCorrelator, traceIndicat
 /**
  * Provides list of recorded OaM requests
  *
- * user String User identifier from the system starting the service call
- * originator String 'Identification for the system consuming the API, as defined in  [/core-model-1-4:control-construct/logical-termination-point={uuid}/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-capability/application-name]' 
- * xCorrelator String UUID for the service execution flow that allows to correlate requests and responses
- * traceIndicator String Sequence of request numbers along the flow
- * customerJourney String Holds information supporting customer’s journey to which the execution applies
  * returns List
  **/
-exports.listRecords = function (body,user, originator, xCorrelator, traceIndicator, customerJourney) {
-  return new Promise(async function (resolve, reject) {
-    let numberOfRecords = body["number-of-records"];
-    let latest = body["latest-record"];
-    let indexAlias = await getIndexAliasAsync();
-    try {
-      let client = await elasticsearchService.getClient();
-      const result = await client.search({
-        index: indexAlias,
-        from: latest,
-        size: numberOfRecords,
-        body: {
-          query: {
-            match_all: {}
-          }
-        }
-      });
-      resolve(createResultArray(result));
-    } catch (error) {
-      console.log(error);
+exports.listRecords = async function (body) {
+  let numberOfRecords = body["number-of-records"];
+  let latest = body["latest-record"];
+  let indexAlias = await getIndexAliasAsync();
+  let client = await elasticsearchService.getClient();
+  const result = await client.search({
+    index: indexAlias,
+    from: latest,
+    size: numberOfRecords,
+    body: {
+      query: {
+        match_all: {}
+      }
     }
   });
+  const resultArray = createResultArray(result);
+  return { "response": resultArray, "took": result.body.took };
 }
+
 /**
  * Provides list of OaM request records belonging to the same application
  *
  * body V1_listrecordsofapplication_body 
- * user String User identifier from the system starting the service call
- * originator String 'Identification for the system consuming the API, as defined in  [/core-model-1-4:control-construct/logical-termination-point={uuid}/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-capability/application-name]' 
- * xCorrelator String UUID for the service execution flow that allows to correlate requests and responses
- * traceIndicator String Sequence of request numbers along the flow
- * customerJourney String Holds information supporting customer’s journey to which the execution applies
  * returns List
  **/
-exports.listRecordsOfApplication = function (body, user, originator, xCorrelator, traceIndicator, customerJourney) {
-  return new Promise(async function (resolve, reject) {
-    let numberOfRecords = body["number-of-records"];
-    let latest = body["latest-match"];
-    let desiredApplicationName = body["application-name"];
-    let indexAlias = await getIndexAliasAsync();
-    try {
-      let client = await elasticsearchService.getClient(false);
-      const result = await client.search({
-        index: indexAlias,
-        from: latest,
-        size: numberOfRecords,
-        body: {
-          query: {
-            term: {
-              "application-name": desiredApplicationName
-            }
-          }
+exports.listRecordsOfApplication = async function (body) {
+  let numberOfRecords = body["number-of-records"];
+  let latest = body["latest-match"];
+  let desiredApplicationName = body["application-name"];
+  let indexAlias = await getIndexAliasAsync();
+  let client = await elasticsearchService.getClient(false);
+  const result = await client.search({
+    index: indexAlias,
+    from: latest,
+    size: numberOfRecords,
+    body: {
+      query: {
+        term: {
+          "application-name": desiredApplicationName
         }
-      });
-      resolve(createResultArray(result));
-    } catch (error) {
-      console.log(error);
+      }
     }
   });
+  const resultArray = createResultArray(result);
+  return { "response": resultArray, "took": result.body.took };
 }
 
 
@@ -322,30 +303,20 @@ exports.listRecordsOfApplication = function (body, user, originator, xCorrelator
  * Records an OaM request
  *
  * body OamRequestRecord 
- * user String User identifier from the system starting the service call
- * originator String 'Identification for the system consuming the API, as defined in  [/core-model-1-4:control-construct/logical-termination-point={uuid}/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-capability/application-name]' 
- * xCorrelator String UUID for the service execution flow that allows to correlate requests and responses
- * traceIndicator String Sequence of request numbers along the flow
- * customerJourney String Holds information supporting customer’s journey to which the execution applies
  * no response value expected for this operation
  **/
-exports.recordOamRequest = async function (body, user, originator, xCorrelator, traceIndicator, customerJourney) {
-  return new Promise(async function (resolve, reject) {
-    try {
-      let indexAlias = await getIndexAliasAsync();
-      let client = await elasticsearchService.getClient(false);
-      let response = await client.index({
-        index: indexAlias,
-        body: body
-      });
-      if (response.body.result == 'created' || response.body.result == 'updated') {
-        resolve();
-      }
-      reject();
-    } catch (error) {
-      reject(error);
-    }
+exports.recordOamRequest = async function (body) {
+  let indexAlias = await getIndexAliasAsync();
+  let client = await elasticsearchService.getClient(false);
+  let startTime = process.hrtime();
+  let result = await client.index({
+    index: indexAlias,
+    body: body
   });
+  let backendTime = process.hrtime(startTime);
+  if (result.body.result == 'created' || result.body.result == 'updated') {
+    return { "took": backendTime[0] * 1000 + backendTime[1] / 1000000 };
+  }
 }
 
 
