@@ -7,7 +7,7 @@ ENV NODE_ENV production
 USER node
 
 # Change to directory owned by node user
-WORKDIR /home/node
+WORKDIR /home/openbackhaul/OamLog
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
