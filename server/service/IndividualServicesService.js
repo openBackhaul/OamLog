@@ -50,7 +50,13 @@ exports.bequeathYourDataAndDie = function (body, user, originator, xCorrelator, 
       let protocol = body["new-application-protocol"];
       let address = body["new-application-address"];
       let port = body["new-application-port"];
-      let httpClientUuidList = await resolveHttpClient()
+
+      const oldReleaseLtpDetails = await resolveLtpDetails('PromptForEmbeddingCausesRequestForBequeathingData');
+      if(oldReleaseLtpDetails['application-name'] === "OldRelease"){
+        throw new Error(`/v1/bequeath-your-data-and-die could not be addressed as the client application name is still OldRelease`)
+      }
+
+      let httpClientUuidList = await resolveLtpDetails('PromptForBequeathingDataCausesTransferOfListOfApplications')
 
       /****************************************************************************************
        * Prepare logicalTerminatinPointConfigurationInput object to 
@@ -475,12 +481,14 @@ function getAllApplicationList() {
   });
 }
 
-
-var resolveHttpClient = exports.resolveHttpClientLtpUuidFromForwardingName = function () {
+/*
+  function to get LTP Details using forwarding name
+*/
+var resolveLtpDetails = exports.resolveLtpDetailsFromForwardingName = function (forwardingName) {
   return new Promise(async function (resolve, reject) {
     try {
       let uuidList = {};
-      const fcportValue = 'PromptForBequeathingDataCausesTransferOfListOfApplications';
+      const fcportValue = forwardingName;
       let forwardConstructName = await ForwardingDomain.getForwardingConstructForTheForwardingNameAsync(fcportValue)
       if (forwardConstructName === undefined) {
         return {};
@@ -492,7 +500,8 @@ var resolveHttpClient = exports.resolveHttpClientLtpUuidFromForwardingName = fun
 
       let httpClientUuid = (await logicalTerminationPoint.getServerLtpListAsync(operationClientUuid))[0];
       let tcpClientUuid = (await logicalTerminationPoint.getServerLtpListAsync(httpClientUuid))[0];
-      uuidList = { httpClientUuid, tcpClientUuid }
+      let applicationName = await httpClientInterface.getApplicationNameAsync(httpClientUuid)
+      uuidList = { httpClientUuid, tcpClientUuid, "application-name":applicationName }
 
       resolve(uuidList)
     } catch (error) {

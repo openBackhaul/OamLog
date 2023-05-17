@@ -16,7 +16,7 @@ const FcPort = require('onf-core-model-ap/applicationPattern/onfModel/models/FcP
 const IndividualService = require('../IndividualServicesService')
 const eventDispatcher = require('onf-core-model-ap/applicationPattern/rest/client/eventDispatcher');
 const ForwardingConstruct = require('onf-core-model-ap/applicationPattern/onfModel/models/ForwardingConstruct');
-
+const forwardingKindNameForBequeathingDataCausesTransferOfListOfApplications = 'PromptForBequeathingDataCausesTransferOfListOfApplications'
 /**
  * This method performs the set of procedure to transfer the data from this version to next version 
  * of the application and bring the new release official
@@ -195,7 +195,7 @@ async function PromptForBequeathingDataCausesRObeingRequestedToNotifyApprovalsOf
              * Preparing requestBody 
              ************************************************************************************/
             try {
-                let newHttpClientUuid = await IndividualService.resolveHttpClientLtpUuidFromForwardingName()
+                let newHttpClientUuid = await IndividualService.resolveLtpDetailsFromForwardingName(forwardingKindNameForBequeathingDataCausesTransferOfListOfApplications)
                 let newReleaseHttpClientUuid = newHttpClientUuid.httpClientUuid
                 let newReleaseTcpClientUuid = (await logicalTerminationPoint.getServerLtpListAsync(newReleaseHttpClientUuid))[0];
 
@@ -260,7 +260,7 @@ async function PromptForBequeathingDataCausesRObeingRequestedToNotifyWithdrawnAp
              ************************************************************************************/
             try {
 
-                let newHttpClientUuid = await IndividualService.resolveHttpClientLtpUuidFromForwardingName()
+                let newHttpClientUuid = await IndividualService.resolveLtpDetailsFromForwardingName(forwardingKindNameForBequeathingDataCausesTransferOfListOfApplications)
                 let newReleaseHttpClientUuid = newHttpClientUuid.httpClientUuid
                 let newReleaseTcpClientUuid = (await logicalTerminationPoint.getServerLtpListAsync(newReleaseHttpClientUuid))[0];
 
@@ -377,7 +377,7 @@ async function promptForBequeathingDataCausesRequestForBroadcastingInfoAboutServ
              ************************************************************************************/
             try {
 
-                let newHttpClientUuid = await IndividualService.resolveHttpClientLtpUuidFromForwardingName()
+                let newHttpClientUuid = await IndividualService.resolveLtpDetailsFromForwardingName(forwardingKindNameForBequeathingDataCausesTransferOfListOfApplications)
                 let newReleaseHttpClientUuid = newHttpClientUuid.httpClientUuid
 
                 let newReleaseTcpClientUuid = (await logicalTerminationPoint.getServerLtpListAsync(newReleaseHttpClientUuid))[0];
@@ -445,7 +445,7 @@ async function promptForBequeathingDataCausesRequestForDeregisteringOfOldRelease
              * Preparing requestBody 
              ************************************************************************************/
             try {
-                let newHttpClientUuid = await IndividualService.resolveHttpClientLtpUuidFromForwardingName()
+                let newHttpClientUuid = await IndividualService.resolveLtpDetailsFromForwardingName(forwardingKindNameForBequeathingDataCausesTransferOfListOfApplications)
                 let newReleaseHttpClientUuid = newHttpClientUuid.httpClientUuid
                 let oldApplicationName = await httpServerInterface.getApplicationNameAsync();
                 let oldReleaseNumber = await httpServerInterface.getReleaseNumberAsync();
