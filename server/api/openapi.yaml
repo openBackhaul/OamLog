@@ -19816,7 +19816,7 @@ components:
           type: string
           description: Name of application addressed by OaM request
         release-number:
-          pattern: "^([0-9]{1,2}).([0-9]{1,2}).([0-9]{1,2})$"
+          pattern: "^([0-9]{1,2})\\.([0-9]{1,2})\\.([0-9]{1,2})$"
           type: string
           description: |
             'Release number of application addressed by OaM request'
