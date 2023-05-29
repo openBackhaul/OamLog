@@ -288,7 +288,7 @@ exports.listRecordsOfApplication = async function (body) {
     size: numberOfRecords,
     body: {
       query: {
-        term: {
+        match: {
           "application-name": desiredApplicationName
         }
       }
