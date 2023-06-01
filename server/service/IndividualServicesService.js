@@ -252,22 +252,26 @@ exports.listApplications = function (user, originator, xCorrelator, traceIndicat
  * returns List
  **/
 exports.listRecords = async function (body) {
-  let numberOfRecords = body["number-of-records"];
-  let latest = body["latest-record"];
-  let indexAlias = await getIndexAliasAsync();
-  let client = await elasticsearchService.getClient();
-  const result = await client.search({
-    index: indexAlias,
-    from: latest,
-    size: numberOfRecords,
-    body: {
-      query: {
-        match_all: {}
+  let size = body["number-of-records"];
+  let from = body["latest-record"];
+  let query = {
+    match_all: {}
+  };
+  if (size + from <= 10000) {
+    let indexAlias = await getIndexAliasAsync();
+    let client = await elasticsearchService.getClient();
+    const result = await client.search({
+      index: indexAlias,
+      from: from,
+      size: size,
+      body: {
+        query: query
       }
-    }
-  });
-  const resultArray = createResultArray(result);
-  return { "response": resultArray, "took": result.body.took };
+    });
+    const resultArray = createResultArray(result);
+    return { "response": resultArray, "took": result.body.took };
+  }
+  return await elasticsearchService.scroll(from, size, query);
 }
 
 /**
@@ -277,25 +281,29 @@ exports.listRecords = async function (body) {
  * returns List
  **/
 exports.listRecordsOfApplication = async function (body) {
-  let numberOfRecords = body["number-of-records"];
-  let latest = body["latest-match"];
+  let size = body["number-of-records"];
+  let from = body["latest-match"];
   let desiredApplicationName = body["application-name"];
-  let indexAlias = await getIndexAliasAsync();
-  let client = await elasticsearchService.getClient(false);
-  const result = await client.search({
-    index: indexAlias,
-    from: latest,
-    size: numberOfRecords,
-    body: {
-      query: {
-        term: {
-          "application-name": desiredApplicationName
-        }
-      }
+  let query = {
+    term: {
+      "application-name": desiredApplicationName
     }
-  });
-  const resultArray = createResultArray(result);
-  return { "response": resultArray, "took": result.body.took };
+  };
+  if (size + from <= 10000) {
+    let indexAlias = await getIndexAliasAsync();
+    let client = await elasticsearchService.getClient(false);
+    const result = await client.search({
+      index: indexAlias,
+      from: from,
+      size: size,
+      body: {
+        query: query
+      }
+    });
+    const resultArray = createResultArray(result);
+    return { "response": resultArray, "took": result.body.took };
+  }
+  return await elasticsearchService.scroll(from, size, query);
 }
 
 
