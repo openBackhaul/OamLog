@@ -106,7 +106,7 @@ exports.putElasticsearchClientIndexAlias = async function(url, body, uuid) {
     await fileOperation.writeToDatabaseAsync(url, body, false);
     await prepareElasticsearch();
     // we need to reassign policy associated with the old alias to the new
-    if (oldPolicy) {
+    if (oldPolicy["service-records-policy-name"] !== "") {
       await elasticsearchService.assignPolicyToIndexTemplate(oldPolicy["service-records-policy-name"], uuid);
     }
   }
