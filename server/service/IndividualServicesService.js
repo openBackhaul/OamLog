@@ -224,12 +224,13 @@ exports.disregardApplication = function (body, user, originator, xCorrelator, tr
 exports.listApplications = function (user, originator, xCorrelator, traceIndicator, customerJourney) {
   return new Promise(async function (resolve, reject) {
     let response = {};
+    let forwadingName = "NewApplicationCausesRequestForOamRequestInformation"
     try {
       /****************************************************************************************
        * Preparing response body
        ****************************************************************************************/
-      let applicationList = await getAllApplicationList();
-
+      
+       let applicationList = await LogicalTerminationPointService.getAllApplicationList(forwadingName);
       /****************************************************************************************
        * Setting 'application/json' response body
        ****************************************************************************************/
