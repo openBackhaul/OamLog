@@ -285,7 +285,7 @@ exports.listRecordsOfApplication = async function (body) {
   let from = body["latest-match"];
   let desiredApplicationName = body["application-name"];
   let query = {
-    term: {
+    match: {
       "application-name": desiredApplicationName
     }
   };
