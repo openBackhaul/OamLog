@@ -11,7 +11,7 @@ const prepareForwardingAutomation = require('./individualServices/PrepareForward
 const tcpServerInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/TcpServerInterface');
 const httpClientInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/HttpClientInterface');
 const FcPort = require("onf-core-model-ap/applicationPattern/onfModel/models/FcPort");
-const LogicalTerminationPointServiceOfUtility = require("onf-core-model-ap-bs/basicServices/basicServices/utility/LogicalTerminationPoint")
+const LogicalTerminationPointServiceOfUtility = require("onf-core-model-ap-bs/basicServices/utility/LogicalTerminationPoint")
 const onfAttributeFormatter = require('onf-core-model-ap/applicationPattern/onfModel/utility/OnfAttributeFormatter');
 
 const ConfigurationStatus = require('onf-core-model-ap/applicationPattern/onfModel/services/models/ConfigurationStatus');
