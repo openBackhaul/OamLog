@@ -3,7 +3,7 @@
  * @module SoftwareUpgrade
  **/
 
-const LogicalTerminationPointService = require("onf-core-model-ap-bs/basicServices/basicServices/utility/LogicalTerminationPoint")
+const LogicalTerminationPointService = require("onf-core-model-ap-bs/basicServices/utility/LogicalTerminationPoint")
 const operationClientInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/OperationClientInterface');
 const logicalTerminationPoint = require('onf-core-model-ap/applicationPattern/onfModel/models/LogicalTerminationPoint');
 const httpServerInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/HttpServerInterface');
