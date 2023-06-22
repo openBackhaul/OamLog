@@ -50,7 +50,7 @@ exports.bequeathYourDataAndDie = function (body, user, originator, xCorrelator, 
       let protocol = body["new-application-protocol"];
       let address = body["new-application-address"];
       let port = body["new-application-port"];
-      let httpClientUuidList = await LogicalTerminationPointServiceOfUtility.resolveHttpTcpAndOperationClientUuidFromForwardingName()
+      let httpClientUuidList = await LogicalTerminationPointServiceOfUtility.resolveHttpTcpAndOperationClientUuidOfNewRelease()
 
       /****************************************************************************************
        * Prepare logicalTerminatinPointConfigurationInput object to 
