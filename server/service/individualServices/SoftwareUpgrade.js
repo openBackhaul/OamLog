@@ -3,6 +3,7 @@
  * @module SoftwareUpgrade
  **/
 
+const LogicalTerminationPointService = require("onf-core-model-ap-bs/basicServices/utility/LogicalTerminationPoint")
 const operationClientInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/OperationClientInterface');
 const logicalTerminationPoint = require('onf-core-model-ap/applicationPattern/onfModel/models/LogicalTerminationPoint');
 const httpServerInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/HttpServerInterface');
@@ -195,7 +196,7 @@ async function PromptForBequeathingDataCausesRObeingRequestedToNotifyApprovalsOf
              * Preparing requestBody 
              ************************************************************************************/
             try {
-                let newHttpClientUuid = await IndividualService.resolveHttpClientLtpUuidFromForwardingName()
+                let newHttpClientUuid = await LogicalTerminationPointService.resolveHttpTcpAndOperationClientUuidFromForwardingName()
                 let newReleaseHttpClientUuid = newHttpClientUuid.httpClientUuid
                 let newReleaseTcpClientUuid = (await logicalTerminationPoint.getServerLtpListAsync(newReleaseHttpClientUuid))[0];
 
@@ -260,7 +261,7 @@ async function PromptForBequeathingDataCausesRObeingRequestedToNotifyWithdrawnAp
              ************************************************************************************/
             try {
 
-                let newHttpClientUuid = await IndividualService.resolveHttpClientLtpUuidFromForwardingName()
+                let newHttpClientUuid = await LogicalTerminationPointService.resolveHttpTcpAndOperationClientUuidFromForwardingName()
                 let newReleaseHttpClientUuid = newHttpClientUuid.httpClientUuid
                 let newReleaseTcpClientUuid = (await logicalTerminationPoint.getServerLtpListAsync(newReleaseHttpClientUuid))[0];
 
@@ -377,7 +378,7 @@ async function promptForBequeathingDataCausesRequestForBroadcastingInfoAboutServ
              ************************************************************************************/
             try {
 
-                let newHttpClientUuid = await IndividualService.resolveHttpClientLtpUuidFromForwardingName()
+                let newHttpClientUuid = await LogicalTerminationPointService.resolveHttpTcpAndOperationClientUuidFromForwardingName()
                 let newReleaseHttpClientUuid = newHttpClientUuid.httpClientUuid
 
                 let newReleaseTcpClientUuid = (await logicalTerminationPoint.getServerLtpListAsync(newReleaseHttpClientUuid))[0];
@@ -445,7 +446,7 @@ async function promptForBequeathingDataCausesRequestForDeregisteringOfOldRelease
              * Preparing requestBody 
              ************************************************************************************/
             try {
-                let newHttpClientUuid = await IndividualService.resolveHttpClientLtpUuidFromForwardingName()
+                let newHttpClientUuid = await LogicalTerminationPointService.resolveHttpTcpAndOperationClientUuidFromForwardingName()
                 let newReleaseHttpClientUuid = newHttpClientUuid.httpClientUuid
                 let oldApplicationName = await httpServerInterface.getApplicationNameAsync();
                 let oldReleaseNumber = await httpServerInterface.getReleaseNumberAsync();
