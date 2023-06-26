@@ -12,8 +12,8 @@ module.exports.getHttpServerApplicationName = async function getHttpServerApplic
         responseBuilder.buildResponse(res, responseCode, response);
       })
       .catch(function (response) {
-        responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
-        responseBuilder.buildResponse(res, responseCode, response);
+        let sentResp = responseBuilder.buildResponse(res, undefined, response);
+        responseCode = sentResp.code;
       });
   oamLogService.recordOamRequest(req.url, req.body, responseCode, req.headers.authorization, req.method);
 };
@@ -25,8 +25,8 @@ module.exports.getHttpServerApplicationPurpose = async function getHttpServerApp
         responseBuilder.buildResponse(res, responseCode, response);
       })
       .catch(function (response) {
-        responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
-        responseBuilder.buildResponse(res, responseCode, response);
+        let sentResp = responseBuilder.buildResponse(res, undefined, response);
+        responseCode = sentResp.code;
       });
   oamLogService.recordOamRequest(req.url, req.body, responseCode, req.headers.authorization, req.method);
 };
@@ -38,8 +38,8 @@ module.exports.getHttpServerDataUpdatePeriode = async function getHttpServerData
         responseBuilder.buildResponse(res, responseCode, response);
       })
       .catch(function (response) {
-        responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
-        responseBuilder.buildResponse(res, responseCode, response);
+        let sentResp = responseBuilder.buildResponse(res, undefined, response);
+        responseCode = sentResp.code;
       });
   oamLogService.recordOamRequest(req.url, req.body, responseCode, req.headers.authorization, req.method);
 };
@@ -51,8 +51,8 @@ module.exports.getHttpServerOwnerEmailAddress = async function getHttpServerOwne
         responseBuilder.buildResponse(res, responseCode, response);
       })
       .catch(function (response) {
-        responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
-        responseBuilder.buildResponse(res, responseCode, response);
+        let sentResp = responseBuilder.buildResponse(res, undefined, response);
+        responseCode = sentResp.code;
       });
   oamLogService.recordOamRequest(req.url, req.body, responseCode, req.headers.authorization, req.method);
 };
@@ -64,8 +64,8 @@ module.exports.getHttpServerOwnerName = async function getHttpServerOwnerName (r
         responseBuilder.buildResponse(res, responseCode, response);
       })
       .catch(function (response) {
-        responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
-        responseBuilder.buildResponse(res, responseCode, response);
+        let sentResp = responseBuilder.buildResponse(res, undefined, response);
+        responseCode = sentResp.code;
       });
   oamLogService.recordOamRequest(req.url, req.body, responseCode, req.headers.authorization, req.method);
 };
@@ -77,8 +77,8 @@ module.exports.getHttpServerReleaseList = async function getHttpServerReleaseLis
         responseBuilder.buildResponse(res, responseCode, response);
       })
       .catch(function (response) {
-        responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
-        responseBuilder.buildResponse(res, responseCode, response);
+        let sentResp = responseBuilder.buildResponse(res, undefined, response);
+        responseCode = sentResp.code;
       });
   oamLogService.recordOamRequest(req.url, req.body, responseCode, req.headers.authorization, req.method);
 };
@@ -90,8 +90,8 @@ module.exports.getHttpServerReleaseNumber = async function getHttpServerReleaseN
         responseBuilder.buildResponse(res, responseCode, response);
       })
       .catch(function (response) {
-        responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
-        responseBuilder.buildResponse(res, responseCode, response);
+        let sentResp = responseBuilder.buildResponse(res, undefined, response);
+        responseCode = sentResp.code;
       });
   oamLogService.recordOamRequest(req.url, req.body, responseCode, req.headers.authorization, req.method);
 };
