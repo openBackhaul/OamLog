@@ -12,8 +12,8 @@ module.exports.getTcpServerLocalAddress = async function getTcpServerLocalAddres
         responseBuilder.buildResponse(res, responseCode, response);
       })
       .catch(function (response) {
-        responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
-        responseBuilder.buildResponse(res, responseCode, response);
+        let sentResp = responseBuilder.buildResponse(res, undefined, response);
+        responseCode = sentResp.code;
       });
   oamLogService.recordOamRequest(req.url, req.body, responseCode, req.headers.authorization, req.method);
 };
@@ -25,23 +25,23 @@ module.exports.getTcpServerLocalPort = async function getTcpServerLocalPort (req
         responseBuilder.buildResponse(res, responseCode, response);
       })
       .catch(function (response) {
-        responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
-        responseBuilder.buildResponse(res, responseCode, response);
+        let sentResp = responseBuilder.buildResponse(res, undefined, response);
+        responseCode = sentResp.code;
       });
   oamLogService.recordOamRequest(req.url, req.body, responseCode, req.headers.authorization, req.method);
 };
 
-module.exports.putTcpServerLocalAddress = function putTcpServerLocalAddress (req, res, next, body, uuid) {
+module.exports.putTcpServerLocalAddress = async function putTcpServerLocalAddress(req, res, next, body, uuid) {
   let responseCode = responseCodeEnum.code.NO_CONTENT;
-  TcpServer.putTcpServerLocalAddress(req.url,body,uuid)
-  .then(function (response) {
-    responseBuilder.buildResponse(res, responseCode, response);
-  })
-  .catch(function (response) {
-    responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
-    responseBuilder.buildResponse(res, responseCode, response);
-  });
-oamLogService.recordOamRequest(req.url, req.body, responseCode, req.headers.authorization, req.method);
+  await TcpServer.putTcpServerLocalAddress(req.url, body, uuid)
+    .then(function (response) {
+      responseBuilder.buildResponse(res, responseCode, response);
+    })
+    .catch(function (response) {
+      let sentResp = responseBuilder.buildResponse(res, undefined, response);
+      responseCode = sentResp.code;
+    });
+  oamLogService.recordOamRequest(req.url, req.body, responseCode, req.headers.authorization, req.method);
 };
 
 
@@ -52,61 +52,61 @@ module.exports.putTcpServerLocalPort = async function putTcpServerLocalPort (req
         responseBuilder.buildResponse(res, responseCode, response);
       })
       .catch(function (response) {
-        responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
-        responseBuilder.buildResponse(res, responseCode, response);
+        let sentResp = responseBuilder.buildResponse(res, undefined, response);
+        responseCode = sentResp.code;
       });
   oamLogService.recordOamRequest(req.url, req.body, responseCode, req.headers.authorization, req.method);
 };
 
-module.exports.getTcpServerLocalProtocol = function getTcpServerLocalProtocol (req, res, next, uuid) {
+module.exports.getTcpServerLocalProtocol = async function getTcpServerLocalProtocol(req, res, next, uuid) {
   let responseCode = responseCodeEnum.code.OK;
-  TcpServer.getTcpServerLocalProtocol(req.url)
-  .then(function (response) {
-    responseBuilder.buildResponse(res, responseCode, response);
-  })
-  .catch(function (response) {
-    responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
-    responseBuilder.buildResponse(res, responseCode, response);
-  });
-oamLogService.recordOamRequest(req.url, req.body, responseCode, req.headers.authorization, req.method);
+  await TcpServer.getTcpServerLocalProtocol(req.url)
+    .then(function (response) {
+      responseBuilder.buildResponse(res, responseCode, response);
+    })
+    .catch(function (response) {
+      let sentResp = responseBuilder.buildResponse(res, undefined, response);
+      responseCode = sentResp.code;
+    });
+  oamLogService.recordOamRequest(req.url, req.body, responseCode, req.headers.authorization, req.method);
 };
 
-module.exports.putTcpServerLocalProtocol = function putTcpServerLocalProtocol (req, res, next, body, uuid) {
+module.exports.putTcpServerLocalProtocol = async function putTcpServerLocalProtocol(req, res, next, body, uuid) {
   let responseCode = responseCodeEnum.code.NO_CONTENT;
-  TcpServer.putTcpServerLocalProtocol(req.url,body,uuid)
-  .then(function (response) {
-    responseBuilder.buildResponse(res, responseCode, response);
-  })
-  .catch(function (response) {
-    responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
-    responseBuilder.buildResponse(res, responseCode, response);
-  });
-oamLogService.recordOamRequest(req.url, req.body, responseCode, req.headers.authorization, req.method);
+  await TcpServer.putTcpServerLocalProtocol(req.url, body, uuid)
+    .then(function (response) {
+      responseBuilder.buildResponse(res, responseCode, response);
+    })
+    .catch(function (response) {
+      let sentResp = responseBuilder.buildResponse(res, undefined, response);
+      responseCode = sentResp.code;
+    });
+  oamLogService.recordOamRequest(req.url, req.body, responseCode, req.headers.authorization, req.method);
 };
 
-module.exports.getTcpServerDescription = function getTcpServerDescription (req, res, next, uuid) {
+module.exports.getTcpServerDescription = async function getTcpServerDescription(req, res, next, uuid) {
   let responseCode = responseCodeEnum.code.OK;
-  TcpServer.getTcpServerDescription(req.url)
-  .then(function (response) {
-    responseBuilder.buildResponse(res, responseCode, response);
-  })
-  .catch(function (response) {
-    responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
-    responseBuilder.buildResponse(res, responseCode, response);
-  });
-oamLogService.recordOamRequest(req.url, req.body, responseCode, req.headers.authorization, req.method);
+  await TcpServer.getTcpServerDescription(req.url)
+    .then(function (response) {
+      responseBuilder.buildResponse(res, responseCode, response);
+    })
+    .catch(function (response) {
+      let sentResp = responseBuilder.buildResponse(res, undefined, response);
+      responseCode = sentResp.code;
+    });
+  oamLogService.recordOamRequest(req.url, req.body, responseCode, req.headers.authorization, req.method);
 };
 
-module.exports.putTcpServerDescription = function putTcpServerDescription (req, res, next, body, uuid) {
+module.exports.putTcpServerDescription = async function putTcpServerDescription(req, res, next, body, uuid) {
   let responseCode = responseCodeEnum.code.NO_CONTENT;
-  TcpServer.putTcpServerDescription(req.url,body,uuid)
-  .then(function (response) {
-    responseBuilder.buildResponse(res, responseCode, response);
-  })
-  .catch(function (response) {
-    responseCode = responseCodeEnum.code.INTERNAL_SERVER_ERROR;
-    responseBuilder.buildResponse(res, responseCode, response);
-  });
-oamLogService.recordOamRequest(req.url, req.body, responseCode, req.headers.authorization, req.method);
+  await TcpServer.putTcpServerDescription(req.url, body, uuid)
+    .then(function (response) {
+      responseBuilder.buildResponse(res, responseCode, response);
+    })
+    .catch(function (response) {
+      let sentResp = responseBuilder.buildResponse(res, undefined, response);
+      responseCode = sentResp.code;
+    });
+  oamLogService.recordOamRequest(req.url, req.body, responseCode, req.headers.authorization, req.method);
 };
 
