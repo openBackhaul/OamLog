@@ -274,6 +274,12 @@ module.exports.registerYourself = async function registerYourself(req, res, next
     let startTime = process.hrtime();
     let responseCode = responseCodeEnum.code.NO_CONTENT;
     let responseBodyToDocument = {};
+    if (body["registry-office-application"] === undefined) {
+      customerJourney = traceIndicator;
+      traceIndicator = xCorrelator;
+      xCorrelator = originator;
+      user = body;
+    }
     await BasicServices.registerYourself(body, user, originator, xCorrelator, traceIndicator, customerJourney, req.url)
       .then(async function (responseBody) {
         responseBodyToDocument = responseBody;
