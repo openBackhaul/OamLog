@@ -280,6 +280,14 @@ module.exports.registerYourself = async function registerYourself(req, res, next
       xCorrelator = originator;
       user = body;
     }
+    if (Object.keys(req.body).length === 0) {
+      body = req.body;
+      user = req.headers["user"];
+      originator = req.headers["originator"];
+      xCorrelator = req.headers["x-correlator"];
+      traceIndicator = req.headers["trace-indicator"];
+      customerJourney = req.headers["customer-journey"]; 
+    }
     await BasicServices.registerYourself(body, user, originator, xCorrelator, traceIndicator, customerJourney, req.url)
       .then(async function (responseBody) {
         responseBodyToDocument = responseBody;
