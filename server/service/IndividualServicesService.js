@@ -15,6 +15,8 @@ const individualServicesOperationsMapping = require('./individualServices/indivi
 const softwareUpgrade = require('./individualServices/SoftwareUpgrade');
 const { getIndexAliasAsync, createResultArray, elasticsearchService } = require('onf-core-model-ap/applicationPattern/services/ElasticsearchService');
 
+const NEW_RELEASE_FORWARDING_NAME = 'PromptForBequeathingDataCausesTransferOfListOfApplications';
+
 /**
  * Initiates process of embedding a new release
  *
@@ -147,7 +149,8 @@ exports.disregardApplication = function (body, user, originator, xCorrelator, tr
 
       let logicalTerminationPointconfigurationStatus = await LogicalTerminationPointService.deleteApplicationInformationAsync(
         applicationName,
-        applicationReleaseNumber
+        applicationReleaseNumber,
+        NEW_RELEASE_FORWARDING_NAME
       );
 
       /****************************************************************************************
@@ -358,7 +361,8 @@ exports.regardApplication = function (body, user, originator, xCorrelator, trace
       );
 
       let logicalTerminationPointconfigurationStatus = await LogicalTerminationPointService.findOrCreateApplicationInformationAsync(
-        logicalTerminatinPointConfigurationInput
+        logicalTerminatinPointConfigurationInput,
+        NEW_RELEASE_FORWARDING_NAME
       );
 
 
