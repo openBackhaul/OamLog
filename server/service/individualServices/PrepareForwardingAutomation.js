@@ -26,9 +26,10 @@ exports.regardApplication = function (logicalTerminationPointconfigurationStatus
             let redirectOamRequestRequestBody = {};
             redirectOamRequestRequestBody.oamLogApplication = await HttpServerInterface.getApplicationNameAsync();
             redirectOamRequestRequestBody.oamLogApplicationReleaseNumber = await HttpServerInterface.getReleaseNumberAsync();
-            redirectOamRequestRequestBody.oamLogOperation = await operationServerInterface.getOperationNameAsync("ol-0-0-1-op-s-3004");
-            redirectOamRequestRequestBody.oamLogAddress = await tcpServerInterface.getLocalAddress();
+            redirectOamRequestRequestBody.oamLogOperation = await operationServerInterface.getOperationNameAsync("ol-2-0-1-op-s-is-004");
+            redirectOamRequestRequestBody.oamLogAddress = await tcpServerInterface.getLocalAddressForForwarding();
             redirectOamRequestRequestBody.oamLogPort = await tcpServerInterface.getLocalPort();
+            redirectOamRequestRequestBody.oamLogProtocol = await tcpServerInterface.getLocalProtocol();
             redirectOamRequestRequestBody = onfFormatter.modifyJsonObjectKeysToKebabCase(redirectOamRequestRequestBody);
             let forwardingAutomation = new forwardingConstructAutomationInput(
                 redirectOamRequestForwardingName,
@@ -97,6 +98,32 @@ exports.bequeathYourDataAndDie = function (logicalTerminationPointconfigurationS
             let applicationLayerTopologyForwardingInputList = await prepareALTForwardingAutomation.getALTForwardingAutomationInputAsync(
                 logicalTerminationPointconfigurationStatus,
                 undefined
+            );
+
+            if (applicationLayerTopologyForwardingInputList) {
+                for (let i = 0; i < applicationLayerTopologyForwardingInputList.length; i++) {
+                    let applicationLayerTopologyForwardingInput = applicationLayerTopologyForwardingInputList[i];
+                    forwardingConstructAutomationList.push(applicationLayerTopologyForwardingInput);
+                }
+            }
+
+            resolve(forwardingConstructAutomationList);
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
+
+exports.OAMLayerRequest = function (uuid) {
+    return new Promise(async function (resolve, reject) {
+        let forwardingConstructAutomationList = [];
+        try {
+
+            /***********************************************************************************
+             * forwardings for application layer topology
+             ************************************************************************************/
+            let applicationLayerTopologyForwardingInputList = await prepareALTForwardingAutomation.getALTForwardingAutomationInputForOamRequestAsync(
+                uuid
             );
 
             if (applicationLayerTopologyForwardingInputList) {

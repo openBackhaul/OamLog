@@ -1,14 +1,16 @@
 'use strict';
 
 var fileOperation = require('onf-core-model-ap/applicationPattern/databaseDriver/JSONDriver');
-
+const operationClintService = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/OperationClientInterface')
+const prepareForwardingAutomation = require('./individualServices/PrepareForwardingAutomation');
+const ForwardingAutomationService = require('onf-core-model-ap/applicationPattern/onfModel/services/ForwardingConstructAutomationServices');
 /**
  * Returns detailed logging configuration.
  *
  * uuid String 
  * returns inline_response_200_30
  **/
-exports.getOperationClientDetailedLoggingIsOn = function(url) {
+exports.getOperationClientDetailedLoggingIsOn = function (url) {
   return new Promise(async function (resolve, reject) {
     try {
       var value = await fileOperation.readFromDatabaseAsync(url);
@@ -34,7 +36,7 @@ exports.getOperationClientDetailedLoggingIsOn = function(url) {
  * uuid String 
  * returns inline_response_200_29
  **/
-exports.getOperationClientLifeCycleState = function(url) {
+exports.getOperationClientLifeCycleState = function (url) {
   return new Promise(async function (resolve, reject) {
     try {
       var value = await fileOperation.readFromDatabaseAsync(url);
@@ -60,7 +62,7 @@ exports.getOperationClientLifeCycleState = function(url) {
  * uuid String 
  * returns inline_response_200_27
  **/
-exports.getOperationClientOperationKey = function(url) {
+exports.getOperationClientOperationKey = function (url) {
   return new Promise(async function (resolve, reject) {
     try {
       var value = await fileOperation.readFromDatabaseAsync(url);
@@ -86,7 +88,7 @@ exports.getOperationClientOperationKey = function(url) {
  * uuid String 
  * returns inline_response_200_26
  **/
-exports.getOperationClientOperationName = function(url) {
+exports.getOperationClientOperationName = function (url) {
   return new Promise(async function (resolve, reject) {
     try {
       var value = await fileOperation.readFromDatabaseAsync(url);
@@ -112,7 +114,7 @@ exports.getOperationClientOperationName = function(url) {
  * uuid String 
  * returns inline_response_200_28
  **/
-exports.getOperationClientOperationalState = function(url) {
+exports.getOperationClientOperationalState = function (url) {
   return new Promise(async function (resolve, reject) {
     try {
       var value = await fileOperation.readFromDatabaseAsync(url);
@@ -139,7 +141,7 @@ exports.getOperationClientOperationalState = function(url) {
  * uuid String 
  * no response value expected for this operation
  **/
-exports.putOperationClientDetailedLoggingIsOn = function(url, body) {
+exports.putOperationClientDetailedLoggingIsOn = function (url, body) {
   return new Promise(async function (resolve, reject) {
     try {
       await fileOperation.writeToDatabaseAsync(url, body, false);
@@ -158,7 +160,7 @@ exports.putOperationClientDetailedLoggingIsOn = function(url, body) {
  * uuid String 
  * no response value expected for this operation
  **/
-exports.putOperationClientOperationKey = function(url, body) {
+exports.putOperationClientOperationKey = function (url, body) {
   return new Promise(async function (resolve, reject) {
     try {
       await fileOperation.writeToDatabaseAsync(url, body, false);
@@ -177,10 +179,27 @@ exports.putOperationClientOperationKey = function(url, body) {
  * uuid String 
  * no response value expected for this operation
  **/
-exports.putOperationClientOperationName = function(url,body) {
+exports.putOperationClientOperationName = function (url, body, uuid) {
   return new Promise(async function (resolve, reject) {
     try {
-      await fileOperation.writeToDatabaseAsync(url, body, false);
+      let oldValue = await operationClintService.getOperationNameAsync(uuid);
+      let newValue = body["operation-client-interface-1-0:operation-name"];
+      if (oldValue !== newValue) {
+        let isUpdated = await fileOperation.writeToDatabaseAsync(url, body, false);
+
+
+        /****************************************************************************************
+         * Prepare attributes to automate forwarding-construct
+         ****************************************************************************************/
+        if (isUpdated) {
+          let forwardingAutomationInputList = await prepareForwardingAutomation.OAMLayerRequest(
+            uuid
+          );
+          ForwardingAutomationService.automateForwardingConstructWithoutInputAsync(
+            forwardingAutomationInputList
+          );
+        }
+      }
       resolve();
     } catch (error) {
       reject();
