@@ -24,18 +24,17 @@ var expressAppConfig = oas3Tools.expressAppConfig(path.join(__dirname, 'api/open
 var app = expressAppConfig.getApp();
 appCommons.setupExpressApp(app);
 
-// Initialize the Swagger middleware
-http.createServer(app).listen(serverPort, function () {
-    console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
-    console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
-});
-
 //setting the path to the database 
 global.databasePath = './database/load.json'
 
-
-prepareElasticsearch(false).then().catch(err => {
+prepareElasticsearch(false).catch(err => {
     console.error(`Error preparing Elasticsearch : ${err}`);
-});
-
-appCommons.performApplicationRegistration();
+}).finally(() => {
+    // Initialize the Swagger middleware
+    http.createServer(app).listen(serverPort, function () {
+        console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
+        console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
+    });
+    appCommons.performApplicationRegistration();
+}
+);

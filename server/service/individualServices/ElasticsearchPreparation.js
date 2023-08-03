@@ -39,6 +39,14 @@ module.exports = async function prepareElasticsearch() {
 async function createIndexTemplate() {
     let indexAlias = await getIndexAliasAsync();
     let client = await elasticsearchService.getClient(false);
+    // disable creation of index, if it's not yet created by the app
+    await client.cluster.putSettings({
+        body: {
+            persistent: {
+                "action.auto_create_index": "false"
+            }
+        }
+    });
     let found = await elasticsearchService.getExistingIndexTemplate();
     let iTemplate = found ? found : {
         name: 'ol-index-template',
