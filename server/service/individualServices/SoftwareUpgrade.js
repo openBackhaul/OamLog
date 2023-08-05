@@ -159,7 +159,7 @@ async function PromptForBequeathingDataCausesRObeingRequestedToNotifyApprovalsOf
                 let newReleaseHttpClientUuid = newHttpClientUuid.httpClientUuid
                 let newReleaseTcpClientUuid = (await logicalTerminationPoint.getServerLtpListAsync(newReleaseHttpClientUuid))[0];
 
-                let applicationName = await httpServerInterface.getApplicationNameAsync();
+                let applicationName = await httpClientInterface.getApplicationNameAsync(newReleaseHttpClientUuid);
                 let releaseNumber = await httpClientInterface.getReleaseNumberAsync(newReleaseHttpClientUuid);
                 let regardApplicationOperation = await OperationServerInterface.getOperationNameAsync("ol-2-0-1-op-s-is-001");
                 let applicationAddress = await tcpClientInterface.getRemoteAddressAsync(newReleaseTcpClientUuid);
@@ -224,7 +224,7 @@ async function PromptForBequeathingDataCausesRObeingRequestedToNotifyWithdrawnAp
                 let newReleaseHttpClientUuid = newHttpClientUuid.httpClientUuid
                 let newReleaseTcpClientUuid = (await logicalTerminationPoint.getServerLtpListAsync(newReleaseHttpClientUuid))[0];
 
-                let applicationName = await httpServerInterface.getApplicationNameAsync();
+                let applicationName = await httpClientInterface.getApplicationNameAsync(newReleaseHttpClientUuid)
                 let releaseNumber = await httpClientInterface.getReleaseNumberAsync(newReleaseHttpClientUuid);
                 let disregardApplicationOperation = await OperationServerInterface.getOperationNameAsync("ol-2-0-1-op-s-is-002");
                 let applicationAddress = await tcpClientInterface.getRemoteAddressAsync(newReleaseTcpClientUuid);
