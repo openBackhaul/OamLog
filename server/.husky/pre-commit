@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+SERVER_DIR=$(dirname -- "$0")/..
+# change working dir to be server/
+cd $SERVER_DIR
+npx lint-staged
