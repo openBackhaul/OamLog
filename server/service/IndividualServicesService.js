@@ -76,7 +76,7 @@ exports.bequeathYourDataAndDie = function (body, user, originator, xCorrelator, 
         }
 
         let tcpClientConfigurationStatus = new ConfigurationStatus(
-          newReleaseHttpClientLtpUuid,
+          newReleaseTcpClientUuid,
           '',
           (update.isProtocolUpdated || update.isAddressUpdated || update.isPortUpdated)
         );
