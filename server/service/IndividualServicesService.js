@@ -140,7 +140,7 @@ exports.disregardApplication = async function (body, user, originator, xCorrelat
   let httpClientUuid = await httpClientInterface.getHttpClientUuidExcludingOldReleaseAndNewRelease(
     applicationName, applicationReleaseNumber, NEW_RELEASE_FORWARDING_NAME
   )
-  let ltpConfigurationStatus = await LogicalTerminationPointService.deleteOperationClientLtpAsync(
+  let ltpConfigurationStatus = await LogicalTerminationPointService.deleteApplicationLtpsAsync(
     httpClientUuid
   );
 
