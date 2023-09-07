@@ -7,7 +7,7 @@ const ForwardingAutomationService = require('onf-core-model-ap/applicationPatter
 const prepareForwardingConfiguration = require('./individualServices/PrepareForwardingConfiguration');
 const prepareForwardingAutomation = require('./individualServices/PrepareForwardingAutomation');
 const httpClientInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/HttpClientInterface');
-const LogicalTerminationPointServiceOfUtility = require("onf-core-model-ap-bs/basicServices/utility/LogicalTerminationPoint")
+const ServiceUtils = require("onf-core-model-ap-bs/basicServices/utility/LogicalTerminationPoint")
 const onfAttributeFormatter = require('onf-core-model-ap/applicationPattern/onfModel/utility/OnfAttributeFormatter');
 const ConfigurationStatus = require('onf-core-model-ap/applicationPattern/onfModel/services/models/ConfigurationStatus');
 const tcpClientInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/TcpClientInterface');
@@ -42,7 +42,7 @@ exports.bequeathYourDataAndDie = function (body, user, originator, xCorrelator, 
       let protocol = body["new-application-protocol"];
       let address = body["new-application-address"];
       let port = body["new-application-port"];
-      let httpClientUuidList = await LogicalTerminationPointServiceOfUtility.resolveHttpTcpAndOperationClientUuidOfNewRelease()
+      let httpClientUuidList = await ServiceUtils.resolveHttpTcpAndOperationClientUuidOfNewRelease()
 
       /****************************************************************************************
        * Prepare logicalTerminatinPointConfigurationInput object to 
@@ -140,7 +140,7 @@ exports.disregardApplication = async function (body, user, originator, xCorrelat
   let httpClientUuid = await httpClientInterface.getHttpClientUuidExcludingOldReleaseAndNewRelease(
     applicationName, applicationReleaseNumber, NEW_RELEASE_FORWARDING_NAME
   )
-  let ltpConfigurationStatus = await LogicalTerminationPointService.deleteOperationClientLtpAsync(
+  let ltpConfigurationStatus = await LogicalTerminationPointService.deleteApplicationLtpsAsync(
     httpClientUuid
   );
 
@@ -179,7 +179,7 @@ exports.disregardApplication = async function (body, user, originator, xCorrelat
  **/
 exports.listApplications = async function () {
   let forwadingName = "NewApplicationCausesRequestForOamRequestInformation"
-  let applicationList = await LogicalTerminationPointServiceOfUtility.getAllApplicationList(forwadingName);
+  let applicationList = await ServiceUtils.getAllApplicationList(forwadingName);
   return onfAttributeFormatter.modifyJsonObjectKeysToKebabCase(applicationList);
 }
 
@@ -196,7 +196,7 @@ exports.listRecords = async function (body) {
   };
   if (size + from <= 10000) {
     let indexAlias = await getIndexAliasAsync();
-    let client = await elasticsearchService.getClient();
+    let client = await elasticsearchService.getClient(false);
     const result = await client.search({
       index: indexAlias,
       from: from,
@@ -296,8 +296,10 @@ exports.regardApplication = async function (body, user, originator, xCorrelator,
     operationNamesByAttributes,
     individualServicesOperationsMapping.individualServicesOperationsMapping
   );
-  let ltpConfigurationStatus = await LogicalTerminationPointService.createOrUpdateApplicationLtpsAsync(
-    ltpConfigurationInput
+  const roApplicationName = await ServiceUtils.resolveRegistryOfficeApplicationNameFromForwardingAsync();
+  const ltpConfigurationStatus = await LogicalTerminationPointService.createOrUpdateApplicationLtpsAsync(
+    ltpConfigurationInput,
+    roApplicationName === applicationName
   );
 
   let forwardingConfigurationInputList = [];
