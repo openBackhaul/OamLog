@@ -80,17 +80,17 @@ forwardings:
         uuid: ol-2-0-1-op-s-bs-003
       - server-name: /v1/inform-about-release-history-in-generic-representation
         uuid: ol-2-0-1-op-s-bs-004
-      - service-name: /v1/regard-application
+      - server-name: /v1/regard-application
         uuid: ol-2-0-1-op-s-is-001
-      - service-name: /v1/disregard-application
+      - server-name: /v1/disregard-application
         uuid: ol-2-0-1-op-s-is-002
-      - service-name: /v1/list-applications
+      - server-name: /v1/list-applications
         uuid: ol-2-0-1-op-s-is-003
-      - service-name: /v1/record-oam-request
+      - server-name: /v1/record-oam-request
         uuid: ol-2-0-1-op-s-is-004
-      - service-name: /v1/list-records
+      - server-name: /v1/list-records
         uuid: ol-2-0-1-op-s-is-005
-      - service-name: /v1/list-records-of-application
+      - server-name: /v1/list-records-of-application
         uuid: ol-2-0-1-op-s-is-006
     consequent-requests:
       - client-name: ExecutionAndTraceLog://v1/record-service-request
@@ -280,7 +280,7 @@ forwardings:
         uuid: ol-2-0-1-op-s-bm-011
       - server-name: /v1/bequeath-your-data-and-die
         uuid: ol-2-0-1-op-s-im-000
-      - service-name: /v1/regard-application
+      - server-name: /v1/regard-application
         uuid: ol-2-0-1-op-s-is-001
     consequent-requests:
       - client-name: ApplicationLayerTopology://v1/update-ltp
@@ -299,7 +299,7 @@ forwardings:
       fc-port-deletion:
       operation-client-deletion:
     initiating-requests:
-      - service-name: /v1/disregard-application
+      - server-name: /v1/disregard-application
         uuid: ol-2-0-1-op-s-is-002
     consequent-requests:
       - client-name: ApplicationLayerTopology://v1/delete-ltp-and-dependents
@@ -318,7 +318,7 @@ forwardings:
       fc-port-deletion:
       operation-client-deletion:
     initiating-requests:
-      - service-name: /v1/regard-application
+      - server-name: /v1/regard-application
         uuid: ol-2-0-1-op-s-is-001
     consequent-requests:
       - client-name: ApplicationLayerTopology://v1/update-fc
