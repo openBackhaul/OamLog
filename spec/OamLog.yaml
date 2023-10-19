@@ -888,13 +888,13 @@ paths:
                   minLength: 3
                   description: >
                     'Name of application that shall be requested for OaM request notifications
-                    find or create [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-1-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/application-name]'
+                    find, but not at OldRelease or NewRelease, or create [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-1-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/application-name]'
                 release-number:
                   type: string
                   pattern: '^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{1,2})$'
                   description: >
                     'Release of application that shall be requested for OaM request notifications
-                    find or create [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-1-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/release-number]'
+                    find, but not at OldRelease or NewRelease, or create [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-1-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/release-number]'
                 protocol:
                   type: string
                   enum:
@@ -1131,13 +1131,13 @@ paths:
                   type: string
                   description: >
                     'Name of application that shall no longer be requested for OaM request notifications
-                    find in [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-1-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/application-name]'
+                    find, but not at OldRelease or NewRelease, in [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-1-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/application-name]'
                 release-number:
                   type: string
                   pattern: '^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{1,2})$'
                   description: >
                     'Release of application that shall no longer be requested for OaM request notifications
-                    find in [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-1-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/release-number]'
+                    find, but not at OldRelease or NewRelease, in [/core-model-1-4:control-construct/logical-termination-point=ol-2-0-1-http-c-*/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/release-number]'
               example:
                 application-name: 'CurrentController'
                 release-number: '0.0.6'
