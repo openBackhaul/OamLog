@@ -144,7 +144,7 @@ forwardings:
       - server-name: /v1/bequeath-your-data-and-die
         uuid: ol-2-0-1-op-s-im-000
     consequent-requests:
-      - client-name: NewRelease:://v1/regard-application
+      - client-name: NewRelease://v1/regard-application
         uuid: ol-2-0-1-op-c-im-nr-2-0-1-000
 
   - forwarding-name: PromptForBequeathingDataCausesRObeingRequestedToNotifyApprovalsOfNewApplicationsToNewRelease
@@ -159,7 +159,7 @@ forwardings:
       - server-name: /v1/bequeath-your-data-and-die
         uuid: ol-2-0-1-op-s-im-000
     consequent-requests:
-      - client-name: RegistryOffice:://v1/notify-approvals
+      - client-name: RegistryOffice://v1/notify-approvals
         uuid: ol-2-0-1-op-c-im-ro-2-0-1-000
 
   - forwarding-name: PromptForBequeathingDataCausesRObeingRequestedToNotifyWithdrawnApprovalsToNewRelease
@@ -174,7 +174,7 @@ forwardings:
       - server-name: /v1/bequeath-your-data-and-die
         uuid: ol-2-0-1-op-s-im-000
     consequent-requests:
-      - client-name: RegistryOffice:://v1/notify-withdrawn-approvals
+      - client-name: RegistryOffice://v1/notify-withdrawn-approvals
         uuid: ol-2-0-1-op-c-im-ro-2-0-1-001
 
   - forwarding-name: PromptForBequeathingDataCausesRObeingRequestedToStopNotificationsToOldRelease
@@ -189,7 +189,7 @@ forwardings:
       - server-name: /v1/bequeath-your-data-and-die
         uuid: ol-2-0-1-op-s-im-000
     consequent-requests:
-      - client-name: RegistryOffice:://v1/end-subscription
+      - client-name: RegistryOffice://v1/end-subscription
         uuid: ol-2-0-1-op-c-im-ro-2-0-1-002
 
   - forwarding-name: PromptForBequeathingDataCausesRequestForBroadcastingInfoAboutServerReplacement
@@ -465,19 +465,19 @@ forwardings:
       - server-name: /v1/regard-application
         uuid: ol-2-0-1-op-s-is-001
     consequent-requests:
-      - client-name: RegistryOffice:://v1/redirect-oam-request-information
+      - client-name: RegistryOffice://v1/redirect-oam-request-information
         uuid: ol-2-0-1-op-c-im-ro-2-0-1-004
-      - client-name: TypeApprovalRegister:://v1/redirect-oam-request-information
+      - client-name: TypeApprovalRegister://v1/redirect-oam-request-information
         uuid: ol-2-0-1-op-c-im-tar-1-0-0-004
-      - client-name: ExecutionAndTraceLog:://v1/redirect-oam-request-information
+      - client-name: ExecutionAndTraceLog://v1/redirect-oam-request-information
         uuid: ol-2-0-1-op-c-im-eatl-1-0-0-004
-      - client-name: OamLog:://v1/redirect-oam-request-information
+      - client-name: OamLog://v1/redirect-oam-request-information
         uuid: ol-2-0-1-op-c-im-ol-2-0-1-004
-      - client-name: AdministratorAdministration:://v1/redirect-oam-request-information
+      - client-name: AdministratorAdministration://v1/redirect-oam-request-information
         uuid: ol-2-0-1-op-c-im-aa-1-0-0-004
-      - client-name: ApplicationLayerTopology:://v1/redirect-oam-request-information
+      - client-name: ApplicationLayerTopology://v1/redirect-oam-request-information
         uuid: ol-2-0-1-op-c-im-alt-1-0-0-004
-      - client-name: OperationKeyManagement:://v1/redirect-oam-request-information
+      - client-name: OperationKeyManagement://v1/redirect-oam-request-information
         uuid: ol-2-0-1-op-c-im-okm-1-0-0-004
-      - client-name: CurrentController:://v1/redirect-oam-request-information
+      - client-name: CurrentController://v1/redirect-oam-request-information
         uuid: ol-2-0-1-op-c-im-cc-1-0-0-004
