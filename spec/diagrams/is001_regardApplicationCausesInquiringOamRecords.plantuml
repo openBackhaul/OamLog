@@ -1,0 +1,70 @@
+@startuml is001_regardApplicationCausesInquiringOamRecordsoam
+skinparam responseMessageBelowArrow true
+
+title
+RegardApplicationCausesSequenceForInquiringOamRecords
+end title
+
+participant "RO" as ro
+participant "OL://v1/regard-application" as ol
+participant "ALT://v1/add-operation-client-to-link" as alt
+participant "newApplicationName://v1/redirect-oam-request-information" as newApplicationFuture
+
+ro -> ol : {newApplicationName, releaseNumber, protocol, address, port} (apiKey)
+activate ol
+
+note over ol
+<u>CreateLinkForInquiringOamRecords</u>
+Request for automatically creating the Link:
+OL => newApplicationName://v1/redirect-oam-request-information
+end note
+ol -> alt : { servingApplicationName == requestBody.newApplicationName,\n servingApplicationReleaseNumber == requestBody.releaseNumber,\n operationName == /v1/redirect-oam-request-information,\n consumingApplicationName == OamLog,\n consumingApplicationReleaseNumber == 2.1.0 } (apiKey)
+ol <-- alt : {client-successfully-added, reason-of-failure}
+
+note left ol
+IF (NOT 200) OR (client-successfully-added==false)
+end note
+ro <-- ol : { successfully-connected==false,  reason-of-failure}
+
+note over ol
+ELSE
+end note
+
+note over ol
+<u>CreateLinkForSendingOamRecords</u>
+Request for automatically creating the Link:
+newApplication => OL://v1/record-oam-request
+end note
+ol -> alt : { servingApplicationName == OamLog,\n servingApplicationReleaseNumber == 2.1.0,\n operationName == /v1/record-oam-request,\n consumingApplicationName == requestBody.newApplicationName,\n consumingApplicationReleaseNumber == requestBody.releaseNumber } (apiKey)
+ol <-- alt : {client-successfully-added, reason-of-failure}
+
+note left ol
+IF (NOT 200) OR (client-successfully-added==false)
+end note
+ro <-- ol : { successfully-connected==false,  reason-of-failure}
+
+note over ol
+ELSE
+end note
+
+note over ol
+<u>RequestForInquiringOamRecords</u>
+Request for sending
+oam records in future
+end note
+ol -> newApplicationFuture : {loggingApplication, releaseNumber, loggingService, protocol, address, port} (apiKey)
+ol <-- newApplicationFuture : 204
+
+note left ol
+IF 204
+end note
+ro <-- ol : { successfully-connected==true }
+
+note left ol
+IF (NOT 204)
+end note
+ro <-- ol : { successfully-connected==false,  reason-of-failure}
+
+deactivate ol
+
+@enduml

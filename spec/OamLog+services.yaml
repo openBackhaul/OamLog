@@ -57,13 +57,13 @@ servers:
           uuid: ol-2-0-1-op-s-is-006
   http-server:
     own-application-name: OamLog
-    own-release-number: 2.0.1
+    own-release-number: 2.1.0
     uuid: ol-2-0-1-http-s-000
   tpc-server:
     - description: Without TLS layer
       local-protocol: http
-      own-ip-address: 1.1.3.11
-      own-tcp-port: 3011
+      own-ip-address: 127.0.0.1
+      own-tcp-port: 3027
       uuid: ol-2-0-1-tcp-s-000
 
 clients:
@@ -236,13 +236,13 @@ clients:
 
   - http-client:
       application-name: ApplicationLayerTopology
-      release-number: 1.0.0
-      uuid: ol-2-0-1-http-c-alt-1-0-0-000
+      release-number: 2.1.0
+      uuid: ol-2-0-1-http-c-alt-2-1-0-000
     tcp-client:
       remote-protocol: http
-      ip-address: 1.1.3.6
-      tcp-port: 3006
-      uuid: ol-2-0-1-tcp-c-alt-1-0-0-000
+      ip-address: 127.0.0.1
+      tcp-port: 3029
+      uuid: ol-2-0-1-tcp-c-alt-2-1-0-000
     operation-clients:
       own-oam:
         basic:
@@ -264,6 +264,8 @@ clients:
       service:
         basic:
         individual:
+          - operation-name: /v1/add-operation-client-to-link
+            uuid: ol-2-0-1-op-c-is-alt-2-1-0-000
 
   - http-client:
       application-name: OperationKeyManagement

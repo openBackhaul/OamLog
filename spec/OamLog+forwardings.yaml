@@ -445,8 +445,38 @@ forwardings:
       - client-name: ApplicationLayerTopology://v1/delete-fc-port
         uuid: ol-2-0-1-op-c-bm-alt-1-0-0-005
 
-  - forwarding-name: NewApplicationCausesRequestForOamRequestInformation
-    uuid: ol-2-0-1-op-fc-is-000
+  - forwarding-name: RegardApplicationCausesSequenceForInquiringOamRecords.CreateLinkForInquiringOamRecords
+    uuid: ol-2-0-1-op-fc-is-001
+    forwarding-type: InvariantProcessSnippet
+    management-requests:
+      operation-client-update:
+      fc-port-update:
+      fc-port-deletion:
+      operation-client-deletion:
+    initiating-requests:
+      - server-name: /v1/regard-application
+        uuid: ol-2-0-1-op-s-is-001
+    consequent-requests:
+      - client-name: ApplicationLayerTopology://v1/add-operation-client-to-link
+        uuid: ol-2-0-1-op-c-is-alt-2-1-0-000
+
+  - forwarding-name: RegardApplicationCausesSequenceForInquiringOamRecords.CreateLinkForSendingOamRecords
+    uuid: ol-2-0-1-op-fc-is-002
+    forwarding-type: InvariantProcessSnippet
+    management-requests:
+      operation-client-update:
+      fc-port-update:
+      fc-port-deletion:
+      operation-client-deletion:
+    initiating-requests:
+      - server-name: /v1/regard-application
+        uuid: ol-2-0-1-op-s-is-001
+    consequent-requests:
+      - client-name: ApplicationLayerTopology://v1/add-operation-client-to-link
+        uuid: ol-2-0-1-op-c-is-alt-2-1-0-000
+
+  - forwarding-name: RegardApplicationCausesSequenceForInquiringOamRecords.RequestForInquiringOamRecords
+    uuid: ol-2-0-1-op-fc-is-003
     forwarding-type: ProcessSnippet
     management-requests:
       operation-client-update:
