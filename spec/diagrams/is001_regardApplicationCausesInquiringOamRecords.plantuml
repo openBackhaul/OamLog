@@ -31,6 +31,23 @@ ELSE
 end note
 
 note over ol
+<u>RequestForInquiringOamRecords</u>
+Request for sending
+oam records in future
+end note
+ol -> newApplicationFuture : {loggingApplication, releaseNumber, loggingService, protocol, address, port} (apiKey)
+ol <-- newApplicationFuture : 204
+
+note left ol
+IF (NOT 204)
+end note
+ro <-- ol : { successfully-connected==false,  reason-of-failure}
+
+note over ol
+ELSE
+end note
+
+note over ol
 <u>CreateLinkForSendingOamRecords</u>
 Request for automatically creating the Link:
 newApplication => OL://v1/record-oam-request
@@ -43,27 +60,10 @@ IF (NOT 200) OR (client-successfully-added==false)
 end note
 ro <-- ol : { successfully-connected==false,  reason-of-failure}
 
-note over ol
+note left ol
 ELSE
 end note
-
-note over ol
-<u>RequestForInquiringOamRecords</u>
-Request for sending
-oam records in future
-end note
-ol -> newApplicationFuture : {loggingApplication, releaseNumber, loggingService, protocol, address, port} (apiKey)
-ol <-- newApplicationFuture : 204
-
-note left ol
-IF 204
-end note
 ro <-- ol : { successfully-connected==true }
-
-note left ol
-IF (NOT 204)
-end note
-ro <-- ol : { successfully-connected==false,  reason-of-failure}
 
 deactivate ol
 
