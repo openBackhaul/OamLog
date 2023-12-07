@@ -1121,7 +1121,7 @@ paths:
                 default:
                   $ref: '#/components/responses/responseForErroredServiceRequests'
           RequestForInquiringOamRecords: #[/core-model-1-4:control-construct/logical-termination-point=ol-2-0-1-tcp-c-*/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-protocol]://[/core-model-1-4:control-construct/logical-termination-point=ol-2-0-1-tcp-c-*/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/domain-name or /core-model-1-4:control-construct/logical-termination-point=ol-2-0-1-tcp-c-*/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/ip-address/ipv-4-address]:[/core-model-1-4:control-construct/logical-termination-point=ol-2-0-1-tcp-c-*/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port][/core-model-1-4:control-construct/logical-termination-point=ol-2-0-1-op-c-im-*-*-*-*-004/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]
-            description: 'This request is initiated by receiving /v1/update-operation-key for /v1/redirect-oam-request-information'
+            description: 'This request is initiated by receiving /v1/update-operation-key of {$request.body#application-name}://v1/redirect-oam-request-information'
             post:
               parameters:
                 - $ref: '#/components/parameters/user'
