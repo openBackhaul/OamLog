@@ -159,7 +159,7 @@ async function PromptForBequeathingDataCausesRObeingRequestedToNotifyApprovalsOf
                 let newReleaseHttpClientUuid = newHttpClientUuid.httpClientUuid
                 let newReleaseTcpClientUuid = (await logicalTerminationPoint.getServerLtpListAsync(newReleaseHttpClientUuid))[0];
 
-                let applicationName = await httpServerInterface.getApplicationNameAsync();
+                let applicationName = await httpClientInterface.getApplicationNameAsync(newReleaseHttpClientUuid);
                 let releaseNumber = await httpClientInterface.getReleaseNumberAsync(newReleaseHttpClientUuid);
                 let regardApplicationOperation = await OperationServerInterface.getOperationNameAsync("ol-2-0-1-op-s-is-001");
                 let applicationAddress = await tcpClientInterface.getRemoteAddressAsync(newReleaseTcpClientUuid);
@@ -224,7 +224,7 @@ async function PromptForBequeathingDataCausesRObeingRequestedToNotifyWithdrawnAp
                 let newReleaseHttpClientUuid = newHttpClientUuid.httpClientUuid
                 let newReleaseTcpClientUuid = (await logicalTerminationPoint.getServerLtpListAsync(newReleaseHttpClientUuid))[0];
 
-                let applicationName = await httpServerInterface.getApplicationNameAsync();
+                let applicationName = await httpClientInterface.getApplicationNameAsync(newReleaseHttpClientUuid)
                 let releaseNumber = await httpClientInterface.getReleaseNumberAsync(newReleaseHttpClientUuid);
                 let disregardApplicationOperation = await OperationServerInterface.getOperationNameAsync("ol-2-0-1-op-s-is-002");
                 let applicationAddress = await tcpClientInterface.getRemoteAddressAsync(newReleaseTcpClientUuid);
@@ -448,22 +448,18 @@ async function promptForBequeathingDataCausesRequestForDeregisteringOfOldRelease
  * Functions utilized by individual services
  ****************************************************************************************/
 function getFcPortOutputLogicalTerminationPointList(forwardingConstructInstance) {
-    try {
-        let fcPortOutputLogicalTerminationPointList = [];
-        let fcPortList = forwardingConstructInstance[
-            onfAttributes.FORWARDING_CONSTRUCT.FC_PORT];
-        for (let i = 0; i < fcPortList.length; i++) {
-            let fcPort = fcPortList[i];
-            let fcPortPortDirection = fcPort[onfAttributes.FC_PORT.PORT_DIRECTION];
-            if (fcPortPortDirection == FcPort.portDirectionEnum.OUTPUT) {
-                let fclogicalTerminationPoint = fcPort[onfAttributes.FC_PORT.LOGICAL_TERMINATION_POINT];
-                fcPortOutputLogicalTerminationPointList.push(fclogicalTerminationPoint);
-            }
+    let fcPortOutputLogicalTerminationPointList = [];
+    let fcPortList = forwardingConstructInstance[
+        onfAttributes.FORWARDING_CONSTRUCT.FC_PORT];
+    for (let i = 0; i < fcPortList.length; i++) {
+        let fcPort = fcPortList[i];
+        let fcPortPortDirection = fcPort[onfAttributes.FC_PORT.PORT_DIRECTION];
+        if (fcPortPortDirection == FcPort.portDirectionEnum.OUTPUT) {
+            let fclogicalTerminationPoint = fcPort[onfAttributes.FC_PORT.LOGICAL_TERMINATION_POINT];
+            fcPortOutputLogicalTerminationPointList.push(fclogicalTerminationPoint);
         }
-        return fcPortOutputLogicalTerminationPointList;
-    } catch (error) {
-        throw error;
     }
+    return fcPortOutputLogicalTerminationPointList;
 }
 
 /**
