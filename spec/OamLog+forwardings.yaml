@@ -71,6 +71,12 @@ forwardings:
         uuid: ol-2-1-0-op-s-bm-011
       - server-name: /v1/inquire-basic-auth-approvals
         uuid: ol-2-1-0-op-s-bm-012
+      - server-name: /v1/dispose-remainders-of-deregistered-application
+        uuid: ol-2-1-0-op-s-bm-013
+      - server-name: /v1/inform-about-preceding-release
+        uuid: ol-2-1-0-op-s-bm-014
+      - server-name: /v1/update-client-of-subsequent-release
+        uuid: ol-2-1-0-op-s-bm-015
       - server-name: /v1/bequeath-your-data-and-die
         uuid: ol-2-1-0-op-s-im-000
       - server-name: /v1/start-application-in-generic-representation
@@ -155,51 +161,6 @@ forwardings:
     consequent-requests:
       - client-name: NewRelease://v1/regard-application
         uuid: ol-2-1-0-op-c-im-nr-2-1-0-000
-
-  - forwarding-name: PromptForBequeathingDataCausesRObeingRequestedToNotifyApprovalsOfNewApplicationsToNewRelease
-    uuid: ol-2-1-0-op-fc-im-112
-    forwarding-type: InvariantProcessSnippet
-    management-requests:
-      operation-client-update:
-      fc-port-update:
-      fc-port-deletion:
-      operation-client-deletion:
-    initiating-requests:
-      - server-name: /v1/bequeath-your-data-and-die
-        uuid: ol-2-1-0-op-s-im-000
-    consequent-requests:
-      - client-name: RegistryOffice://v1/notify-approvals
-        uuid: ol-2-1-0-op-c-im-ro-2-1-0-000
-
-  - forwarding-name: PromptForBequeathingDataCausesRObeingRequestedToNotifyWithdrawnApprovalsToNewRelease
-    uuid: ol-2-1-0-op-fc-im-113
-    forwarding-type: InvariantProcessSnippet
-    management-requests:
-      operation-client-update:
-      fc-port-update:
-      fc-port-deletion:
-      operation-client-deletion:
-    initiating-requests:
-      - server-name: /v1/bequeath-your-data-and-die
-        uuid: ol-2-1-0-op-s-im-000
-    consequent-requests:
-      - client-name: RegistryOffice://v1/notify-withdrawn-approvals
-        uuid: ol-2-1-0-op-c-im-ro-2-1-0-001
-
-  - forwarding-name: PromptForBequeathingDataCausesRObeingRequestedToStopNotificationsToOldRelease
-    uuid: ol-2-1-0-op-fc-im-114
-    forwarding-type: InvariantProcessSnippet
-    management-requests:
-      operation-client-update:
-      fc-port-update:
-      fc-port-deletion:
-      operation-client-deletion:
-    initiating-requests:
-      - server-name: /v1/bequeath-your-data-and-die
-        uuid: ol-2-1-0-op-s-im-000
-    consequent-requests:
-      - client-name: RegistryOffice://v1/end-subscription
-        uuid: ol-2-1-0-op-c-im-ro-2-1-0-002
 
   - forwarding-name: PromptForBequeathingDataCausesRequestForBroadcastingInfoAboutServerReplacement
     uuid: ol-2-1-0-op-fc-bm-105
@@ -289,6 +250,8 @@ forwardings:
         uuid: ol-2-1-0-op-s-bm-011
       - server-name: /v1/inquire-basic-auth-approvals
         uuid: ol-2-1-0-op-s-bm-012
+      - server-name: /v1/update-client-of-subsequent-release
+        uuid: ol-2-1-0-op-s-bm-015
       - server-name: /v1/bequeath-your-data-and-die
         uuid: ol-2-1-0-op-s-im-000
       - server-name: /v1/regard-application
@@ -312,6 +275,8 @@ forwardings:
     initiating-requests:
       - server-name: /v1/dispose-remainders-of-deregistered-application
         uuid: ol-2-1-0-op-s-bm-013
+      - server-name: /v1/disregard-application
+        uuid: ol-2-1-0-op-s-is-002
     consequent-requests:
       - client-name: ApplicationLayerTopology://v1/delete-ltp-and-dependents
         uuid: ol-2-1-0-op-c-bm-alt-2-1-0-002
@@ -482,11 +447,11 @@ forwardings:
         - server-name: /v1/regard-application
           uuid: ol-2-1-0-op-s-is-001
       fc-port-deletion:
-        - server-name: /v1/disregard-application
-          uuid: ol-2-1-0-op-s-is-002
+        - server-name: /v1/dispose-remainders-of-deregistered-application
+          uuid: ol-2-1-0-op-s-bm-013
       operation-client-deletion:
-        - server-name: /v1/disregard-application
-          uuid: ol-2-1-0-op-s-is-002
+        - server-name: /v1/dispose-remainders-of-deregistered-application
+          uuid: ol-2-1-0-op-s-bm-013
     initiating-requests:
       - server-name: /v1/regard-application
         uuid: ol-2-1-0-op-s-is-001
@@ -507,8 +472,6 @@ forwardings:
         uuid: ol-2-1-0-op-c-im-alt-2-1-0-004
       - client-name: OperationKeyManagement://v1/redirect-oam-request-information
         uuid: ol-2-1-0-op-c-im-okm-2-1-0-004
-      - client-name: CurrentController://v1/redirect-oam-request-information
-        uuid: ol-2-1-0-op-c-im-cc-1-0-0-004
 
   - forwarding-name: RegardApplicationCausesSequenceForInquiringOamRecords.CreateLinkForSendingOamRecords
     uuid: ol-2-1-0-op-fc-is-003

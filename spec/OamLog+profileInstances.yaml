@@ -117,3 +117,14 @@ profile-instances:
       datatype: string
     configuration:
       value-reference: '/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-http-s-000/layer-protocol=0/http-server-interface-1-0:http-server-interface-pac/http-server-interface-capability/release-list=1/changes'
+
+  - profile-name: 'IntegerProfile'
+    uuid: 'ol-2-1-0-integer-p-000'
+    capability:
+      integer-name: 'maximumWaitTimeToReceiveOperationKey'
+      purpose: 'Limit the waiting for an event to happen'
+      unit: 'millisecond'
+      minimum: '0'
+      maximum: '5000'
+    configuration:
+      integer-value: '500'
