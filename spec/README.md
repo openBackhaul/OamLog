@@ -1,5 +1,8 @@
 # OamLog Specification
 
+### Diagrams  
+- [Collection of Diagrams](./diagrams)
+
 ### ServiceList
 - [OamLog+services](./OamLog+services.yaml)
 

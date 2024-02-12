@@ -65,7 +65,7 @@ servers:
           uuid: ol-2-1-0-op-s-is-006
   http-server:
     own-application-name: OamLog
-    own-release-number: 2.1.0
+    own-release-number: 2.1.1
     uuid: ol-2-1-0-http-s-000
   tcp-server:
     - description: Without TLS layer
@@ -149,12 +149,6 @@ clients:
           - operation-name: /v1/relay-operation-update
             uuid: ol-2-1-0-op-c-bm-ro-2-1-0-003
         individual:
-          - operation-name: /v1/notify-approvals
-            uuid: ol-2-1-0-op-c-im-ro-2-1-0-000
-          - operation-name: /v1/notify-withdrawn-approvals
-            uuid: ol-2-1-0-op-c-im-ro-2-1-0-001
-          - operation-name: /v1/end-subscription
-            uuid: ol-2-1-0-op-c-im-ro-2-1-0-002
           - operation-name: /v1/redirect-oam-request-information
             uuid: ol-2-1-0-op-c-im-ro-2-1-0-004
       service:

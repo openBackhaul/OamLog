@@ -1,7 +1,7 @@
 ﻿openapi: 3.0.0
 info:
   title: OamLog
-  version: 2.1.0
+  version: 2.1.1
 
 x-gui-paths:
 ########################################################################################################################
@@ -233,325 +233,6 @@ paths:
               responses:
                 '204':
                   description: 'Application will be requested for service request notifications'
-                  headers:
-                    x-correlator:
-                      schema:
-                        type: string
-                        example: '550e8400-e29b-11d4-a716-446655440000'
-                      description: 'UUID for the service execution flow that allows to correlate requests and responses. Its value must be identical at the response compared with its corresponding request'
-                    exec-time:
-                      schema:
-                        type: integer
-                        example: 1100
-                      description: 'Value written by the service provider, reporting the total elapsed time for the execution, including all the additional processing needed to retrieve the data from the backend service. Expressed in milliseconds'
-                    backend-time:
-                      schema:
-                        type: integer
-                        example: 850
-                      description: 'Value written by the service provider, reporting the elapsed time for data retrieval from the backend (service invocation, database access…). Expressed in milliseconds'
-                    life-cycle-state:
-                      schema:
-                        type: string
-                        enum:
-                          - 'EXPERIMENTAL'
-                          - 'OPERATIONAL'
-                          - 'DEPRECATED'
-                          - 'OBSOLETE'
-                          - 'UNKNOWN'
-                          - 'NOT_YET_DEFINED'
-                        example: 'EXPERIMENTAL'
-                      description: 'Life cycle state of the consumed service'
-                '400':
-                  $ref: '#/components/responses/responseForErroredServiceRequests'
-                '401':
-                  $ref: '#/components/responses/responseForErroredServiceRequests'
-                '403':
-                  $ref: '#/components/responses/responseForErroredServiceRequests'
-                '404':
-                  $ref: '#/components/responses/responseForErroredServiceRequests'
-                '500':
-                  $ref: '#/components/responses/responseForErroredServiceRequests'
-                default:
-                  $ref: '#/components/responses/responseForErroredServiceRequests'
-        PromptForBequeathingDataCausesRObeingRequestedToNotifyApprovalsOfNewApplicationsToNewRelease:
-          url: #[/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-ro-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-protocol]://[/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-ro-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/domain-name or /core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-ro-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/ip-address/ipv-4-address]:[/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-ro-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port][/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-op-c-im-ro-2-1-0-000/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]
-            post:
-              parameters:
-                - $ref: '#/components/parameters/user'
-                - $ref: '#/components/parameters/originator'
-                - $ref: '#/components/parameters/x-correlator'
-                - $ref: '#/components/parameters/trace-indicator'
-                - $ref: '#/components/parameters/customer-journey'
-              requestBody:
-                required: true
-                content:
-                  application/json:
-                    schema:
-                      type: object
-                      required:
-                        - subscriber-application
-                        - subscriber-release-number
-                        - subscriber-operation
-                        - subscriber-protocol
-                        - subscriber-address
-                        - subscriber-port
-                      properties:
-                        subscriber-application:
-                          type: string
-                          description: >
-                            'Future application name
-                            from [/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-http-c-nr-2-1-0-000/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/application-name]'
-                        subscriber-release-number:
-                          type: string
-                          description: >
-                            'Future release number
-                            from [/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-http-c-nr-2-1-0-000/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/release-number]'
-                        subscriber-operation:
-                          type: string
-                          description: >
-                            'Names of the operation that shall be addressed by notifications about new approvals
-                            from [/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-op-s-is-001/layer-protocol=0/operation-server-interface-1-0:operation-server-interface-pac/operation-server-interface-capability/operation-name]'
-                        subscriber-protocol:
-                          type: string
-                          description: >
-                            'Protocol to be used for addressing the application that wants to receive notifications about new approvals
-                            from [/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-nr-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-protocol]'
-                        subscriber-address:
-                          type: object
-                          properties:
-                            ip-address:
-                              type: object
-                              properties:
-                                ipv-4-address:
-                                  type: string
-                                  description: >
-                                    'IPv4 address of application that wants to receive notifications about new approvals
-                                    from [/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-nr-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/ip-address/ipv-4-address]'
-                            domain-name:
-                              type: string
-                              pattern: '^([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}$'
-                              description: >
-                                'Domain name of application that wants to receive notifications about new approvals
-                                from [/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-nr-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/domain-name]'
-                        subscriber-port:
-                          type: integer
-                          description: >
-                            'TCP port of application that wants to receive notifications about new approvals
-                            from [/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-nr-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port]'
-                      example:
-                        subscriber-application: 'OamLog'
-                        subscriber-release-number: '2.0.1'
-                        subscriber-operation: '/v1/regard-application'
-                        subscriber-protocol: 'HTTP'
-                        subscriber-address:
-                          ip-address:
-                            ipv-4-address: '127.0.0.1'
-                        subscriber-port: 3011
-              responses:
-                '204':
-                  description: 'Subscribed for notifications about new approvals'
-                  headers:
-                    x-correlator:
-                      schema:
-                        type: string
-                        example: '550e8400-e29b-11d4-a716-446655440000'
-                      description: 'UUID for the service execution flow that allows to correlate requests and responses. Its value must be identical at the response compared with its corresponding request'
-                    exec-time:
-                      schema:
-                        type: integer
-                        example: 1100
-                      description: 'Value written by the service provider, reporting the total elapsed time for the execution, including all the additional processing needed to retrieve the data from the backend service. Expressed in milliseconds'
-                    backend-time:
-                      schema:
-                        type: integer
-                        example: 850
-                      description: 'Value written by the service provider, reporting the elapsed time for data retrieval from the backend (service invocation, database access…). Expressed in milliseconds'
-                    life-cycle-state:
-                      schema:
-                        type: string
-                        enum:
-                          - 'EXPERIMENTAL'
-                          - 'OPERATIONAL'
-                          - 'DEPRECATED'
-                          - 'OBSOLETE'
-                          - 'UNKNOWN'
-                          - 'NOT_YET_DEFINED'
-                        example: 'EXPERIMENTAL'
-                      description: 'Life cycle state of the consumed service'
-                '400':
-                  $ref: '#/components/responses/responseForErroredServiceRequests'
-                '401':
-                  $ref: '#/components/responses/responseForErroredServiceRequests'
-                '403':
-                  $ref: '#/components/responses/responseForErroredServiceRequests'
-                '404':
-                  $ref: '#/components/responses/responseForErroredServiceRequests'
-                '500':
-                  $ref: '#/components/responses/responseForErroredServiceRequests'
-                default:
-                  $ref: '#/components/responses/responseForErroredServiceRequests'
-        PromptForBequeathingDataCausesRObeingRequestedToNotifyWithdrawnApprovalsToNewRelease:
-          url: #[/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-ro-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-protocol]://[/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-ro-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/domain-name or /core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-ro-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/ip-address/ipv-4-address]:[/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-ro-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port][/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-op-c-im-ro-2-1-0-001/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]
-            post:
-              parameters:
-                - $ref: '#/components/parameters/user'
-                - $ref: '#/components/parameters/originator'
-                - $ref: '#/components/parameters/x-correlator'
-                - $ref: '#/components/parameters/trace-indicator'
-                - $ref: '#/components/parameters/customer-journey'
-              requestBody:
-                required: true
-                content:
-                  application/json:
-                    schema:
-                      type: object
-                      required:
-                        - subscriber-application
-                        - subscriber-release-number
-                        - subscriber-operation
-                        - subscriber-protocol
-                        - subscriber-address
-                        - subscriber-port
-                      properties:
-                        subscriber-application:
-                          type: string
-                          description: >
-                            'Future application name
-                            from [/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-http-c-nr-2-1-0-000/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/application-name]'
-                        subscriber-release-number:
-                          type: string
-                          description: >
-                            'Future release number
-                            from [/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-http-c-nr-2-1-0-000/layer-protocol=0/http-client-interface-1-0:http-client-interface-pac/http-client-interface-configuration/release-number]'
-                        subscriber-operation:
-                          type: string
-                          description: >
-                            'Names of the operation that shall be addressed by notifications about withdrawn approvals
-                            from [/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-op-s-is-002/layer-protocol=0/operation-server-interface-1-0:operation-server-interface-pac/operation-server-interface-capability/operation-name]'
-                        subscriber-protocol:
-                          type: string
-                          description: >
-                            'Protocol to be used for addressing the application that wants to receive notifications about withdrawn approvals
-                            from [/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-nr-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-protocol]'
-                        subscriber-address:
-                          type: object
-                          properties:
-                            ip-address:
-                              type: object
-                              properties:
-                                ipv-4-address:
-                                  type: string
-                                  description: >
-                                    'IPv4 address of application that wants to receive notifications about withdrawn approvals
-                                    from [/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-nr-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/ip-address/ipv-4-address]'
-                            domain-name:
-                              type: string
-                              pattern: '^([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}$'
-                              description: >
-                                'Domain name of application that wants to receive notifications about withdrawn approvals
-                                from [/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-nr-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/domain-name]'
-                        subscriber-port:
-                          type: integer
-                          description: >
-                            'TCP port of application that wants to receive notifications about withdrawn approvals
-                            from [/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-nr-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port]'
-                      example:
-                        subscriber-application: 'OamLog'
-                        subscriber-release-number: '2.0.1'
-                        subscriber-operation: '/v1/disregard-application'
-                        subscriber-protocol: 'HTTP'
-                        subscriber-address:
-                          ip-address:
-                            ipv-4-address: '127.0.0.1'
-                        subscriber-port: 3011
-              responses:
-                '204':
-                  description: 'Subscribed for notifications about withdrawn approvals'
-                  headers:
-                    x-correlator:
-                      schema:
-                        type: string
-                        example: '550e8400-e29b-11d4-a716-446655440000'
-                      description: 'UUID for the service execution flow that allows to correlate requests and responses. Its value must be identical at the response compared with its corresponding request'
-                    exec-time:
-                      schema:
-                        type: integer
-                        example: 1100
-                      description: 'Value written by the service provider, reporting the total elapsed time for the execution, including all the additional processing needed to retrieve the data from the backend service. Expressed in milliseconds'
-                    backend-time:
-                      schema:
-                        type: integer
-                        example: 850
-                      description: 'Value written by the service provider, reporting the elapsed time for data retrieval from the backend (service invocation, database access…). Expressed in milliseconds'
-                    life-cycle-state:
-                      schema:
-                        type: string
-                        enum:
-                          - 'EXPERIMENTAL'
-                          - 'OPERATIONAL'
-                          - 'DEPRECATED'
-                          - 'OBSOLETE'
-                          - 'UNKNOWN'
-                          - 'NOT_YET_DEFINED'
-                        example: 'EXPERIMENTAL'
-                      description: 'Life cycle state of the consumed service'
-                '400':
-                  $ref: '#/components/responses/responseForErroredServiceRequests'
-                '401':
-                  $ref: '#/components/responses/responseForErroredServiceRequests'
-                '403':
-                  $ref: '#/components/responses/responseForErroredServiceRequests'
-                '404':
-                  $ref: '#/components/responses/responseForErroredServiceRequests'
-                '500':
-                  $ref: '#/components/responses/responseForErroredServiceRequests'
-                default:
-                  $ref: '#/components/responses/responseForErroredServiceRequests'
-        PromptForBequeathingDataCausesRObeingRequestedToStopNotificationsToOldRelease:
-          url: #[/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-ro-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-protocol]://[/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-ro-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/domain-name or /core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-ro-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/ip-address/ipv-4-address]:[/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-ro-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port][/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-op-c-im-ro-2-1-0-002/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]
-            post:
-              parameters:
-                - $ref: '#/components/parameters/user'
-                - $ref: '#/components/parameters/originator'
-                - $ref: '#/components/parameters/x-correlator'
-                - $ref: '#/components/parameters/trace-indicator'
-                - $ref: '#/components/parameters/customer-journey'
-              requestBody:
-                required: true
-                content:
-                  application/json:
-                    schema:
-                      type: object
-                      required:
-                        - subscriber-application
-                        - subscriber-release-number
-                        - subscription
-                      properties:
-                        subscriber-application:
-                          type: string
-                          description: >
-                            'Own application name
-                            from [/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-http-s-000/layer-protocol=0/http-server-interface-1-0:http-server-interface-pac/http-server-interface-capability/application-name]'
-                        subscriber-release-number:
-                          type: string
-                          description: >
-                            'Own release number
-                            from [/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-http-s-000/layer-protocol=0/http-server-interface-1-0:http-server-interface-pac/http-server-interface-capability/release-number]'
-                        subscription:
-                          type: string
-                          description: >
-                            'Name of operation that had been addressed for starting getting notifications
-                            from [/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-op-c-im-ro-2-1-0-000/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]
-                            and
-                            from  [/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-op-c-im-ro-2-1-0-001/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]
-                            in two separate, sequential requests.'
-                      example:
-                        subscriber-application: 'OamLog'
-                        subscriber-release-number: '1.0.0'
-                        subscription: '/v1/notify-approvals'
-              responses:
-                '204':
-                  description: 'Stopped sending notifications of a specific subscription'
                   headers:
                     x-correlator:
                       schema:
@@ -965,7 +646,7 @@ paths:
                     properties:
                       successfully-connected:
                         type: boolean
-                  - description: 'IF ( (NOT (200 OR 204)) OR (successfully-connected==false) )'
+                  - description: 'IF ( (NOT (200 OR 204)) OR (successfully-connected==false) OR (waiting>maximumWaitTimeToReceiveOperationKey) )'
                     type: object
                     required:
                       - successfully-connected
@@ -984,6 +665,7 @@ paths:
                           - 'OL_ALT_UNKNOWN'
                           - 'OL_NOT_REACHABLE'
                           - 'OL_UNKNOWN'
+                          - 'OL_MAXIMUM_WAIT_TIME_TO_RECEIVE_OPERATION_KEY_EXCEEDED'
                         description: 'Reasons provided by ALT to be pre-fixed with OL_. If (NOT (200 OR 204)) respond OL_NOT_REACHABLE'
               examples:
                 if-successful:
@@ -1130,7 +812,9 @@ paths:
                 default:
                   $ref: '#/components/responses/responseForErroredServiceRequests'
           RequestForInquiringOamRecords: #[/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-*/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-protocol]://[/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-*/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/domain-name or /core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-*/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/ip-address/ipv-4-address]:[/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-*/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port][/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-op-c-im-*-*-*-*-004/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]
-            description: 'This request is initiated by receiving /v1/update-operation-key of {$request.body#application-name}://v1/redirect-oam-request-information'
+            description: >
+              'This request is initiated by receiving /v1/update-operation-key of {$request.body#application-name}://v1/redirect-oam-request-information
+              Process shall be terminated, if /v1/update-operation-key is not received within time period defined in [/core-model-1-4:control-construct/profile-collection/profile=ol-2-1-0-integer-p-000/integer-profile-1-0:integer-profile-pac/integer-profile-configuration/integer-value]'
             post:
               parameters:
                 - $ref: '#/components/parameters/user'
@@ -1229,7 +913,10 @@ paths:
                   $ref: '#/components/responses/responseForErroredServiceRequests'
                 default:
                   $ref: '#/components/responses/responseForErroredServiceRequests'
-          CreateLinkForSendingOamRecords: #[/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-alt-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-protocol]://[/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-alt-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/ip-address/ipv-4-address or /core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-alt-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/domain-name]:[/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-alt-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port][/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-op-c-is-alt-2-1-0-000/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]
+          CreateLinkForReceivingOamRecords: #[/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-alt-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-protocol]://[/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-alt-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/ip-address/ipv-4-address or /core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-alt-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/domain-name]:[/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-alt-2-1-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-port][/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-op-c-is-alt-2-1-0-000/layer-protocol=0/operation-client-interface-1-0:operation-client-interface-pac/operation-client-interface-configuration/operation-name]
+            description: >
+              'This request shall be repeated as it may fail because background processes are not finished.
+              Process shall be terminated, if number of attempts is exceeding the maximum defined in [/core-model-1-4:control-construct/profile-collection/profile=ol-2-1-0-integer-p-001/integer-profile-1-0:integer-profile-pac/integer-profile-configuration/integer-value]'
             post:
               parameters:
                 - $ref: '#/components/parameters/user'
@@ -1322,6 +1009,9 @@ paths:
                 default:
                   $ref: '#/components/responses/responseForErroredServiceRequests'
   /v1/disregard-application:
+    description: >
+      'DEPRECATED
+      Service shall be deleted with OL v3.0.0'
     parameters:
       - $ref: '#/components/parameters/user'
       - $ref: '#/components/parameters/originator'
@@ -2161,6 +1851,16 @@ paths:
                   application/json:
                     schema:
                       type: object
+                      required:
+                        - application-name
+                        - release-number
+                        - embedding-operation
+                        - client-update-operation
+                        - operation-client-update-operation
+                        - dispose-remainders-operation
+                        - preceding-release-operation
+                        - subsequent-release-operation
+                        - tcp-server
                       properties:
                         application-name:
                           type: string
@@ -3310,6 +3010,12 @@ paths:
                   application/json:
                     schema:
                       type: object
+                      required:
+                        - Authorization
+                        - application-name
+                        - release-number
+                        - operation-name
+                        - method
                       properties:
                         Authorization:
                           type: string
@@ -3344,16 +3050,28 @@ paths:
                   content:
                     application/json:
                       schema:
-                        type: object
-                        properties:
-                          basic-auth-request-is-approved:
-                            type: boolean
-                            description: 'If true, BasicAuth request can be executed'
-                          reason-of-objection:
-                            type: string
-                            description: >
-                              'if AUTHORIZATION_CODE_UNKNOWN BasicAuth request to be aborted and 401 to be sent
-                              else BasicAuth request to be aborted and 403 to be sent'
+                        oneOf:
+                          - description: 'AdministratorAdministration is responding'
+                            type: object
+                            properties:
+                              oam-request-is-approved:
+                                type: boolean
+                              reason-of-objection:
+                                type: string
+                                description: >
+                                  'This attribute to be represented, if response::oam-request-is-approved==false.
+                                  Reasons to be checked and indicated according to the sequence defined in the enumeration.'
+                          - description: 'AccessAdministration is responding'
+                            type: object
+                            properties:
+                              basic-auth-request-is-approved:
+                                type: boolean
+                                description: 'If true, BasicAuth request can be executed'
+                              reason-of-objection:
+                                type: string
+                                description: >
+                                  'if AUTHORIZATION_CODE_UNKNOWN BasicAuth request to be aborted and 401 to be sent
+                                  else BasicAuth request to be aborted and 403 to be sent'
                   headers:
                     x-correlator:
                       schema:
@@ -5000,6 +4718,12 @@ paths:
                   application/json:
                     schema:
                       type: object
+                      required:
+                        - Authorization
+                        - application-name
+                        - release-number
+                        - operation-name
+                        - method
                       properties:
                         Authorization:
                           type: string
@@ -5174,8 +4898,6 @@ paths:
       summary: 'Provides name and number of the preceding release'
       tags:
         - BasicServices
-      security:
-        - apiKeyAuth: []
       responses:
         '200':
           description: 'Name and number of the preceding release provided'
@@ -5307,7 +5029,7 @@ paths:
                       description: >
                         'Domain name to be used during the bequeath-your-data-and-die process
                         update [/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-tcp-c-nr-1-0-0-000/layer-protocol=0/tcp-client-interface-1-0:tcp-client-interface-pac/tcp-client-interface-configuration/remote-address/domain-name]'
-                future-port:
+                port:
                   type: integer
                   minimum: 0
                   maximum: 65535
@@ -7737,6 +7459,288 @@ paths:
       responses:
         '204':
           description: 'Request path configured'
+        '400':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '401':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '403':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '404':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '500':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        default:
+          $ref: '#/components/responses/responseForErroredOamRequests'
+
+  /core-model-1-4:control-construct/profile-collection/profile={uuid}/integer-profile-1-0:integer-profile-pac/integer-profile-capability/integer-name:
+    parameters:
+      - in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+          pattern: '^([a-z]{2,6})-([0-9]{1,2})-([0-9]{1,2})-([0-9]{1,2})-integer-p-([0-9]{3})$'
+          example: 'xy-15-3-2-integer-p-000'
+    get:
+      operationId: getIntegerProfileIntegerName
+      summary: 'Returns the name of the Integer'
+      tags:
+        - IntegerProfile
+      security:
+        - basicAuth: []
+      responses:
+        '200':
+          description: 'Integer name provided'
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - integer-profile-1-0:integer-name
+                properties:
+                  integer-profile-1-0:integer-name:
+                    type: string
+                    example: 'maximumNumberOfEntries'
+        '400':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '401':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '403':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '404':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '500':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        default:
+          $ref: '#/components/responses/responseForErroredOamRequests'
+  /core-model-1-4:control-construct/profile-collection/profile={uuid}/integer-profile-1-0:integer-profile-pac/integer-profile-capability/purpose:
+    parameters:
+      - in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+          pattern: '^([a-z]{2,6})-([0-9]{1,2})-([0-9]{1,2})-([0-9]{1,2})-integer-p-([0-9]{3})$'
+          example: 'yz-34-4-4-integer-p-000'
+    get:
+      operationId: getIntegerProfilePurpose
+      summary: 'Returns the purpose of the Integer'
+      tags:
+        - IntegerProfile
+      security:
+        - basicAuth: []
+      responses:
+        '200':
+          description: 'Integer purpose provided'
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - integer-profile-1-0:purpose
+                properties:
+                  integer-profile-1-0:purpose:
+                    type: string
+                    example: 'Limiting the number of entries for controlling the storage consumption and access response time'
+        '400':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '401':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '403':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '404':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '500':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        default:
+          $ref: '#/components/responses/responseForErroredOamRequests'
+  /core-model-1-4:control-construct/profile-collection/profile={uuid}/integer-profile-1-0:integer-profile-pac/integer-profile-capability/unit:
+    parameters:
+      - in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+          pattern: '^([a-z]{2,6})-([0-9]{1,2})-([0-9]{1,2})-([0-9]{1,2})-integer-p-([0-9]{3})$'
+          example: 'xy-15-3-2-integer-p-000'
+    get:
+      operationId: getIntegerProfileUnit
+      summary: 'Returns the unit of the Integer'
+      tags:
+        - IntegerProfile
+      security:
+        - basicAuth: []
+      responses:
+        '200':
+          description: 'Integer unit provided'
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - integer-profile-1-0:unit
+                properties:
+                  integer-profile-1-0:unit:
+                    type: string
+                    example: 'records'
+        '400':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '401':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '403':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '404':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '500':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        default:
+          $ref: '#/components/responses/responseForErroredOamRequests'
+  /core-model-1-4:control-construct/profile-collection/profile={uuid}/integer-profile-1-0:integer-profile-pac/integer-profile-capability/minimum:
+    parameters:
+      - in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+          pattern: '^([a-z]{2,6})-([0-9]{1,2})-([0-9]{1,2})-([0-9]{1,2})-integer-p-([0-9]{3})$'
+          example: 'xy-15-3-2-integer-p-000'
+    get:
+      operationId: getIntegerProfileMinimum
+      summary: 'Returns the minimum value of the Integer'
+      tags:
+        - IntegerProfile
+      security:
+        - basicAuth: []
+      responses:
+        '200':
+          description: 'Minimum value provided'
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - integer-profile-1-0:minimum
+                properties:
+                  integer-profile-1-0:minimum:
+                    type: integer
+                    example: 0
+        '400':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '401':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '403':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '404':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '500':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        default:
+          $ref: '#/components/responses/responseForErroredOamRequests'
+  /core-model-1-4:control-construct/profile-collection/profile={uuid}/integer-profile-1-0:integer-profile-pac/integer-profile-capability/maximum:
+    parameters:
+      - in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+          pattern: '^([a-z]{2,6})-([0-9]{1,2})-([0-9]{1,2})-([0-9]{1,2})-integer-p-([0-9]{3})$'
+          example: 'xy-15-3-2-integer-p-000'
+    get:
+      operationId: getIntegerProfileMaximum
+      summary: 'Returns the maximum value of the Integer'
+      tags:
+        - IntegerProfile
+      security:
+        - basicAuth: []
+      responses:
+        '200':
+          description: 'Maximum value provided'
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - integer-profile-1-0:maximum
+                properties:
+                  integer-profile-1-0:maximum:
+                    type: integer
+                    example: 1000000
+        '400':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '401':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '403':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '404':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '500':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        default:
+          $ref: '#/components/responses/responseForErroredOamRequests'
+  /core-model-1-4:control-construct/profile-collection/profile={uuid}/integer-profile-1-0:integer-profile-pac/integer-profile-configuration/integer-value:
+    parameters:
+      - in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+          pattern: '^([a-z]{2,6})-([0-9]{1,2})-([0-9]{1,2})-([0-9]{1,2})-integer-p-([0-9]{3})$'
+          example: 'xy-15-3-2-integer-p-000'
+    get:
+      operationId: getIntegerProfileIntegerValue
+      summary: 'Returns the configured value of the Integer'
+      tags:
+        - IntegerProfile
+      security:
+        - basicAuth: []
+      responses:
+        '200':
+          description: 'Integer value provided'
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - integer-profile-1-0:integer-value
+                properties:
+                  integer-profile-1-0:integer-value:
+                    type: integer
+                    example: 1000000
+        '400':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '401':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '403':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '404':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        '500':
+          $ref: '#/components/responses/responseForErroredOamRequests'
+        default:
+          $ref: '#/components/responses/responseForErroredOamRequests'
+    put:
+      operationId: putIntegerProfileIntegerValue
+      summary: 'Configures value of the Integer'
+      tags:
+        - IntegerProfile
+      security:
+        - basicAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - integer-profile-1-0:integer-value
+              properties:
+                integer-profile-1-0:integer-value:
+                  type: integer
+                  description: 'Value must be between /integer-profile-capability/minimum and /integer-profile-capability/maximum to be accepted, if those attributes are available in the Capability section'
+                  example: 1000000
+      responses:
+        '204':
+          description: 'Integer value configured'
         '400':
           $ref: '#/components/responses/responseForErroredOamRequests'
         '401':
