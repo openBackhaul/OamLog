@@ -1,4 +1,4 @@
-@startuml is001_regardApplicationCausesInquiringOamRecordsoam
+@startuml is001_RegardApplicationCausesSequenceForInquiringOamRecords
 skinparam responseMessageBelowArrow true
 
 title
@@ -30,7 +30,22 @@ note over ol
 ELSE
 end note
 
+note left ol #Orange
+OKM addressing OL://v1/update-operation-key
+is indicating successful creation of the Link
+IF waiting > maximumWaitTimeToReceiveOperationKey
+end note
+ro <-- ol : { successfully-connected==false,  reason-of-failure}
+
 note over ol
+ELSE
+end note
+
+note over ol
+After receiving an updated operation-key
+for the operation-client
+NewApp://v1/redirect-oam-request-information
+
 <u>RequestForInquiringOamRecords</u>
 Request for sending
 oam records in future
@@ -47,21 +62,70 @@ note over ol
 ELSE
 end note
 
+note over ol #LightCoral
+OL does not know, whether ALT already 
+contains an updated OL client at NewApp
+end note
+
+note over ol #Orange
+attempts = 0 
+end note
+
+note over ol #Orange
+mark#1
+end note
+
+note over ol #Orange
+attempts = attempts + 1 
+end note
+
 note over ol
-<u>CreateLinkForSendingOamRecords</u>
+<u>CreateLinkForReceivingOamRecords</u>
 Request for automatically creating the Link:
 newApplication => OL://v1/record-oam-request
 end note
 ol -> alt : { servingApplicationName == OamLog,\n servingApplicationReleaseNumber == 2.1.0,\n operationName == /v1/record-oam-request,\n consumingApplicationName == requestBody.newApplicationName,\n consumingApplicationReleaseNumber == requestBody.releaseNumber } (apiKey)
 ol <-- alt : {client-successfully-added, reason-of-failure}
 
+note left ol #Orange
+IF ( (attempts<=maximumNumberOfAttemptsToCreateLink)
+      AND 
+      (client-successfully-added==false)
+      AND
+      ( (reason-of-failure==ALT_SERVING_APPLICATION_NAME_UNKNOWN)
+        OR (reason-of-failure==ALT_SERVING_APPLICATION_RELEASE_NUMBER_UNKNOWN)
+  Return to mark#1
+)
+end note
+
+note over ol
+ELSE
+end note
+
 note left ol
 IF (NOT 200) OR (client-successfully-added==false)
 end note
 ro <-- ol : { successfully-connected==false,  reason-of-failure}
 
+note over ol
+ELSE
+end note
+
+note left ol #Orange
+OKM addressing OL://v1/update-operation-key
+is indicating successful creation of the Link
+IF waiting > maximumWaitTimeToReceiveOperationKey
+end note
+ro <-- ol : { successfully-connected==false,  reason-of-failure}
+
 note left ol
 ELSE
+end note
+
+note over ol
+After receiving an updated operation-key
+for the operation-server
+OL://v1/record-oam-request
 end note
 ro <-- ol : { successfully-connected==true }
 

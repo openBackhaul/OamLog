@@ -473,7 +473,7 @@ forwardings:
       - client-name: OperationKeyManagement://v1/redirect-oam-request-information
         uuid: ol-2-1-0-op-c-im-okm-2-1-0-004
 
-  - forwarding-name: RegardApplicationCausesSequenceForInquiringOamRecords.CreateLinkForSendingOamRecords
+  - forwarding-name: RegardApplicationCausesSequenceForInquiringOamRecords.CreateLinkForReceivingOamRecords
     uuid: ol-2-1-0-op-fc-is-003
     forwarding-type: InvariantProcessSnippet
     management-requests:

@@ -236,13 +236,29 @@
               "integer-profile-1-0:integer-profile-pac": {
                 "integer-profile-capability": {
                   "integer-name": "maximumWaitTimeToReceiveOperationKey",
-                  "purpose": "Limit the waiting for an event to happen",
+                  "purpose": "Creating a Link in ALT was successful if an OperationKey could be received. This attribute limits waiting for the OperationKey to be received.",
                   "unit": "millisecond",
                   "minimum": 0,
                   "maximum": 5000
                 },
                 "integer-profile-configuration": {
                   "integer-value": 500
+                }
+              }
+            },
+            {
+              "uuid": "ol-2-1-0-integer-p-001",
+              "profile-name": "integer-profile-1-0:PROFILE_NAME_TYPE_INTEGER_PROFILE",
+              "integer-profile-1-0:integer-profile-pac": {
+                "integer-profile-capability": {
+                  "integer-name": "maximumNumberOfAttemptsToCreateLink",
+                  "purpose": "Creating a Link in ALT may fail because background processes are not finished. This attribute limits the number of attempts to create the Link.",
+                  "unit": "attempt",
+                  "minimum": 0,
+                  "maximum": 20
+                },
+                "integer-profile-configuration": {
+                  "integer-value": 5
                 }
               }
             }
@@ -2945,7 +2961,7 @@
                   },
                   {
                     "value-name": "ForwardingName",
-                    "value": "RegardApplicationCausesSequenceForInquiringOamRecords.CreateLinkForSendingOamRecords"
+                    "value": "RegardApplicationCausesSequenceForInquiringOamRecords.CreateLinkForReceivingOamRecords"
                   }
                 ],
                 "fc-port": [
