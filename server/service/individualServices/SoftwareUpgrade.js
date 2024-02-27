@@ -65,7 +65,7 @@ async function PromptForBequeathingDataCausesTransferOfListOfApplications(user, 
              * Preparing requestBody and transfering the data one by one
              ************************************************************************************/
 
-            let requestForOamRequestInformationFCName = "NewApplicationCausesRequestForOamRequestInformation";
+            let requestForOamRequestInformationFCName = "RegardApplicationCausesSequenceForInquiringOamRecords.RequestForInquiringOamRecords";
             let forwardingConstructInstance = await ForwardingDomain.getForwardingConstructForTheForwardingNameAsync(requestForOamRequestInformationFCName);
             let operationClientUuidList = getFcPortOutputLogicalTerminationPointList(forwardingConstructInstance);
 
@@ -100,7 +100,7 @@ async function PromptForBequeathingDataCausesTransferOfListOfApplications(user, 
                         customerJourney
                     );
                     if (!result) {
-                        throw forwardingKindNameOfTheBequeathOperation + "forwarding is not success for the input" + JSON.stringify(requestBody);
+                        throw forwardingKindNameOfTheBequeathOperation + " forwarding is not success for the input" + JSON.stringify(requestBody);
                     }
 
                 } catch (error) {
