@@ -16,7 +16,7 @@ exports.regardApplication = function (operationClientConfigurationStatusList, re
                 let forwardingName;
                 if (operationClientName == redirectServiceRequestOperation) {
                     forwardingName =
-                        "NewApplicationCausesRequestForOamRequestInformation";
+                        "RegardApplicationCausesSequenceForInquiringOamRecords.RequestForInquiringOamRecords";
                     forwardingConfigurationInput = new forwardingConstructConfigurationInput(
                         forwardingName,
                         operationClientUuid
