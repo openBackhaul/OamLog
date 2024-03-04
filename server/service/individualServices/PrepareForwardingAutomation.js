@@ -47,7 +47,7 @@ exports.regardApplication = function (logicalTerminationPointconfigurationStatus
 }
 
 /**
- * Prepare attributes and automate RegardApplicationCausesSequenceForInquiringServiceRecords.CreateLinkForInquiringServiceRecords<br>
+ * Prepare attributes and automate RegardApplicationCausesSequenceForInquiringOamRecords.CreateLinkForInquiringOamRecords<br>
  * @param {String} applicationName from {$request.body#application-name}
  * @param {String} releaseNumber from {$request.body#release-number}
  * @param {String} user User identifier from the system starting the service call
@@ -92,7 +92,7 @@ async function CreateLinkForInquiringOamRecords(applicationName, releaseNumber, 
     });
 }
 
-exports.RequestForInquiringOamRecords = function (logicalTerminationPointconfigurationStatus, forwardingConstructConfigurationStatus, applicationName, releaseNumber, 
+async function RequestForInquiringOamRecords(logicalTerminationPointconfigurationStatus, forwardingConstructConfigurationStatus, applicationName, releaseNumber, 
     operationServerName, user, xCorrelator, traceIndicator, customerJourney) {
     return new Promise(async function (resolve, reject) {
         let forwardingConstructAutomationList = [];
@@ -165,7 +165,7 @@ exports.RequestForInquiringOamRecords = function (logicalTerminationPointconfigu
 async function CreateLinkForReceivingOamRecords(applicationName, releaseNumber, user, xCorrelator, traceIndicator, customerJourney) {
     return new Promise(async function (resolve, reject) {
         try {
-            let forwardingKindNameOfInquiringServiceRecords = "RegardApplicationCausesSequenceForInquiringServiceRecords.CreateLinkForReceivingServiceRecords";
+            let forwardingKindNameOfInquiringServiceRecords = "RegardApplicationCausesSequenceForInquiringOamRecords.CreateLinkForReceivingOamRecords";
             try {
                 let requestBody = {};
                 requestBody['serving-application-name'] = await HttpServerInterface.getApplicationNameAsync();
