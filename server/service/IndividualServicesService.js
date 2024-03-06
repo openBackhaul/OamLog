@@ -327,19 +327,12 @@ exports.regardApplication = async function (body, user, originator, xCorrelator,
         applicationName,
         releaseNumber,
         operationServerName,
+        httpClientUuid,
         user,
         xCorrelator,
         traceIndicator,
         customerJourney
       );
-      // ForwardingAutomationService.automateForwardingConstructAsync(
-      //   operationServerName,
-      //   forwardingAutomationInputList,
-      //   user,
-      //   xCorrelator,
-      //   traceIndicator,
-      //   customerJourney
-      // );
       resolve(result);
     } catch (error) {
       reject(error);

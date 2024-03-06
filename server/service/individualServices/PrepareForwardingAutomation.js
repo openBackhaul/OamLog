@@ -8,9 +8,11 @@ const onfAttributes = require('onf-core-model-ap/applicationPattern/onfModel/con
 const FcPort = require('onf-core-model-ap/applicationPattern/onfModel/models/FcPort');
 const ForwardingDomain = require('onf-core-model-ap/applicationPattern/onfModel/models/ForwardingDomain');
 const eventDispatcher = require('onf-core-model-ap/applicationPattern/rest/client/eventDispatcher');
+const OperationClientInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/OperationClientInterface');
+const IntegerProfile = require('onf-core-model-ap/applicationPattern/onfModel/models/profile/IntegerProfile');
 
 exports.regardApplication = function (logicalTerminationPointconfigurationStatus,
-    forwardingConstructConfigurationStatus, applicationName, releaseNumber, operationServerName,
+    forwardingConstructConfigurationStatus, applicationName, releaseNumber, operationServerName, httpClientUuid,
     user, xCorrelator, traceIndicator, customerJourney) {
     return new Promise(async function (resolve, reject) {
         try {
@@ -20,26 +22,61 @@ exports.regardApplication = function (logicalTerminationPointconfigurationStatus
                 resolve(result);
             }
             else{
-                const result = await RequestForInquiringOamRecords(logicalTerminationPointconfigurationStatus, forwardingConstructConfigurationStatus, 
-                    applicationName, releaseNumber, operationServerName, user, xCorrelator, traceIndicator, customerJourney)
-                
-                if(result.code != 204){
-                    resolve(result);
-                }
-                else{
-                    const result = await CreateLinkForReceivingOamRecords(applicationName, releaseNumber, user, 
-                        xCorrelator, traceIndicator, customerJourney)
-                    if(!result['client-successfully-added']){
+                // Get the operationClientUuid for which the operation-key updated is expected
+                const serverName = '/v1/redirect-service-request-information';
+                let operationClientUuid = await OperationClientInterface.getOperationClientUuidAsync(httpClientUuid, serverName);
+                // maxmimum time to wait (from integer)
+                let waitTime = await IntegerProfile.maximumWaitTimeToReceiveOperationKey();
+                let timestampOfCurrentRequest = Date.now();
+                //let maximumWaitTimeToReceiveOperationKey = await IntegerProfile.waitUntilOperationKeyIsUpdated(operationClientUuid, timestampOfCurrentRequest, waitTime);
+                if(waitTime > maximumWaitTimeToReceiveOperationKey){
+                    resolve(
+                        { 'successfully-connected': false }
+                    );
+                }else{
+                    const result = await RequestForInquiringOamRecords(logicalTerminationPointconfigurationStatus, forwardingConstructConfigurationStatus, 
+                        applicationName, releaseNumber, operationServerName, user, xCorrelator, traceIndicator, customerJourney)
+                    
+                    if(result.code != 204){
                         resolve(result);
-                    }else{
-                        resolve(
-                            { 'successfully-connected': true }
-                        );
+                    }
+                    else{
+                        
+                        let attempts = 1;
+                        let maximumNumberOfAttemptsToCreateLink = await IntegerProfile.maximumNumberOfAttemptsToCreateLink();
+                        for(let i=0; i < maximumNumberOfAttemptsToCreateLink; i++){
+                            const result = await CreateLinkForReceivingOamRecords(applicationName, releaseNumber, user, 
+                                xCorrelator, traceIndicator, customerJourney)
+                            if((attempts<=maximumNumberOfAttemptsToCreateLink) 
+                                && (result['client-successfully-added'] == false) 
+                                && ((result['reason-of-failure'] == 'ALT_SERVING_APPLICATION_NAME_UNKNOWN') 
+                                || (result['reason-of-failure'] == 'ALT_SERVING_APPLICATION_RELEASE_NUMBER_UNKNOWN')))
+                            {
+                                attempts = attempts+1;
+                            }else{
+                                if(!result['client-successfully-added'] || result.code != 200){
+                                    resolve(result);
+                                }else{
+                                    if(waitTime > maximumWaitTimeToReceiveOperationKey){
+                                        resolve(
+                                            { 'successfully-connected': false }
+                                        );
+                                    }
+                                    else{
+                                        resolve(
+                                            { 'successfully-connected': true }
+                                        );
+                                    }
+                                }
+                                //exit();
+                            }  
+                        }
+                        
                     }
                 }
+                
             }
                      
-            //resolve({'successfully-connected': true});
         } catch (error) {
             reject(error);
         }
@@ -98,7 +135,7 @@ async function RequestForInquiringOamRecords(logicalTerminationPointconfiguratio
         let forwardingConstructAutomationList = [];
         try {
             /********************************************************************************************************
-             * NewApplicationCausesRequestForOamRequestInformation /v1/redirect-oam-request-information
+             * RegardApplicationCausesSequenceForInquiringOamRecords.RequestForInquiringOamRecords /v1/redirect-oam-request-information
              ********************************************************************************************************/
             let redirectOamRequestForwardingName = "RegardApplicationCausesSequenceForInquiringOamRecords.RequestForInquiringOamRecords";
             let redirectOamRequestContext = applicationName + releaseNumber;
