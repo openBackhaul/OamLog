@@ -122,7 +122,7 @@ module.exports.recordOamRequest = async function recordOamRequest(req, res, next
 
 module.exports.regardApplication = async function regardApplication(req, res, next, body, user, originator, xCorrelator, traceIndicator, customerJourney) {
   let startTime = process.hrtime();
-  let responseCode = responseCodeEnum.code.NO_CONTENT;
+  let responseCode = responseCodeEnum.code.OK;
   let responseBodyToDocument = {};
   await IndividualServices.regardApplication(body, user, originator, xCorrelator, traceIndicator, customerJourney, req.url)
     .then(async function (responseBody) {
