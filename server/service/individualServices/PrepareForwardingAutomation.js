@@ -18,7 +18,7 @@ exports.regardApplication = function (logicalTerminationPointconfigurationStatus
         try {
             const result = await CreateLinkForInquiringOamRecords(applicationName, releaseNumber, user, 
                 xCorrelator, traceIndicator, customerJourney)
-            if(!result['client-successfully-added']){
+            if(!result['client-successfully-added'] || result.code != 200){
                 resolve(result);
             }
             else{
@@ -28,7 +28,7 @@ exports.regardApplication = function (logicalTerminationPointconfigurationStatus
                 // maxmimum time to wait (from integer)
                 let waitTime = await IntegerProfile.maximumWaitTimeToReceiveOperationKey();
                 let timestampOfCurrentRequest = Date.now();
-                //let maximumWaitTimeToReceiveOperationKey = await IntegerProfile.waitUntilOperationKeyIsUpdated(operationClientUuid, timestampOfCurrentRequest, waitTime);
+                let maximumWaitTimeToReceiveOperationKey = await IntegerProfile.waitUntilOperationKeyIsUpdated(operationClientUuid, timestampOfCurrentRequest, waitTime);
                 if(waitTime > maximumWaitTimeToReceiveOperationKey){
                     resolve(
                         { 'successfully-connected': false }
@@ -37,7 +37,7 @@ exports.regardApplication = function (logicalTerminationPointconfigurationStatus
                     const result = await RequestForInquiringOamRecords(logicalTerminationPointconfigurationStatus, forwardingConstructConfigurationStatus, 
                         applicationName, releaseNumber, operationServerName, user, xCorrelator, traceIndicator, customerJourney)
                     
-                    if(result.code != 204){
+                    if(!result['client-successfully-added'] || result.code != 200){
                         resolve(result);
                     }
                     else{
