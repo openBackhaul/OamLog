@@ -10,9 +10,10 @@ const ForwardingDomain = require('onf-core-model-ap/applicationPattern/onfModel/
 const eventDispatcher = require('onf-core-model-ap/applicationPattern/rest/client/eventDispatcher');
 const OperationClientInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/OperationClientInterface');
 const IntegerProfile = require('onf-core-model-ap/applicationPattern/onfModel/models/profile/IntegerProfile');
+const HttpClientInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/HttpClientInterface');
 
 exports.regardApplication = function (logicalTerminationPointconfigurationStatus,
-    forwardingConstructConfigurationStatus, applicationName, releaseNumber, operationServerName, httpClientUuid,
+    forwardingConstructConfigurationStatus, applicationName, releaseNumber, operationServerName,
     user, xCorrelator, traceIndicator, customerJourney) {
     return new Promise(async function (resolve, reject) {
         try {
@@ -22,14 +23,15 @@ exports.regardApplication = function (logicalTerminationPointconfigurationStatus
                 resolve(result);
             }
             else{
-                // Get the operationClientUuid for which the operation-key updated is expected
-                const serverName = '/v1/redirect-service-request-information';
-                let operationClientUuid = await OperationClientInterface.getOperationClientUuidAsync(httpClientUuid, serverName);
-                // maxmimum time to wait (from integer)
-                let waitTime = await IntegerProfile.maximumWaitTimeToReceiveOperationKey();
-                let timestampOfCurrentRequest = Date.now();
-                let maximumWaitTimeToReceiveOperationKey = await IntegerProfile.waitUntilOperationKeyIsUpdated(operationClientUuid, timestampOfCurrentRequest, waitTime);
-                if(waitTime > maximumWaitTimeToReceiveOperationKey){
+                let operationName = '/v1/redirect-service-request-information';
+                let httpClientUuid = await HttpClientInterface.getHttpClientUuidAsync(applicationName, releaseNumber);
+                let operationClientUuid = await OperationClientInterface.getOperationClientUuidAsync(httpClientUuid, operationName);
+                let timestampOfCurrentRequest = new Date();
+                OperationClientInterface.turnONNotificationChannel(timestampOfCurrentRequest);
+                let waitTime = await IntegerProfile.getIntegerValueForTheIntegerProfileNameAsync("maximumWaitTimeToReceiveOperationKey");
+                let isOperationKeyUpdated = await OperationClientInterface.waitUntilOperationKeyIsUpdated(operationClientUuid, timestampOfCurrentRequest, waitTime);
+                OperationClientInterface.turnOFFNotificationChannel(timestampOfCurrentRequest);
+                if(!isOperationKeyUpdated){
                     resolve(
                         { 'successfully-connected': false }
                     );
@@ -43,32 +45,33 @@ exports.regardApplication = function (logicalTerminationPointconfigurationStatus
                     else{
                         
                         let attempts = 1;
-                        let maximumNumberOfAttemptsToCreateLink = await IntegerProfile.maximumNumberOfAttemptsToCreateLink();
+                        let maximumNumberOfAttemptsToCreateLink = await IntegerProfile.getIntegerValueForTheIntegerProfileNameAsync("maximumNumberOfAttemptsToCreateLink");
                         for(let i=0; i < maximumNumberOfAttemptsToCreateLink; i++){
                             const result = await CreateLinkForReceivingOamRecords(applicationName, releaseNumber, user, 
                                 xCorrelator, traceIndicator, customerJourney)
                             if((attempts<=maximumNumberOfAttemptsToCreateLink) 
                                 && (result['client-successfully-added'] == false) 
-                                && ((result['reason-of-failure'] == 'ALT_SERVING_APPLICATION_NAME_UNKNOWN') 
-                                || (result['reason-of-failure'] == 'ALT_SERVING_APPLICATION_RELEASE_NUMBER_UNKNOWN')))
+                                && ((result['reason-of-failure'] == "ALT_SERVING_APPLICATION_NAME_UNKNOWN") 
+                                || (result['reason-of-failure'] == "ALT_SERVING_APPLICATION_RELEASE_NUMBER_UNKNOWN")))
                             {
                                 attempts = attempts+1;
                             }else{
                                 if(!result['client-successfully-added'] || result.code != 200){
                                     resolve(result);
                                 }else{
-                                    if(waitTime > maximumWaitTimeToReceiveOperationKey){
+                                    if(!isOperationKeyUpdated){
                                         resolve(
                                             { 'successfully-connected': false }
                                         );
+                                        break;
                                     }
                                     else{
                                         resolve(
                                             { 'successfully-connected': true }
                                         );
+                                        break;
                                     }
                                 }
-                                //exit();
                             }  
                         }
                         
@@ -118,11 +121,7 @@ async function CreateLinkForInquiringOamRecords(applicationName, releaseNumber, 
                 throw "operation is not success";
             }
 
-            resolve({
-                "client-successfully-added": true,
-                "reason-of-failure": ""
-            });
-            //resolve(result);
+            resolve(result);
         } catch (error) {
             reject(error);
         }
@@ -178,11 +177,7 @@ async function RequestForInquiringOamRecords(logicalTerminationPointconfiguratio
                 customerJourney
               );
             
-            resolve({
-                "code": 204,
-                "reason-of-failure": ""
-            });
-            //resolve(result);
+            resolve(result);
         } catch (error) {
             reject(error);
         }
@@ -224,11 +219,7 @@ async function CreateLinkForReceivingOamRecords(applicationName, releaseNumber, 
                 throw "operation is not success";
             }
 
-            resolve({
-                "client-successfully-added": true,
-                "reason-of-failure": ""
-            });
-            //resolve(result);
+            resolve(result);
         } catch (error) {
             reject(error);
         }
