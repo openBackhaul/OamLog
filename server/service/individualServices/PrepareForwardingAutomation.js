@@ -12,6 +12,20 @@ const ForwardingProcessingInput = require('onf-core-model-ap/applicationPattern/
 const ForwardingConstructProcessingService = require('onf-core-model-ap/applicationPattern/onfModel/services/ForwardingConstructProcessingServices');
 
 var traceIndicatorIncrementer = 1;
+/**
+ * This method performs the set of callback to RegardApplicationCausesSequenceForInquiringOamRecords
+ * @param {String} applicationName from {$request.body#application-name}
+ * @param {String} releaseNumber from {$request.body#release-number}
+ * @param {String} user User identifier from the system starting the service call
+ * @param {String} xCorrelator UUID for the service execution flow that allows to correlate requests and responses
+ * @param {String} traceIndicator Sequence of request numbers along the flow
+ * @param {String} customerJourney Holds information supporting customer’s journey to which the execution applies
+ * @returns {Promise} promise resolved if-successful then successfully-connected-true or if-unsuccessful successfully-connected-false else promise reject
+ * The following are the list of forwarding that will be automated to redirect the RegardApplicationCausesSequenceForInquiringOamRecords
+ * 1. CreateLinkForInquiringOamRecords
+ * 2. RequestForInquiringOamRecords
+ * 3. CreateLinkForReceivingOamRecords
+ */
 exports.regardApplication = function (applicationName, releaseNumber, user, xCorrelator, traceIndicator, customerJourney, _traceIndicatorIncrementer) {
     return new Promise(async function (resolve, reject) {
         try {
