@@ -16,6 +16,7 @@ const softwareUpgrade = require('./individualServices/SoftwareUpgrade');
 const { getIndexAliasAsync, createResultArray, elasticsearchService } = require('onf-core-model-ap/applicationPattern/services/ElasticsearchService');
 const LogicalTerminationPointConfigurationStatus = require('onf-core-model-ap/applicationPattern/onfModel/services/models/logicalTerminationPoint/ConfigurationStatus');
 const TcpObject = require('onf-core-model-ap/applicationPattern/onfModel/services/models/TcpObject');
+const prepareALTForwardingAutomation = require('onf-core-model-ap-bs/basicServices/services/PrepareALTForwardingAutomation');
 
 const NEW_RELEASE_FORWARDING_NAME = 'PromptForBequeathingDataCausesTransferOfListOfApplications';
 
@@ -318,19 +319,34 @@ exports.regardApplication = async function (body, user, originator, xCorrelator,
           );
       }
 
-      /****************************************************************************************
-       * Prepare attributes to automate forwarding-construct
-       ****************************************************************************************/
-      let result = await prepareForwardingAutomation.regardApplication(
+      /***********************************************************************************
+       * forwardings for application layer topology
+       ************************************************************************************/
+      let applicationLayerTopologyForwardingInputList = await prepareALTForwardingAutomation.getALTForwardingAutomationInputAsync(
         ltpConfigurationStatus,
-        forwardingConstructConfigurationStatus,
-        applicationName,
-        releaseNumber,
+        forwardingConstructConfigurationStatus
+      );
+    
+      await ForwardingAutomationService.automateForwardingConstructAsync(
         operationServerName,
+        applicationLayerTopologyForwardingInputList,
         user,
         xCorrelator,
         traceIndicator,
         customerJourney
+      );
+
+      /****************************************************************************************
+       * Prepare attributes to automate forwarding-construct
+       ****************************************************************************************/
+      let result = await prepareForwardingAutomation.regardApplication(
+        applicationName,
+        releaseNumber,
+        user,
+        xCorrelator,
+        traceIndicator,
+        customerJourney,
+        applicationLayerTopologyForwardingInputList.length
       );
       resolve(result);
     } catch (error) {
