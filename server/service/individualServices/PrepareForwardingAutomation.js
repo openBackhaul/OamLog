@@ -5,7 +5,6 @@ const onfAttributeFormatter = require('onf-core-model-ap/applicationPattern/onfM
 const onfAttributes = require('onf-core-model-ap/applicationPattern/onfModel/constants/OnfAttributes');
 const FcPort = require('onf-core-model-ap/applicationPattern/onfModel/models/FcPort');
 const ForwardingDomain = require('onf-core-model-ap/applicationPattern/onfModel/models/ForwardingDomain');
-const eventDispatcher = require('onf-core-model-ap/applicationPattern/rest/client/eventDispatcher');
 const OperationClientInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/OperationClientInterface');
 const IntegerProfile = require('onf-core-model-ap/applicationPattern/onfModel/models/profile/IntegerProfile');
 const HttpClientInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/HttpClientInterface');
@@ -26,8 +25,7 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
             }
             else{
                 let forwardingKindName = "RegardApplicationCausesSequenceForInquiringOamRecords.RequestForInquiringOamRecords";
-                let forwardingConstructInstance = await ForwardingDomain.getForwardingConstructForTheForwardingNameAsync(forwardingKindName);
-                let clientUuid = (getFcPortOutputLogicalTerminationPointList(forwardingConstructInstance))[0];
+                let clientUuid = await getOperationClientUuuid(forwardingKindName);
                 let operationName = OperationClientInterface.getOperationNameAsync(clientUuid);
                 let httpClientUuid = await HttpClientInterface.getHttpClientUuidAsync(applicationName, releaseNumber);
                 let operationClientUuid = await OperationClientInterface.getOperationClientUuidAsync(httpClientUuid, operationName);
@@ -64,8 +62,7 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
                                     break;
                                 }else{
                                     forwardingKindName = "OamRequestCausesLoggingRequest";
-                                    forwardingConstructInstance = await ForwardingDomain.getForwardingConstructForTheForwardingNameAsync(forwardingKindName);
-                                    operationClientUuid = (getFcPortOutputLogicalTerminationPointList(forwardingConstructInstance))[0];
+                                    operationClientUuid = await getOperationClientUuuid(forwardingKindName);
                                     let newOperationKeyUpdated = await isOperationKeyUpdatedOrNot(operationClientUuid);
                                     if(!newOperationKeyUpdated){
                                         resolve(
@@ -114,8 +111,7 @@ async function CreateLinkForInquiringOamRecords(applicationName, releaseNumber, 
             try {
                 let requestBody = {};
                 let forwardingKindName = "RegardApplicationCausesSequenceForInquiringOamRecords.RequestForInquiringOamRecords";
-                let forwardingConstructInstance = await ForwardingDomain.getForwardingConstructForTheForwardingNameAsync(forwardingKindName);
-                let operationClientUuid = (getFcPortOutputLogicalTerminationPointList(forwardingConstructInstance))[0];
+                let operationClientUuid = await getOperationClientUuuid(forwardingKindName);
                 let operationName = OperationClientInterface.getOperationNameAsync(operationClientUuid);
                 requestBody['serving-application-name'] = applicationName;
                 requestBody['serving-application-release-number'] = releaseNumber;
@@ -157,8 +153,7 @@ async function RequestForInquiringOamRecords(user, xCorrelator, traceIndicator, 
             let redirectOamRequestRequestBody = {};
             try {
                 let forwardingKindName = "OamRequestCausesLoggingRequest";
-                let forwardingConstructInstance = await ForwardingDomain.getForwardingConstructForTheForwardingNameAsync(forwardingKindName);
-                let operationClientUuid = (getFcPortOutputLogicalTerminationPointList(forwardingConstructInstance))[0];
+                let operationClientUuid = await getOperationClientUuuid(forwardingKindName);
                 let operationName = OperationClientInterface.getOperationNameAsync(operationClientUuid);
                 redirectOamRequestRequestBody['oam-log-application'] = await HttpServerInterface.getApplicationNameAsync();
                 redirectOamRequestRequestBody['oam-log-application-release-number'] = await HttpServerInterface.getReleaseNumberAsync();
@@ -209,8 +204,7 @@ async function CreateLinkForReceivingOamRecords(applicationName, releaseNumber, 
             try {
                 let requestBody = {};
                 let forwardingKindName = "OamRequestCausesLoggingRequest";
-                let forwardingConstructInstance = await ForwardingDomain.getForwardingConstructForTheForwardingNameAsync(forwardingKindName);
-                let operationClientUuid = (getFcPortOutputLogicalTerminationPointList(forwardingConstructInstance))[0];
+                let operationClientUuid = await getOperationClientUuuid(forwardingKindName);
                 let operationName = OperationClientInterface.getOperationNameAsync(operationClientUuid);
                 requestBody['serving-application-name'] = await HttpServerInterface.getApplicationNameAsync();
                 requestBody['serving-application-release-number'] = await HttpServerInterface.getReleaseNumberAsync();
@@ -345,6 +339,18 @@ function isOperationKeyUpdatedOrNot(operationClientUuid) {
             let result = await OperationClientInterface.waitUntilOperationKeyIsUpdated(operationClientUuid, timestampOfCurrentRequest, waitTime);
             OperationClientInterface.turnOFFNotificationChannel(timestampOfCurrentRequest);
             resolve(result);
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
+
+function getOperationClientUuuid(forwardingKindName) {
+    return new Promise(async function (resolve, reject) {
+        try {
+            let forwardingConstructInstance = await ForwardingDomain.getForwardingConstructForTheForwardingNameAsync(forwardingKindName);
+            let clientUuid = (getFcPortOutputLogicalTerminationPointList(forwardingConstructInstance))[0];
+            resolve(clientUuid);
         } catch (error) {
             reject(error);
         }
