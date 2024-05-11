@@ -34,13 +34,13 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
             }
             const result = await CreateLinkForInquiringOamRecords(applicationName, releaseNumber, user, 
                 xCorrelator, traceIndicator, customerJourney)
-            if(!result.data['client-successfully-added'] || result.status != 200){
+            if(!result['data']['client-successfully-added'] || result.status != 200){
                 resolve(result);
             }
             else{
                 let forwardingKindName = "RegardApplicationCausesSequenceForInquiringOamRecords.RequestForInquiringOamRecords";
                 let clientUuid = await getOperationClientUuuid(forwardingKindName);
-                let operationName = OperationClientInterface.getOperationNameAsync(clientUuid);
+                let operationName = await OperationClientInterface.getOperationNameAsync(clientUuid);
                 let httpClientUuid = await HttpClientInterface.getHttpClientUuidAsync(applicationName, releaseNumber);
                 let operationClientUuid = await OperationClientInterface.getOperationClientUuidAsync(httpClientUuid, operationName);
                 let isOperationKeyUpdated = await isOperationKeyUpdatedOrNot(operationClientUuid);
@@ -54,7 +54,7 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
                 }else{
                     const result = await RequestForInquiringOamRecords(user, xCorrelator, traceIndicator, customerJourney)
                     
-                    if(!result.data['client-successfully-added'] || result.status != 200){
+                    if(result.status != 204){
                         resolve(result);
                     }
                     else{
@@ -65,20 +65,17 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
                             const result = await CreateLinkForReceivingOamRecords(applicationName, releaseNumber, user, 
                                 xCorrelator, traceIndicator, customerJourney)
                             if((attempts<=maximumNumberOfAttemptsToCreateLink) 
-                                && (result.data['client-successfully-added'] == false) 
-                                && ((result.data['reason-of-failure'] == "ALT_SERVING_APPLICATION_NAME_UNKNOWN") 
-                                || (result.data['reason-of-failure'] == "ALT_SERVING_APPLICATION_RELEASE_NUMBER_UNKNOWN")))
+                                && (result['data']['client-successfully-added'] == false) 
+                                && ((result['data']['reason-of-failure'] == "ALT_SERVING_APPLICATION_NAME_UNKNOWN") 
+                                || (result['data']['reason-of-failure'] == "ALT_SERVING_APPLICATION_RELEASE_NUMBER_UNKNOWN")))
                             {
                                 attempts = attempts+1;
                             }else{
-                                if(!result.data['client-successfully-added'] || result.status != 200){
+                                if(!result['data']['client-successfully-added'] || result.status != 200){
                                     resolve(result);
                                     break;
                                 }else{
-                                    forwardingKindName = "OamRequestCausesLoggingRequest";
-                                    operationClientUuid = await getOperationClientUuuid(forwardingKindName);
-                                    let newOperationKeyUpdated = await isOperationKeyUpdatedOrNot(operationClientUuid);
-                                    if(!newOperationKeyUpdated){
+                                    if(!isOperationKeyUpdated){
                                         resolve(
                                             { 
                                                 "successfully-connected": false,
@@ -126,7 +123,7 @@ async function CreateLinkForInquiringOamRecords(applicationName, releaseNumber, 
                 let requestBody = {};
                 let forwardingKindName = "RegardApplicationCausesSequenceForInquiringOamRecords.RequestForInquiringOamRecords";
                 let operationClientUuid = await getOperationClientUuuid(forwardingKindName);
-                let operationName = OperationClientInterface.getOperationNameAsync(operationClientUuid);
+                let operationName = await OperationClientInterface.getOperationNameAsync(operationClientUuid);
                 requestBody['serving-application-name'] = applicationName;
                 requestBody['serving-application-release-number'] = releaseNumber;
                 requestBody['operation-name'] = operationName;
@@ -168,7 +165,7 @@ async function RequestForInquiringOamRecords(user, xCorrelator, traceIndicator, 
             try {
                 let forwardingKindName = "OamRequestCausesLoggingRequest";
                 let operationClientUuid = await getOperationClientUuuid(forwardingKindName);
-                let operationName = OperationClientInterface.getOperationNameAsync(operationClientUuid);
+                let operationName = await OperationClientInterface.getOperationNameAsync(operationClientUuid);
                 redirectOamRequestRequestBody['oam-log-application'] = await HttpServerInterface.getApplicationNameAsync();
                 redirectOamRequestRequestBody['oam-log-application-release-number'] = await HttpServerInterface.getReleaseNumberAsync();
                 redirectOamRequestRequestBody['oam-log-operation'] = operationName;
@@ -219,7 +216,7 @@ async function CreateLinkForReceivingOamRecords(applicationName, releaseNumber, 
                 let requestBody = {};
                 let forwardingKindName = "OamRequestCausesLoggingRequest";
                 let operationClientUuid = await getOperationClientUuuid(forwardingKindName);
-                let operationName = OperationClientInterface.getOperationNameAsync(operationClientUuid);
+                let operationName = await OperationClientInterface.getOperationNameAsync(operationClientUuid);
                 requestBody['serving-application-name'] = await HttpServerInterface.getApplicationNameAsync();
                 requestBody['serving-application-release-number'] = await HttpServerInterface.getReleaseNumberAsync();
                 requestBody['operation-name'] = operationName;
