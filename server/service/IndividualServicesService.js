@@ -16,6 +16,7 @@ const softwareUpgrade = require('./individualServices/SoftwareUpgrade');
 const { getIndexAliasAsync, createResultArray, elasticsearchService } = require('onf-core-model-ap/applicationPattern/services/ElasticsearchService');
 const LogicalTerminationPointConfigurationStatus = require('onf-core-model-ap/applicationPattern/onfModel/services/models/logicalTerminationPoint/ConfigurationStatus');
 const TcpObject = require('onf-core-model-ap/applicationPattern/onfModel/services/models/TcpObject');
+const prepareALTForwardingAutomation = require('onf-core-model-ap-bs/basicServices/services/PrepareALTForwardingAutomation');
 
 const NEW_RELEASE_FORWARDING_NAME = 'PromptForBequeathingDataCausesTransferOfListOfApplications';
 
@@ -277,62 +278,81 @@ exports.recordOamRequest = async function (body) {
  * no response value expected for this operation
  **/
 exports.regardApplication = async function (body, user, originator, xCorrelator, traceIndicator, customerJourney, operationServerName) {
-  let applicationName = body["application-name"];
-  let releaseNumber = body["release-number"];
-  let tcpServerList = [new TcpObject(body["protocol"], body["address"], body["port"])];
-  let oamRequestOperation = "/v1/redirect-oam-request-information";
-  let operationNamesByAttributes = new Map();
-  operationNamesByAttributes.set("redirect-oam-request-information", oamRequestOperation);
+  return new Promise(async function (resolve, reject) {
+    try {
+      let applicationName = body["application-name"];
+      let releaseNumber = body["release-number"];
+      let tcpServerList = [new TcpObject(body["protocol"], body["address"], body["port"])];
+      let oamRequestOperation = "/v1/redirect-oam-request-information";
+      let operationNamesByAttributes = new Map();
+      operationNamesByAttributes.set("redirect-oam-request-information", oamRequestOperation);
 
-  let httpClientUuid = await httpClientInterface.getHttpClientUuidExcludingOldReleaseAndNewRelease(
-    applicationName, releaseNumber, NEW_RELEASE_FORWARDING_NAME
-  )
-  let ltpConfigurationInput = new LogicalTerminationPointConfigurationInput(
-    httpClientUuid,
-    applicationName,
-    releaseNumber,
-    tcpServerList,
-    operationServerName,
-    operationNamesByAttributes,
-    individualServicesOperationsMapping.individualServicesOperationsMapping
-  );
-  let ltpConfigurationStatus = await LogicalTerminationPointService.createOrUpdateApplicationLtpsAsync(
-    ltpConfigurationInput
-  );
-
-  let forwardingConfigurationInputList = [];
-  let forwardingConstructConfigurationStatus;
-  let operationClientConfigurationStatusList = ltpConfigurationStatus.operationClientConfigurationStatusList;
-
-  if (operationClientConfigurationStatusList) {
-    forwardingConfigurationInputList = await prepareForwardingConfiguration.regardApplication(
-      operationClientConfigurationStatusList,
-      oamRequestOperation
-    );
-    forwardingConstructConfigurationStatus = await ForwardingConfigurationService.
-      configureForwardingConstructAsync(
+      let httpClientUuid = await httpClientInterface.getHttpClientUuidExcludingOldReleaseAndNewRelease(
+        applicationName, releaseNumber, NEW_RELEASE_FORWARDING_NAME
+      )
+      let ltpConfigurationInput = new LogicalTerminationPointConfigurationInput(
+        httpClientUuid,
+        applicationName,
+        releaseNumber,
+        tcpServerList,
         operationServerName,
-        forwardingConfigurationInputList
+        operationNamesByAttributes,
+        individualServicesOperationsMapping.individualServicesOperationsMapping
       );
-  }
+      let ltpConfigurationStatus = await LogicalTerminationPointService.createOrUpdateApplicationLtpsAsync(
+        ltpConfigurationInput
+      );
 
-  /****************************************************************************************
-   * Prepare attributes to automate forwarding-construct
-   ****************************************************************************************/
-  let forwardingAutomationInputList = await prepareForwardingAutomation.regardApplication(
-    ltpConfigurationStatus,
-    forwardingConstructConfigurationStatus,
-    applicationName,
-    releaseNumber
-  );
-  ForwardingAutomationService.automateForwardingConstructAsync(
-    operationServerName,
-    forwardingAutomationInputList,
-    user,
-    xCorrelator,
-    traceIndicator,
-    customerJourney
-  );
+      let forwardingConfigurationInputList = [];
+      let forwardingConstructConfigurationStatus;
+      let operationClientConfigurationStatusList = ltpConfigurationStatus.operationClientConfigurationStatusList;
+
+      if (operationClientConfigurationStatusList) {
+        forwardingConfigurationInputList = await prepareForwardingConfiguration.regardApplication(
+          operationClientConfigurationStatusList,
+          oamRequestOperation
+        );
+        forwardingConstructConfigurationStatus = await ForwardingConfigurationService.
+          configureForwardingConstructAsync(
+            operationServerName,
+            forwardingConfigurationInputList
+          );
+      }
+
+      /***********************************************************************************
+       * forwardings for application layer topology
+       ************************************************************************************/
+      let applicationLayerTopologyForwardingInputList = await prepareALTForwardingAutomation.getALTForwardingAutomationInputAsync(
+        ltpConfigurationStatus,
+        forwardingConstructConfigurationStatus
+      );
+    
+      await ForwardingAutomationService.automateForwardingConstructAsync(
+        operationServerName,
+        applicationLayerTopologyForwardingInputList,
+        user,
+        xCorrelator,
+        traceIndicator,
+        customerJourney
+      );
+
+      /****************************************************************************************
+       * Prepare attributes to automate forwarding-construct
+       ****************************************************************************************/
+      let result = await prepareForwardingAutomation.regardApplication(
+        applicationName,
+        releaseNumber,
+        user,
+        xCorrelator,
+        traceIndicator,
+        customerJourney,
+        applicationLayerTopologyForwardingInputList.length
+      );
+      resolve(result);
+    } catch (error) {
+      reject(error);
+    }
+  });
 }
 
 
