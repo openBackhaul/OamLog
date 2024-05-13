@@ -179,7 +179,7 @@ exports.disregardApplication = async function (body, user, originator, xCorrelat
  * returns List
  **/
 exports.listApplications = async function () {
-  let forwadingName = "NewApplicationCausesRequestForOamRequestInformation"
+  let forwadingName = "RegardApplicationCausesSequenceForInquiringOamRecords.RequestForInquiringOamRecords"
   let applicationList = await LogicalTerminationPointServiceOfUtility.getAllApplicationList(forwadingName);
   return onfAttributeFormatter.modifyJsonObjectKeysToKebabCase(applicationList);
 }
