@@ -17,6 +17,7 @@ const { getIndexAliasAsync, createResultArray, elasticsearchService } = require(
 const LogicalTerminationPointConfigurationStatus = require('onf-core-model-ap/applicationPattern/onfModel/services/models/logicalTerminationPoint/ConfigurationStatus');
 const TcpObject = require('onf-core-model-ap/applicationPattern/onfModel/services/models/TcpObject');
 const prepareALTForwardingAutomation = require('onf-core-model-ap-bs/basicServices/services/PrepareALTForwardingAutomation');
+const PrepareRegardApplication = require('./individualServices/PrepareRegardApplication');
 
 const NEW_RELEASE_FORWARDING_NAME = 'PromptForBequeathingDataCausesTransferOfListOfApplications';
 
@@ -339,7 +340,7 @@ exports.regardApplication = async function (body, user, originator, xCorrelator,
       /****************************************************************************************
        * Prepare attributes to automate forwarding-construct
        ****************************************************************************************/
-      let result = await prepareForwardingAutomation.regardApplication(
+      let result = await PrepareRegardApplication.regardApplication(
         applicationName,
         releaseNumber,
         user,
