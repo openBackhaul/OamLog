@@ -9,7 +9,7 @@ const HttpClientInterface = require('onf-core-model-ap/applicationPattern/onfMod
 const ForwardingProcessingInput = require('onf-core-model-ap/applicationPattern/onfModel/services/models/forwardingConstruct/ForwardingProcessingInput');
 const ForwardingConstructProcessingService = require('onf-core-model-ap/applicationPattern/onfModel/services/ForwardingConstructProcessingServices');
 
-var traceIndicatorIncrementer = 1;
+var traceIndicatorIncrementer;
 /**
  * This method performs the set of callback to RegardApplicationCausesSequenceForInquiringOamRecords
  * @param {String} applicationName from {$request.body#application-name}
@@ -33,7 +33,12 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
             const result = await CreateLinkForInquiringOamRecords(applicationName, releaseNumber, user, 
                 xCorrelator, traceIndicator, customerJourney)
             if(!result['data']['client-successfully-added'] || result['status'] != 200){
-                resolve(result['data']);
+                resolve(
+                    { 
+                        "successfully-connected": false,
+                        "reason-of-failure": `OL_${result['data']['reason-of-failure']}`
+                    }
+                );
             }
             else{
                 let forwardingKindName = "RegardApplicationCausesSequenceForInquiringOamRecords.RequestForInquiringOamRecords";
@@ -50,7 +55,12 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
                     const result = await RequestForInquiringOamRecords(user, xCorrelator, traceIndicator, customerJourney)
                     
                     if(result['status'] != 204){
-                        resolve(result['data']);
+                        resolve(
+                            { 
+                                "successfully-connected": false,
+                                "reason-of-failure": `OL_${result['data']['reason-of-failure']}`
+                            }
+                        );
                     }
                     else{
                         
@@ -67,7 +77,12 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
                                 attempts = attempts+1;
                             }else{
                                 if(!result['data']['client-successfully-added'] || result['status'] != 200){
-                                    resolve(result['data']);
+                                    resolve(
+                                        { 
+                                            "successfully-connected": false,
+                                            "reason-of-failure": `OL_${result['data']['reason-of-failure']}`
+                                        }
+                                    );
                                     break;
                                 }else{
                                     // forwardingKindName = "OamRequestCausesLoggingRequest";
@@ -86,7 +101,9 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
                                     }
                                     else{
                                         resolve(
-                                            { 'successfully-connected': true }
+                                            { 
+                                                "successfully-connected": true 
+                                            }
                                         );
                                         break;
                                     }

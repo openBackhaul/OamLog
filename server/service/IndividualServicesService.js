@@ -347,7 +347,7 @@ exports.regardApplication = async function (body, user, originator, xCorrelator,
         xCorrelator,
         traceIndicator,
         customerJourney,
-        applicationLayerTopologyForwardingInputList.length
+        applicationLayerTopologyForwardingInputList.length + 1
       );
       resolve(result);
     } catch (error) {
