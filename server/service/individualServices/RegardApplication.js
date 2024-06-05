@@ -180,11 +180,9 @@ async function RequestForInquiringOamRecords(user, xCorrelator, traceIndicator, 
             let result;
             let redirectOamRequestRequestBody = {};
             try {
-                let forwardingKindName = "OamRequestCausesLoggingRequest";
                 let OAMLogApplication = await HttpServerInterface.getApplicationNameAsync();
                 let OAMLogApplicationReleaseNumber = await HttpServerInterface.getReleaseNumberAsync();
-                let operationClientUuid = await getConsequentOperationClientUuid(forwardingKindName, OAMLogApplication, OAMLogApplicationReleaseNumber);
-                let operationName = await OperationClientInterface.getOperationNameAsync(operationClientUuid);
+                let operationName = '/v1/record-oam-request';
                 redirectOamRequestRequestBody['oam-log-application'] = OAMLogApplication;
                 redirectOamRequestRequestBody['oam-log-application-release-number'] = OAMLogApplicationReleaseNumber;
                 redirectOamRequestRequestBody['oam-log-operation'] = operationName;
@@ -233,11 +231,9 @@ async function CreateLinkForReceivingOamRecords(applicationName, releaseNumber, 
             let result;
             try {
                 let requestBody = {};
-                let forwardingKindName = "OamRequestCausesLoggingRequest";
                 let servingApplication = await HttpServerInterface.getApplicationNameAsync();
                 let servingApplicationReleaseNumber = await HttpServerInterface.getReleaseNumberAsync();
-                let operationClientUuid = await getConsequentOperationClientUuid(forwardingKindName, servingApplication, servingApplicationReleaseNumber);
-                let operationName = await OperationClientInterface.getOperationNameAsync(operationClientUuid);
+                let operationName = '/v1/record-oam-request';
                 requestBody['serving-application-name'] = servingApplication;
                 requestBody['serving-application-release-number'] = servingApplicationReleaseNumber;
                 requestBody['operation-name'] = operationName;
