@@ -113,7 +113,7 @@ exports.bequeathYourDataAndDie = function (body, user, originator, xCorrelator, 
           );
         }
       
-      softwareUpgrade.upgradeSoftwareVersion(user, xCorrelator, traceIndicator, customerJourney, forwardingAutomationInputList.length)
+      softwareUpgrade.upgradeSoftwareVersion(user, xCorrelator, traceIndicator, customerJourney, forwardingAutomationInputList.length + 1)
         .catch(err => console.log(`upgradeSoftwareVersion failed with error: ${err}`));
     }
       resolve();
