@@ -198,7 +198,7 @@ exports.listRecords = async function (body) {
   };
   if (size + from <= 10000) {
     let indexAlias = await getIndexAliasAsync();
-    let client = await elasticsearchService.getClient();
+    let client = await elasticsearchService.getClient(false);
     const result = await client.search({
       index: indexAlias,
       from: from,
@@ -300,8 +300,11 @@ exports.regardApplication = async function (body, user, originator, xCorrelator,
         operationNamesByAttributes,
         individualServicesOperationsMapping.individualServicesOperationsMapping
       );
+
+      const roApplicationName = await LogicalTerminationPointServiceOfUtility.resolveRegistryOfficeApplicationNameFromForwardingAsync();
       let ltpConfigurationStatus = await LogicalTerminationPointService.createOrUpdateApplicationLtpsAsync(
-        ltpConfigurationInput
+        ltpConfigurationInput,
+        roApplicationName === applicationName
       );
 
       let forwardingConfigurationInputList = [];

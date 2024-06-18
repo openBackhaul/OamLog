@@ -203,7 +203,7 @@ async function RequestForInquiringOamRecords(applicationName, releaseNumber, use
                 );
                 forwardingConstructAutomationList.push(forwardingAutomation);
 
-                let operationClientUuid = await operationuuid(forwardingConstructAutomationList, redirectOamRequestContext);
+                let operationClientUuid = await getOperationClientUuid(forwardingConstructAutomationList, redirectOamRequestContext);
                 result = await eventDispatcher.dispatchEvent(
                     operationClientUuid,
                     redirectOamRequestRequestBody,
@@ -311,7 +311,7 @@ async function getConsequentOperationClientUuid(forwardingName, applicationName,
     return undefined;
 }
 
-async function operationuuid(forwardingConstructAutomationList, redirectOamRequestContext) {
+async function getOperationClientUuid(forwardingConstructAutomationList, redirectOamRequestContext) {
     let forwardingName = forwardingConstructAutomationList[0].forwardingName;
     let forwardingConstruct = await ForwardingDomain.getForwardingConstructForTheForwardingNameAsync(
         forwardingName);
