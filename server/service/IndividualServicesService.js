@@ -20,6 +20,8 @@ const prepareALTForwardingAutomation = require('onf-core-model-ap-bs/basicServic
 const RegardApplication = require('./individualServices/RegardApplication');
 
 const NEW_RELEASE_FORWARDING_NAME = 'PromptForBequeathingDataCausesTransferOfListOfApplications';
+const AsyncLock = require('async-lock');
+const lock = new AsyncLock();
 
 /**
  * Initiates process of embedding a new release
@@ -67,7 +69,7 @@ exports.bequeathYourDataAndDie = function (body, user, originator, xCorrelator, 
         if (applicationName != currentNewReleaseApplicationName) {
           update.isApplicationNameUpdated = await httpClientInterface.setApplicationNameAsync(newReleaseHttpClientLtpUuid, applicationName);
         }
-       
+
         if (protocol != currentNewReleaseRemoteProtocol) {
           update.isProtocolUpdated = await tcpClientInterface.setRemoteProtocolAsync(newReleaseTcpClientUuid, protocol);
         }
@@ -287,58 +289,56 @@ exports.regardApplication = async function (body, user, originator, xCorrelator,
       let oamRequestOperation = "/v1/redirect-oam-request-information";
       let operationNamesByAttributes = new Map();
       operationNamesByAttributes.set("redirect-oam-request-information", oamRequestOperation);
-
-      let httpClientUuid = await httpClientInterface.getHttpClientUuidExcludingOldReleaseAndNewRelease(
-        applicationName, releaseNumber, NEW_RELEASE_FORWARDING_NAME
-      )
-      let ltpConfigurationInput = new LogicalTerminationPointConfigurationInput(
-        httpClientUuid,
-        applicationName,
-        releaseNumber,
-        tcpServerList,
-        operationServerName,
-        operationNamesByAttributes,
-        individualServicesOperationsMapping.individualServicesOperationsMapping
-      );
-
-      const roApplicationName = await LogicalTerminationPointServiceOfUtility.resolveRegistryOfficeApplicationNameFromForwardingAsync();
-      let ltpConfigurationStatus = await LogicalTerminationPointService.createOrUpdateApplicationLtpsAsync(
-        ltpConfigurationInput,
-        roApplicationName === applicationName
-      );
-
-      let forwardingConfigurationInputList = [];
-      let forwardingConstructConfigurationStatus;
-      let operationClientConfigurationStatusList = ltpConfigurationStatus.operationClientConfigurationStatusList;
-
-      if (operationClientConfigurationStatusList) {
-        forwardingConfigurationInputList = await prepareForwardingConfiguration.regardApplication(
-          operationClientConfigurationStatusList,
-          oamRequestOperation
+      await lock.acquire("Register application", async () => {
+        let httpClientUuid = await httpClientInterface.getHttpClientUuidExcludingOldReleaseAndNewRelease(
+          applicationName, releaseNumber, NEW_RELEASE_FORWARDING_NAME
+        )
+        let ltpConfigurationInput = new LogicalTerminationPointConfigurationInput(
+          httpClientUuid,
+          applicationName,
+          releaseNumber,
+          tcpServerList,
+          operationServerName,
+          operationNamesByAttributes,
+          individualServicesOperationsMapping.individualServicesOperationsMapping
         );
-        forwardingConstructConfigurationStatus = await ForwardingConfigurationService.
-          configureForwardingConstructAsync(
-            operationServerName,
-            forwardingConfigurationInputList
-          );
-      }
+        let ltpConfigurationStatus = await LogicalTerminationPointService.createOrUpdateApplicationLtpsAsync(
+          ltpConfigurationInput
+        );
+        
+        let forwardingConfigurationInputList = [];
+        let forwardingConstructConfigurationStatus;
+        let operationClientConfigurationStatusList = ltpConfigurationStatus.operationClientConfigurationStatusList;
 
-      /***********************************************************************************
-       * forwardings for application layer topology
-       ************************************************************************************/
-      let applicationLayerTopologyForwardingInputList = await prepareALTForwardingAutomation.getALTForwardingAutomationInputAsync(
-        ltpConfigurationStatus,
-        forwardingConstructConfigurationStatus
-      );
-    
-      await ForwardingAutomationService.automateForwardingConstructAsync(
-        operationServerName,
-        applicationLayerTopologyForwardingInputList,
-        user,
-        xCorrelator,
-        traceIndicator,
-        customerJourney
-      );
+        if (operationClientConfigurationStatusList) {
+          forwardingConfigurationInputList = await prepareForwardingConfiguration.regardApplication(
+            operationClientConfigurationStatusList,
+            oamRequestOperation
+          );
+          forwardingConstructConfigurationStatus = await ForwardingConfigurationService.
+            configureForwardingConstructAsync(
+              operationServerName,
+              forwardingConfigurationInputList
+            );
+        }
+
+        /***********************************************************************************
+         * forwardings for application layer topology
+         ************************************************************************************/
+        let applicationLayerTopologyForwardingInputList = await prepareALTForwardingAutomation.getALTForwardingAutomationInputAsync(
+          ltpConfigurationStatus,
+          forwardingConstructConfigurationStatus
+        );
+
+        await ForwardingAutomationService.automateForwardingConstructAsync(
+          operationServerName,
+          applicationLayerTopologyForwardingInputList,
+          user,
+          xCorrelator,
+          traceIndicator,
+          customerJourney
+        );
+      });
 
       /****************************************************************************************
        * Prepare attributes to automate forwarding-construct
@@ -366,4 +366,4 @@ exports.regardApplication = async function (body, user, originator, xCorrelator,
 
 
 
-      
+
