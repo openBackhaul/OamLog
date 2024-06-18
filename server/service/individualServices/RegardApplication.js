@@ -8,6 +8,9 @@ const IntegerProfile = require('onf-core-model-ap/applicationPattern/onfModel/mo
 const HttpClientInterface = require('onf-core-model-ap/applicationPattern/onfModel/models/layerProtocols/HttpClientInterface');
 const ForwardingProcessingInput = require('onf-core-model-ap/applicationPattern/onfModel/services/models/forwardingConstruct/ForwardingProcessingInput');
 const ForwardingConstructProcessingService = require('onf-core-model-ap/applicationPattern/onfModel/services/ForwardingConstructProcessingServices');
+const LogicalTerminationPoint = require('onf-core-model-ap/applicationPattern/onfModel/models/LogicalTerminationPoint');
+const forwardingConstructAutomationInput = require('onf-core-model-ap/applicationPattern/onfModel/services/models/forwardingConstruct/AutomationInput');
+const eventDispatcher = require('onf-core-model-ap/applicationPattern/rest/client/eventDispatcher');
 
 var traceIndicatorIncrementer;
 /**
@@ -52,7 +55,7 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
                         }
                     );
                 }else{
-                    const result = await RequestForInquiringOamRecords(user, xCorrelator, traceIndicator, customerJourney)
+                    const result = await RequestForInquiringOamRecords(applicationName, releaseNumber, user, xCorrelator, traceIndicator, customerJourney)
                     
                     if(result['status'] != 204){
                         resolve(
@@ -170,7 +173,7 @@ async function CreateLinkForInquiringOamRecords(applicationName, releaseNumber, 
     });
 }
 
-async function RequestForInquiringOamRecords(user, xCorrelator, traceIndicator, customerJourney) {
+async function RequestForInquiringOamRecords(applicationName, releaseNumber, user, xCorrelator, traceIndicator, customerJourney) {
     return new Promise(async function (resolve, reject) {
         try {
             /********************************************************************************************************
@@ -179,7 +182,9 @@ async function RequestForInquiringOamRecords(user, xCorrelator, traceIndicator, 
             let redirectOamRequestForwardingName = "RegardApplicationCausesSequenceForInquiringOamRecords.RequestForInquiringOamRecords";
             let result;
             let redirectOamRequestRequestBody = {};
+            let forwardingConstructAutomationList = [];
             try {
+                let redirectOamRequestContext = applicationName + releaseNumber;
                 let OAMLogApplication = await HttpServerInterface.getApplicationNameAsync();
                 let OAMLogApplicationReleaseNumber = await HttpServerInterface.getReleaseNumberAsync();
                 let operationName = '/v1/record-oam-request';
@@ -191,16 +196,24 @@ async function RequestForInquiringOamRecords(user, xCorrelator, traceIndicator, 
                 redirectOamRequestRequestBody['oam-log-protocol'] = await tcpServerInterface.getLocalProtocol();
                 redirectOamRequestRequestBody = onfAttributeFormatter.modifyJsonObjectKeysToKebabCase(redirectOamRequestRequestBody);
                 
-                let forwardingAutomation = new ForwardingProcessingInput(
+                let forwardingAutomation = new forwardingConstructAutomationInput(
                     redirectOamRequestForwardingName,
-                    redirectOamRequestRequestBody
+                    redirectOamRequestRequestBody,
+                    redirectOamRequestContext
                 );
-                result = await ForwardingConstructProcessingService.processForwardingConstructAsync(
-                    forwardingAutomation,
+                forwardingConstructAutomationList.push(forwardingAutomation);
+
+                let operationClientUuid = await getOperationClientUuid(forwardingConstructAutomationList, redirectOamRequestContext);
+                result = await eventDispatcher.dispatchEvent(
+                    operationClientUuid,
+                    redirectOamRequestRequestBody,
                     user,
                     xCorrelator,
                     traceIndicator + "." + traceIndicatorIncrementer++,
-                    customerJourney
+                    customerJourney,
+                    undefined,
+                    undefined,
+                    true
                 );
 
             } catch (error) {
@@ -296,4 +309,32 @@ async function getConsequentOperationClientUuid(forwardingName, applicationName,
         }
     }
     return undefined;
+}
+
+async function getOperationClientUuid(forwardingConstructAutomationList, redirectOamRequestContext) {
+    let forwardingName = forwardingConstructAutomationList[0].forwardingName;
+    let forwardingConstruct = await ForwardingDomain.getForwardingConstructForTheForwardingNameAsync(
+        forwardingName);
+    let operationClientUuid;
+    let fcPortList = forwardingConstruct["fc-port"];
+    for (let fcPort of fcPortList) {
+        let fcPortDirection = fcPort["port-direction"];
+        if (fcPortDirection == FcPort.portDirectionEnum.OUTPUT) {
+            let isOutputMatchesContext = await isOutputMatchesContextAsync(fcPort, redirectOamRequestContext);
+            if (isOutputMatchesContext) {
+                operationClientUuid = fcPort["logical-termination-point"];
+                break;
+            }
+
+        }
+    }
+    return operationClientUuid;
+}
+async function isOutputMatchesContextAsync(fcPort, context) {
+    let fcLogicalTerminationPoint = fcPort["logical-termination-point"];
+    let serverLtpList = await LogicalTerminationPoint.getServerLtpListAsync(fcLogicalTerminationPoint);
+    let httpClientUuid = serverLtpList[0];
+    let applicationName = await HttpClientInterface.getApplicationNameAsync(httpClientUuid);
+    let releaseNumber = await HttpClientInterface.getReleaseNumberAsync(httpClientUuid);
+    return (context == (applicationName + releaseNumber));
 }

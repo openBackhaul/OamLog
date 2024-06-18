@@ -114,10 +114,10 @@ exports.bequeathYourDataAndDie = function (body, user, originator, xCorrelator, 
             customerJourney
           );
         }
-
-        softwareUpgrade.upgradeSoftwareVersion(user, xCorrelator, traceIndicator, customerJourney, forwardingAutomationInputList.length)
-          .catch(err => console.log(`upgradeSoftwareVersion failed with error: ${err}`));
-      }
+      
+      softwareUpgrade.upgradeSoftwareVersion(user, xCorrelator, traceIndicator, customerJourney, forwardingAutomationInputList.length + 1)
+        .catch(err => console.log(`upgradeSoftwareVersion failed with error: ${err}`));
+    }
       resolve();
     } catch (error) {
       reject(error);
@@ -200,7 +200,7 @@ exports.listRecords = async function (body) {
   };
   if (size + from <= 10000) {
     let indexAlias = await getIndexAliasAsync();
-    let client = await elasticsearchService.getClient();
+    let client = await elasticsearchService.getClient(false);
     const result = await client.search({
       index: indexAlias,
       from: from,
@@ -305,7 +305,7 @@ exports.regardApplication = async function (body, user, originator, xCorrelator,
         let ltpConfigurationStatus = await LogicalTerminationPointService.createOrUpdateApplicationLtpsAsync(
           ltpConfigurationInput
         );
-
+        
         let forwardingConfigurationInputList = [];
         let forwardingConstructConfigurationStatus;
         let operationClientConfigurationStatusList = ltpConfigurationStatus.operationClientConfigurationStatusList;
