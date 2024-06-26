@@ -11,6 +11,7 @@ const ForwardingConstructProcessingService = require('onf-core-model-ap/applicat
 const LogicalTerminationPoint = require('onf-core-model-ap/applicationPattern/onfModel/models/LogicalTerminationPoint');
 const forwardingConstructAutomationInput = require('onf-core-model-ap/applicationPattern/onfModel/services/models/forwardingConstruct/AutomationInput');
 const eventDispatcher = require('onf-core-model-ap/applicationPattern/rest/client/eventDispatcher');
+const operationKeyUpdateNotificationService = require('onf-core-model-ap/applicationPattern/onfModel/services/OperationKeyUpdateNotificationService');
 
 var traceIndicatorIncrementer;
 /**
@@ -280,10 +281,10 @@ function isOperationKeyUpdatedOrNot(operationClientUuid) {
     return new Promise(async function (resolve, reject) {
         try {
             let timestampOfCurrentRequest = new Date();
-            OperationClientInterface.turnONNotificationChannel(timestampOfCurrentRequest);
+            operationKeyUpdateNotificationService.turnONNotificationChannel(timestampOfCurrentRequest);
             let waitTime = await IntegerProfile.getIntegerValueForTheIntegerProfileNameAsync("maximumWaitTimeToReceiveOperationKey");
-            let result = await OperationClientInterface.waitUntilOperationKeyIsUpdated(operationClientUuid, timestampOfCurrentRequest, waitTime);
-            OperationClientInterface.turnOFFNotificationChannel(timestampOfCurrentRequest);
+            let result = await operationKeyUpdateNotificationService.waitUntilOperationKeyIsUpdated(operationClientUuid, timestampOfCurrentRequest, waitTime);
+            operationKeyUpdateNotificationService.turnOFFNotificationChannel(timestampOfCurrentRequest);
             resolve(result);
         } catch (error) {
             reject(error);
