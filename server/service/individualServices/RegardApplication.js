@@ -11,8 +11,8 @@ const ForwardingConstructProcessingService = require('onf-core-model-ap/applicat
 const LogicalTerminationPoint = require('onf-core-model-ap/applicationPattern/onfModel/models/LogicalTerminationPoint');
 const forwardingConstructAutomationInput = require('onf-core-model-ap/applicationPattern/onfModel/services/models/forwardingConstruct/AutomationInput');
 const eventDispatcher = require('onf-core-model-ap/applicationPattern/rest/client/eventDispatcher');
+const operationKeyUpdateNotificationService = require('onf-core-model-ap/applicationPattern/onfModel/services/OperationKeyUpdateNotificationService');
 
-var traceIndicatorIncrementer;
 /**
  * This method performs the set of callback to RegardApplicationCausesSequenceForInquiringOamRecords
  * @param {String} applicationName from {$request.body#application-name}
@@ -27,99 +27,117 @@ var traceIndicatorIncrementer;
  * 2. RequestForInquiringOamRecords
  * 3. CreateLinkForReceivingOamRecords
  */
-exports.regardApplication = function (applicationName, releaseNumber, user, xCorrelator, traceIndicator, customerJourney, _traceIndicatorIncrementer) {
+exports.regardApplication = function (applicationName, releaseNumber, user, xCorrelator, traceIndicator, customerJourney, traceIndicatorIncrementer) {
     return new Promise(async function (resolve, reject) {
+        let timestampOfCurrentRequest = new Date();
         try {
-            if (_traceIndicatorIncrementer !== 0) {
-                traceIndicatorIncrementer = _traceIndicatorIncrementer;
-            }
-            const result = await CreateLinkForInquiringOamRecords(applicationName, releaseNumber, user, 
-                xCorrelator, traceIndicator, customerJourney)
-            if(!result['data']['client-successfully-added'] || result['status'] != 200){
-                resolve(
-                    { 
-                        "successfully-connected": false,
-                        "reason-of-failure": `OL_${result['data']['reason-of-failure']}`
-                    }
-                );
-            }
-            else{
+            operationKeyUpdateNotificationService.turnONNotificationChannel(timestampOfCurrentRequest);
+            const result = await CreateLinkForInquiringOamRecords(applicationName,
+                releaseNumber,
+                user,
+                xCorrelator,
+                traceIndicator,
+                customerJourney,
+                traceIndicatorIncrementer++);
+            if (result['status'] != 200) {
+                resolve({
+                    "successfully-connected": false,
+                    "reason-of-failure": "OL_UNKNOWN"
+                });
+            } else if (result['status'] == 200 && !result['data']['client-successfully-added']) {
+                resolve({
+                    "successfully-connected": false,
+                    "reason-of-failure": `OL_${result['data']['reason-of-failure']}`
+                });
+            } else {
                 let forwardingKindName = "RegardApplicationCausesSequenceForInquiringOamRecords.RequestForInquiringOamRecords";
                 let operationClientUuid = await getConsequentOperationClientUuid(forwardingKindName, applicationName, releaseNumber);
-                let isOperationKeyUpdated = await isOperationKeyUpdatedOrNot(operationClientUuid);
-                if(!isOperationKeyUpdated){
+                let waitTime = await IntegerProfile.getIntegerValueForTheIntegerProfileNameAsync("maximumWaitTimeToReceiveOperationKey");
+                let isOperationKeyUpdated = await OperationClientInterface.waitUntilOperationKeyIsUpdated(operationClientUuid, timestampOfCurrentRequest, waitTime);
+
+                if (!isOperationKeyUpdated) {
                     resolve(
-                        { 
+                        {
                             "successfully-connected": false,
                             "reason-of-failure": "OL_MAXIMUM_WAIT_TIME_TO_RECEIVE_OPERATION_KEY_EXCEEDED"
                         }
                     );
-                }else{
-                    const result = await RequestForInquiringOamRecords(applicationName, releaseNumber, user, xCorrelator, traceIndicator, customerJourney)
-                    
-                    if(result['status'] != 204){
+                } else {
+                    const result = await RequestForInquiringOamRecords(applicationName,
+                        releaseNumber,
+                        user,
+                        xCorrelator,
+                        traceIndicator,
+                        customerJourney,
+                        traceIndicatorIncrementer++)
+
+                    if (result['status'] != 204) {
                         resolve(
-                            { 
+                            {
                                 "successfully-connected": false,
-                                "reason-of-failure": `OL_${result['data']['reason-of-failure']}`
+                                "reason-of-failure": "OL_UNKNOWN"
                             }
                         );
                     }
-                    else{
-                        
+                    else {
                         let attempts = 1;
                         let maximumNumberOfAttemptsToCreateLink = await IntegerProfile.getIntegerValueForTheIntegerProfileNameAsync("maximumNumberOfAttemptsToCreateLink");
-                        for(let i=0; i < maximumNumberOfAttemptsToCreateLink; i++){
-                            const result = await CreateLinkForReceivingOamRecords(applicationName, releaseNumber, user, 
-                                xCorrelator, traceIndicator, customerJourney)
-                            if((attempts<=maximumNumberOfAttemptsToCreateLink) 
-                                && (result['data']['client-successfully-added'] == false) 
-                                && ((result['data']['reason-of-failure'] == "ALT_SERVING_APPLICATION_NAME_UNKNOWN") 
-                                || (result['data']['reason-of-failure'] == "ALT_SERVING_APPLICATION_RELEASE_NUMBER_UNKNOWN")))
-                            {
-                                attempts = attempts+1;
-                            }else{
-                                if(!result['data']['client-successfully-added'] || result['status'] != 200){
-                                    resolve(
-                                        { 
-                                            "successfully-connected": false,
-                                            "reason-of-failure": `OL_${result['data']['reason-of-failure']}`
-                                        }
-                                    );
+                        for (let i = 0; i < maximumNumberOfAttemptsToCreateLink; i++) {
+                            const result = await CreateLinkForReceivingOamRecords(applicationName,
+                                releaseNumber,
+                                user,
+                                xCorrelator,
+                                traceIndicator,
+                                customerJourney,
+                                traceIndicatorIncrementer++
+                            );
+                            if ((attempts <= maximumNumberOfAttemptsToCreateLink) &&
+                                ((result['status'] == 200 && result['data']['client-successfully-added'] == false)
+                                    || (result['status'] != 200))) {
+                                attempts = attempts + 1;
+                            } else {
+                                if (result['status'] != 200) {
+                                    resolve({
+                                        "successfully-connected": false,
+                                        "reason-of-failure": "OL_UNKNOWN"
+                                    });
                                     break;
-                                }else{
-                                    // forwardingKindName = "OamRequestCausesLoggingRequest";
-                                    // let servingApplication = await HttpServerInterface.getApplicationNameAsync();
-                                    // let servingApplicationReleaseNumber = await HttpServerInterface.getReleaseNumberAsync();
-                                    // operationClientUuid = await getConsequentOperationClientUuid(forwardingKindName, servingApplication, servingApplicationReleaseNumber);
-                                    // isOperationKeyUpdated = await isOperationKeyUpdatedOrNot(operationClientUuid);
-                                    if(!isOperationKeyUpdated){
-                                        resolve(
-                                            { 
-                                                "successfully-connected": false,
-                                                "reason-of-failure": "OL_MAXIMUM_WAIT_TIME_TO_RECEIVE_OPERATION_KEY_EXCEEDED"
-                                            }
-                                        );
+                                } else if (result['status'] == 200 && !result['data']['client-successfully-added']) {
+                                    resolve({
+                                        "successfully-connected": false,
+                                        "reason-of-failure": `OL_${result['data']['reason-of-failure']}`
+                                    });
+                                    break;
+                                } else {
+                                    let operationServerUuidOfRecordOamRequest = "ol-2-1-0-op-s-is-004";
+                                    let isOperationServerKeyUpdated = await operationKeyUpdateNotificationService.waitUntilOperationKeyIsUpdated(
+                                        operationServerUuidOfRecordOamRequest,
+                                        timestampOfCurrentRequest,
+                                        waitTime);
+                                    if (!isOperationServerKeyUpdated) {
+                                        resolve({
+                                            "successfully-connected": false,
+                                            "reason-of-failure": "OL_MAXIMUM_WAIT_TIME_TO_RECEIVE_OPERATION_KEY_EXCEEDED"
+                                        });
                                         break;
-                                    }
-                                    else{
-                                        resolve(
-                                            { 
-                                                "successfully-connected": true 
-                                            }
-                                        );
+                                    } else {
+                                        resolve({
+                                            "successfully-connected": true
+                                        });
                                         break;
                                     }
                                 }
-                            }  
+                            }
                         }
-                        
+
                     }
-                }  
+                }
             }
-                     
+
         } catch (error) {
             reject(error);
+        } finally {
+            operationKeyUpdateNotificationService.turnOFFNotificationChannel(timestampOfCurrentRequest);
         }
     });
 }
@@ -134,7 +152,7 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
  * @param {String} customerJourney Holds information supporting customer’s journey to which the execution applies
  * @returns {Promise} if operation success then promise resolved with client-successfully-added: boolean, reason-of-failure: string else promise reject
  */
-async function CreateLinkForInquiringOamRecords(applicationName, releaseNumber, user, xCorrelator, traceIndicator, customerJourney) {
+async function CreateLinkForInquiringOamRecords(applicationName, releaseNumber, user, xCorrelator, traceIndicator, customerJourney, traceIndicatorIncrementer) {
     return new Promise(async function (resolve, reject) {
         try {
             let forwardingKindNameOfInquiringServiceRecords = "RegardApplicationCausesSequenceForInquiringOamRecords.CreateLinkForInquiringOamRecords";
@@ -148,9 +166,9 @@ async function CreateLinkForInquiringOamRecords(applicationName, releaseNumber, 
                 requestBody['serving-application-release-number'] = releaseNumber;
                 requestBody['operation-name'] = operationName;
                 requestBody['consuming-application-name'] = await HttpServerInterface.getApplicationNameAsync();
-                requestBody['consuming-application-release-number'] = await HttpServerInterface.getReleaseNumberAsync();    
+                requestBody['consuming-application-release-number'] = await HttpServerInterface.getReleaseNumberAsync();
                 requestBody = onfAttributeFormatter.modifyJsonObjectKeysToKebabCase(requestBody);
-                
+
                 let forwardingAutomation = new ForwardingProcessingInput(
                     forwardingKindNameOfInquiringServiceRecords,
                     requestBody
@@ -159,7 +177,7 @@ async function CreateLinkForInquiringOamRecords(applicationName, releaseNumber, 
                     forwardingAutomation,
                     user,
                     xCorrelator,
-                    traceIndicator + "." + traceIndicatorIncrementer++,
+                    traceIndicator + "." + traceIndicatorIncrementer,
                     customerJourney
                 );
             } catch (error) {
@@ -173,7 +191,7 @@ async function CreateLinkForInquiringOamRecords(applicationName, releaseNumber, 
     });
 }
 
-async function RequestForInquiringOamRecords(applicationName, releaseNumber, user, xCorrelator, traceIndicator, customerJourney) {
+async function RequestForInquiringOamRecords(applicationName, releaseNumber, user, xCorrelator, traceIndicator, customerJourney, traceIndicatorIncrementer) {
     return new Promise(async function (resolve, reject) {
         try {
             /********************************************************************************************************
@@ -195,7 +213,7 @@ async function RequestForInquiringOamRecords(applicationName, releaseNumber, use
                 redirectOamRequestRequestBody['oam-log-port'] = await tcpServerInterface.getLocalPort();
                 redirectOamRequestRequestBody['oam-log-protocol'] = await tcpServerInterface.getLocalProtocol();
                 redirectOamRequestRequestBody = onfAttributeFormatter.modifyJsonObjectKeysToKebabCase(redirectOamRequestRequestBody);
-                
+
                 let forwardingAutomation = new forwardingConstructAutomationInput(
                     redirectOamRequestForwardingName,
                     redirectOamRequestRequestBody,
@@ -209,7 +227,7 @@ async function RequestForInquiringOamRecords(applicationName, releaseNumber, use
                     redirectOamRequestRequestBody,
                     user,
                     xCorrelator,
-                    traceIndicator + "." + traceIndicatorIncrementer++,
+                    traceIndicator + "." + traceIndicatorIncrementer,
                     customerJourney,
                     undefined,
                     undefined,
@@ -237,7 +255,7 @@ async function RequestForInquiringOamRecords(applicationName, releaseNumber, use
  * @param {String} customerJourney Holds information supporting customer’s journey to which the execution applies
  * @returns {Promise} if operation success then promise resolved with client-successfully-added: boolean, reason-of-failure: string else promise reject
  */
-async function CreateLinkForReceivingOamRecords(applicationName, releaseNumber, user, xCorrelator, traceIndicator, customerJourney) {
+async function CreateLinkForReceivingOamRecords(applicationName, releaseNumber, user, xCorrelator, traceIndicator, customerJourney, traceIndicatorIncrementer) {
     return new Promise(async function (resolve, reject) {
         try {
             let forwardingKindNameOfInquiringServiceRecords = "RegardApplicationCausesSequenceForInquiringOamRecords.CreateLinkForReceivingOamRecords";
@@ -251,9 +269,9 @@ async function CreateLinkForReceivingOamRecords(applicationName, releaseNumber, 
                 requestBody['serving-application-release-number'] = servingApplicationReleaseNumber;
                 requestBody['operation-name'] = operationName;
                 requestBody['consuming-application-name'] = applicationName;
-                requestBody['consuming-application-release-number'] = releaseNumber;    
+                requestBody['consuming-application-release-number'] = releaseNumber;
                 requestBody = onfAttributeFormatter.modifyJsonObjectKeysToKebabCase(requestBody);
-                
+
                 let forwardingAutomation = new ForwardingProcessingInput(
                     forwardingKindNameOfInquiringServiceRecords,
                     requestBody
@@ -262,28 +280,13 @@ async function CreateLinkForReceivingOamRecords(applicationName, releaseNumber, 
                     forwardingAutomation,
                     user,
                     xCorrelator,
-                    traceIndicator + "." + traceIndicatorIncrementer++,
+                    traceIndicator + "." + traceIndicatorIncrementer,
                     customerJourney
                 );
             } catch (error) {
                 console.log(error);
                 throw "operation is not success";
             }
-            resolve(result);
-        } catch (error) {
-            reject(error);
-        }
-    });
-}
-
-function isOperationKeyUpdatedOrNot(operationClientUuid) {
-    return new Promise(async function (resolve, reject) {
-        try {
-            let timestampOfCurrentRequest = new Date();
-            OperationClientInterface.turnONNotificationChannel(timestampOfCurrentRequest);
-            let waitTime = await IntegerProfile.getIntegerValueForTheIntegerProfileNameAsync("maximumWaitTimeToReceiveOperationKey");
-            let result = await OperationClientInterface.waitUntilOperationKeyIsUpdated(operationClientUuid, timestampOfCurrentRequest, waitTime);
-            OperationClientInterface.turnOFFNotificationChannel(timestampOfCurrentRequest);
             resolve(result);
         } catch (error) {
             reject(error);
