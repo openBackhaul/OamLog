@@ -289,7 +289,7 @@ exports.regardApplication = async function (body, user, originator, xCorrelator,
       let oamRequestOperation = "/v1/redirect-oam-request-information";
       let operationNamesByAttributes = new Map();
       operationNamesByAttributes.set("redirect-oam-request-information", oamRequestOperation);
-      await lock.acquire("Register application", async () => {
+      await lock.acquire("Regard application", async () => {
         let httpClientUuid = await httpClientInterface.getHttpClientUuidExcludingOldReleaseAndNewRelease(
           applicationName, releaseNumber, NEW_RELEASE_FORWARDING_NAME
         )
@@ -338,7 +338,7 @@ exports.regardApplication = async function (body, user, originator, xCorrelator,
           traceIndicator,
           customerJourney
         );
-      });
+      
 
       /****************************************************************************************
        * Prepare attributes to automate forwarding-construct
@@ -353,6 +353,7 @@ exports.regardApplication = async function (body, user, originator, xCorrelator,
         applicationLayerTopologyForwardingInputList.length + 1
       );
       resolve(result);
+    });
     } catch (error) {
       reject(error);
     }

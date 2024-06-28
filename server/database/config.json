@@ -234,7 +234,7 @@
               "maximum": 5000
             },
             "integer-profile-configuration": {
-              "integer-value": 500
+              "integer-value": 5000
             }
           }
         },
