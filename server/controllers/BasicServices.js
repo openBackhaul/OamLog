@@ -392,7 +392,7 @@ module.exports.updateClient = async function updateClient(req, res, next, body, 
   ExecutionAndTraceService.recordServiceRequest(xCorrelator, traceIndicator, user, originator, req.url, responseCode, req.body, responseBodyToDocument, execTime);
 };
 
-module.exports.updateClientOfSubsequentRelease = async function updateClientOfSubsequentRelease (req, res, next, body, user, originator, xCorrelator, traceIndicator, customerJourney) {
+module.exports.UpdateClientOfSubsequentRelease = async function UpdateClientOfSubsequentRelease (req, res, next, body, user, originator, xCorrelator, traceIndicator, customerJourney) {
   let startTime = process.hrtime();
   let responseCode = responseCodeEnum.code.OK;
   let responseBodyToDocument = {};
