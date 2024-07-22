@@ -289,6 +289,7 @@ exports.regardApplication = async function (body, user, originator, xCorrelator,
       let oamRequestOperation = "/v1/redirect-oam-request-information";
       let operationNamesByAttributes = new Map();
       operationNamesByAttributes.set("redirect-oam-request-information", oamRequestOperation);
+      let applicationLayerTopologyForwardingInputList;
       await lock.acquire("Regard application", async () => {
         let httpClientUuid = await httpClientInterface.getHttpClientUuidExcludingOldReleaseAndNewRelease(
           applicationName, releaseNumber, NEW_RELEASE_FORWARDING_NAME
@@ -325,7 +326,7 @@ exports.regardApplication = async function (body, user, originator, xCorrelator,
         /***********************************************************************************
          * forwardings for application layer topology
          ************************************************************************************/
-        let applicationLayerTopologyForwardingInputList = await prepareALTForwardingAutomation.getALTForwardingAutomationInputAsync(
+        applicationLayerTopologyForwardingInputList = await prepareALTForwardingAutomation.getALTForwardingAutomationInputAsync(
           ltpConfigurationStatus,
           forwardingConstructConfigurationStatus
         );
@@ -337,23 +338,23 @@ exports.regardApplication = async function (body, user, originator, xCorrelator,
           xCorrelator,
           traceIndicator,
           customerJourney
-        );
-      
+        );      
 
       /****************************************************************************************
        * Prepare attributes to automate forwarding-construct
        ****************************************************************************************/
-      let result = await RegardApplication.regardApplication(
-        applicationName,
-        releaseNumber,
-        user,
-        xCorrelator,
-        traceIndicator,
-        customerJourney,
-        applicationLayerTopologyForwardingInputList.length + 1
-      );
-      resolve(result);
+      
     });
+    let result = await RegardApplication.regardApplication(
+      applicationName,
+      releaseNumber,
+      user,
+      xCorrelator,
+      traceIndicator,
+      customerJourney,
+      applicationLayerTopologyForwardingInputList.length + 1
+    );
+    resolve(result);
     } catch (error) {
       reject(error);
     }
