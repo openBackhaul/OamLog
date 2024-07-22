@@ -82,7 +82,7 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
                     else {
                         let attempts = 1;
                         let maximumNumberOfAttemptsToCreateLink = await IntegerProfile.getIntegerValueForTheIntegerProfileNameAsync("maximumNumberOfAttemptsToCreateLink");
-                        for (let i = 0; i < maximumNumberOfAttemptsToCreateLink; i++) {
+                        for (let attempts = 1; attempts <= maximumNumberOfAttemptsToCreateLink; attempts++) {
                             const result = await CreateLinkForReceivingOamRecords(applicationName,
                                 releaseNumber,
                                 user,
@@ -91,11 +91,18 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
                                 customerJourney,
                                 traceIndicatorIncrementer++
                             );
-                            if ((attempts <= maximumNumberOfAttemptsToCreateLink) &&
-                                ((result['status'] == 200 && result['data']['client-successfully-added'] == false)
-                                    || (result['status'] != 200))) {
-                                attempts = attempts + 1;
-                            } else {
+                            if (attempts == maximumNumberOfAttemptsToCreateLink &&
+                                (result['status'] == 200 && result['data']['client-successfully-added'] == false)) {
+                                resolve({
+                                    "successfully-connected": false,
+                                    "reason-of-failure": `OL_${result['data']['reason-of-failure']}`
+                                });
+                            } else if(attempts == maximumNumberOfAttemptsToCreateLink && result['status'] != 200){
+                                resolve({
+                                    "successfully-connected": false,
+                                    "reason-of-failure": "OL_UNKNOWN"
+                                });
+                            }else {
                                 if (result['status'] != 200) {
                                     resolve({
                                         "successfully-connected": false,
