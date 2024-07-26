@@ -16,8 +16,12 @@ const softwareUpgrade = require('./individualServices/SoftwareUpgrade');
 const { getIndexAliasAsync, createResultArray, elasticsearchService } = require('onf-core-model-ap/applicationPattern/services/ElasticsearchService');
 const LogicalTerminationPointConfigurationStatus = require('onf-core-model-ap/applicationPattern/onfModel/services/models/logicalTerminationPoint/ConfigurationStatus');
 const TcpObject = require('onf-core-model-ap/applicationPattern/onfModel/services/models/TcpObject');
+const prepareALTForwardingAutomation = require('onf-core-model-ap-bs/basicServices/services/PrepareALTForwardingAutomation');
+const RegardApplication = require('./individualServices/RegardApplication');
 
 const NEW_RELEASE_FORWARDING_NAME = 'PromptForBequeathingDataCausesTransferOfListOfApplications';
+const AsyncLock = require('async-lock');
+const lock = new AsyncLock();
 
 /**
  * Initiates process of embedding a new release
@@ -65,7 +69,7 @@ exports.bequeathYourDataAndDie = function (body, user, originator, xCorrelator, 
         if (applicationName != currentNewReleaseApplicationName) {
           update.isApplicationNameUpdated = await httpClientInterface.setApplicationNameAsync(newReleaseHttpClientLtpUuid, applicationName);
         }
-       
+
         if (protocol != currentNewReleaseRemoteProtocol) {
           update.isProtocolUpdated = await tcpClientInterface.setRemoteProtocolAsync(newReleaseTcpClientUuid, protocol);
         }
@@ -111,7 +115,7 @@ exports.bequeathYourDataAndDie = function (body, user, originator, xCorrelator, 
           );
         }
       
-      softwareUpgrade.upgradeSoftwareVersion(user, xCorrelator, traceIndicator, customerJourney, forwardingAutomationInputList.length)
+      softwareUpgrade.upgradeSoftwareVersion(user, xCorrelator, traceIndicator, customerJourney, forwardingAutomationInputList.length + 1)
         .catch(err => console.log(`upgradeSoftwareVersion failed with error: ${err}`));
     }
       resolve();
@@ -178,7 +182,7 @@ exports.disregardApplication = async function (body, user, originator, xCorrelat
  * returns List
  **/
 exports.listApplications = async function () {
-  let forwadingName = "NewApplicationCausesRequestForOamRequestInformation"
+  let forwadingName = "RegardApplicationCausesSequenceForInquiringOamRecords.RequestForInquiringOamRecords"
   let applicationList = await LogicalTerminationPointServiceOfUtility.getAllApplicationList(forwadingName);
   return onfAttributeFormatter.modifyJsonObjectKeysToKebabCase(applicationList);
 }
@@ -196,7 +200,7 @@ exports.listRecords = async function (body) {
   };
   if (size + from <= 10000) {
     let indexAlias = await getIndexAliasAsync();
-    let client = await elasticsearchService.getClient();
+    let client = await elasticsearchService.getClient(false);
     const result = await client.search({
       index: indexAlias,
       from: from,
@@ -277,62 +281,84 @@ exports.recordOamRequest = async function (body) {
  * no response value expected for this operation
  **/
 exports.regardApplication = async function (body, user, originator, xCorrelator, traceIndicator, customerJourney, operationServerName) {
-  let applicationName = body["application-name"];
-  let releaseNumber = body["release-number"];
-  let tcpServerList = [new TcpObject(body["protocol"], body["address"], body["port"])];
-  let oamRequestOperation = "/v1/redirect-oam-request-information";
-  let operationNamesByAttributes = new Map();
-  operationNamesByAttributes.set("redirect-oam-request-information", oamRequestOperation);
+  return new Promise(async function (resolve, reject) {
+    try {
+      let applicationName = body["application-name"];
+      let releaseNumber = body["release-number"];
+      let tcpServerList = [new TcpObject(body["protocol"], body["address"], body["port"])];
+      let oamRequestOperation = "/v1/redirect-oam-request-information";
+      let operationNamesByAttributes = new Map();
+      operationNamesByAttributes.set("redirect-oam-request-information", oamRequestOperation);
+      let applicationLayerTopologyForwardingInputList;
+      await lock.acquire("Regard application", async () => {
+        let httpClientUuid = await httpClientInterface.getHttpClientUuidExcludingOldReleaseAndNewRelease(
+          applicationName, releaseNumber, NEW_RELEASE_FORWARDING_NAME
+        )
+        let ltpConfigurationInput = new LogicalTerminationPointConfigurationInput(
+          httpClientUuid,
+          applicationName,
+          releaseNumber,
+          tcpServerList,
+          operationServerName,
+          operationNamesByAttributes,
+          individualServicesOperationsMapping.individualServicesOperationsMapping
+        );
+        let ltpConfigurationStatus = await LogicalTerminationPointService.createOrUpdateApplicationLtpsAsync(
+          ltpConfigurationInput
+        );
+        
+        let forwardingConfigurationInputList = [];
+        let forwardingConstructConfigurationStatus;
+        let operationClientConfigurationStatusList = ltpConfigurationStatus.operationClientConfigurationStatusList;
 
-  let httpClientUuid = await httpClientInterface.getHttpClientUuidExcludingOldReleaseAndNewRelease(
-    applicationName, releaseNumber, NEW_RELEASE_FORWARDING_NAME
-  )
-  let ltpConfigurationInput = new LogicalTerminationPointConfigurationInput(
-    httpClientUuid,
-    applicationName,
-    releaseNumber,
-    tcpServerList,
-    operationServerName,
-    operationNamesByAttributes,
-    individualServicesOperationsMapping.individualServicesOperationsMapping
-  );
-  let ltpConfigurationStatus = await LogicalTerminationPointService.createOrUpdateApplicationLtpsAsync(
-    ltpConfigurationInput
-  );
+        if (operationClientConfigurationStatusList) {
+          forwardingConfigurationInputList = await prepareForwardingConfiguration.regardApplication(
+            operationClientConfigurationStatusList,
+            oamRequestOperation
+          );
+          forwardingConstructConfigurationStatus = await ForwardingConfigurationService.
+            configureForwardingConstructAsync(
+              operationServerName,
+              forwardingConfigurationInputList
+            );
+        }
 
-  let forwardingConfigurationInputList = [];
-  let forwardingConstructConfigurationStatus;
-  let operationClientConfigurationStatusList = ltpConfigurationStatus.operationClientConfigurationStatusList;
+        /***********************************************************************************
+         * forwardings for application layer topology
+         ************************************************************************************/
+        applicationLayerTopologyForwardingInputList = await prepareALTForwardingAutomation.getALTForwardingAutomationInputAsync(
+          ltpConfigurationStatus,
+          forwardingConstructConfigurationStatus
+        );
 
-  if (operationClientConfigurationStatusList) {
-    forwardingConfigurationInputList = await prepareForwardingConfiguration.regardApplication(
-      operationClientConfigurationStatusList,
-      oamRequestOperation
+        await ForwardingAutomationService.automateForwardingConstructAsync(
+          operationServerName,
+          applicationLayerTopologyForwardingInputList,
+          user,
+          xCorrelator,
+          traceIndicator,
+          customerJourney
+        );      
+
+      /****************************************************************************************
+       * Prepare attributes to automate forwarding-construct
+       ****************************************************************************************/
+      
+    });
+    let result = await RegardApplication.regardApplication(
+      applicationName,
+      releaseNumber,
+      user,
+      xCorrelator,
+      traceIndicator,
+      customerJourney,
+      applicationLayerTopologyForwardingInputList.length + 1
     );
-    forwardingConstructConfigurationStatus = await ForwardingConfigurationService.
-      configureForwardingConstructAsync(
-        operationServerName,
-        forwardingConfigurationInputList
-      );
-  }
-
-  /****************************************************************************************
-   * Prepare attributes to automate forwarding-construct
-   ****************************************************************************************/
-  let forwardingAutomationInputList = await prepareForwardingAutomation.regardApplication(
-    ltpConfigurationStatus,
-    forwardingConstructConfigurationStatus,
-    applicationName,
-    releaseNumber
-  );
-  ForwardingAutomationService.automateForwardingConstructAsync(
-    operationServerName,
-    forwardingAutomationInputList,
-    user,
-    xCorrelator,
-    traceIndicator,
-    customerJourney
-  );
+    resolve(result);
+    } catch (error) {
+      reject(error);
+    }
+  });
 }
 
 
@@ -342,4 +368,4 @@ exports.regardApplication = async function (body, user, originator, xCorrelator,
 
 
 
-      
+
