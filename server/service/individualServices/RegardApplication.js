@@ -80,7 +80,6 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
                         );
                     }
                     else {
-                        let attempts = 1;
                         let maximumNumberOfAttemptsToCreateLink = await IntegerProfile.getIntegerValueForTheIntegerProfileNameAsync("maximumNumberOfAttemptsToCreateLink");
                         for (let attempts = 1; attempts <= maximumNumberOfAttemptsToCreateLink; attempts++) {
                             const result = await CreateLinkForReceivingOamRecords(applicationName,
