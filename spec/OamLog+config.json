@@ -223,6 +223,44 @@
           }
         },
         {
+          "uuid": "ol-2-1-0-response-p-009",
+          "profile-name": "response-profile-1-0:PROFILE_NAME_TYPE_GENERIC_RESPONSE_PROFILE",
+          "response-profile-1-0:response-profile-pac": {
+            "response-profile-capability": {
+              "operation-name": "/v1/inform-about-release-history-in-generic-representation",
+              "field-name": {
+                "field-name-reference": "/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-http-s-000/layer-protocol=0/http-server-interface-1-0:http-server-interface-pac/http-server-interface-capability/release-list=2/release-number"
+              },
+              "description": "Represents 2.1.1",
+              "datatype": "string"
+            },
+            "response-profile-configuration": {
+              "value": {
+                "value-reference": "/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-http-s-000/layer-protocol=0/http-server-interface-1-0:http-server-interface-pac/http-server-interface-capability/release-list=2/changes"
+              }
+            }
+          }
+        },
+        {
+          "uuid": "ol-2-1-0-response-p-010",
+          "profile-name": "response-profile-1-0:PROFILE_NAME_TYPE_GENERIC_RESPONSE_PROFILE",
+          "response-profile-1-0:response-profile-pac": {
+            "response-profile-capability": {
+              "operation-name": "/v1/inform-about-release-history-in-generic-representation",
+              "field-name": {
+                "field-name-reference": "/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-http-s-000/layer-protocol=0/http-server-interface-1-0:http-server-interface-pac/http-server-interface-capability/release-list=3/release-number"
+              },
+              "description": "Represents 2.1.2",
+              "datatype": "string"
+            },
+            "response-profile-configuration": {
+              "value": {
+                "value-reference": "/core-model-1-4:control-construct/logical-termination-point=ol-2-1-0-http-s-000/layer-protocol=0/http-server-interface-1-0:http-server-interface-pac/http-server-interface-capability/release-list=3/changes"
+              }
+            }
+          }
+        },
+        {
           "uuid": "ol-2-1-0-integer-p-000",
           "profile-name": "integer-profile-1-0:PROFILE_NAME_TYPE_INTEGER_PROFILE",
           "integer-profile-1-0:integer-profile-pac": {
@@ -995,6 +1033,12 @@
                     "release-number": "2.1.1",
                     "release-date": "12.02.2024",
                     "changes": "Update on ApplicationPattern 2.1.1 and fixing several findings."
+                  },
+                  {
+                    "local-id": "3",
+                    "release-number": "2.1.2",
+                    "release-date": "14.08.2024",
+                    "changes": "Fixing findings in 2.1.1."
                   }
                 ]
               }
