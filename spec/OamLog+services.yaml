@@ -4,75 +4,75 @@ servers:
     own-oam:
       basic:
         - operation-name: /v1/register-yourself
-          uuid: ol-2-1-0-op-s-bm-000
+          uuid: ol-2-1-2-op-s-bm-000
         - operation-name: /v1/embed-yourself
-          uuid: ol-2-1-0-op-s-bm-001
+          uuid: ol-2-1-2-op-s-bm-001
         - operation-name: /v1/redirect-service-request-information
-          uuid: ol-2-1-0-op-s-bm-002
+          uuid: ol-2-1-2-op-s-bm-002
         - operation-name: /v1/redirect-oam-request-information
-          uuid: ol-2-1-0-op-s-bm-003
+          uuid: ol-2-1-2-op-s-bm-003
         - operation-name: /v1/end-subscription
-          uuid: ol-2-1-0-op-s-bm-004
+          uuid: ol-2-1-2-op-s-bm-004
         - operation-name: /v1/inquire-oam-request-approvals
-          uuid: ol-2-1-0-op-s-bm-005
+          uuid: ol-2-1-2-op-s-bm-005
         - operation-name: /v1/update-client
-          uuid: ol-2-1-0-op-s-bm-007
+          uuid: ol-2-1-2-op-s-bm-007
         - operation-name: /v1/list-ltps-and-fcs
-          uuid: ol-2-1-0-op-s-bm-008
+          uuid: ol-2-1-2-op-s-bm-008
         - operation-name: /v1/redirect-topology-change-information
-          uuid: ol-2-1-0-op-s-bm-009
+          uuid: ol-2-1-2-op-s-bm-009
         - operation-name: /v1/update-operation-key
-          uuid: ol-2-1-0-op-s-bm-010
+          uuid: ol-2-1-2-op-s-bm-010
         - operation-name: /v1/update-operation-client
-          uuid: ol-2-1-0-op-s-bm-011
+          uuid: ol-2-1-2-op-s-bm-011
         - operation-name: /v1/inquire-basic-auth-approvals
-          uuid: ol-2-1-0-op-s-bm-012
+          uuid: ol-2-1-2-op-s-bm-012
         - operation-name: /v1/dispose-remainders-of-deregistered-application
-          uuid: ol-2-1-0-op-s-bm-013
+          uuid: ol-2-1-2-op-s-bm-013
         - operation-name: /v1/inform-about-preceding-release
-          uuid: ol-2-1-0-op-s-bm-014
+          uuid: ol-2-1-2-op-s-bm-014
         - operation-name: /v1/update-client-of-subsequent-release
-          uuid: ol-2-1-0-op-s-bm-015
+          uuid: ol-2-1-2-op-s-bm-015
       individual:
         - operation-name: /v1/bequeath-your-data-and-die
-          uuid: ol-2-1-0-op-s-im-000
+          uuid: ol-2-1-2-op-s-im-000
     service:
       basic:
         - operation-name: /v1/start-application-in-generic-representation
-          uuid: ol-2-1-0-op-s-bs-000
+          uuid: ol-2-1-2-op-s-bs-000
         - operation-name: /v1/inform-about-application
-          uuid: ol-2-1-0-op-s-bs-001
+          uuid: ol-2-1-2-op-s-bs-001
         - operation-name: /v1/inform-about-application-in-generic-representation
-          uuid: ol-2-1-0-op-s-bs-002
+          uuid: ol-2-1-2-op-s-bs-002
         - operation-name: /v1/inform-about-release-history
-          uuid: ol-2-1-0-op-s-bs-003
+          uuid: ol-2-1-2-op-s-bs-003
         - operation-name: /v1/inform-about-release-history-in-generic-representation
-          uuid: ol-2-1-0-op-s-bs-004
+          uuid: ol-2-1-2-op-s-bs-004
         - operation-name: /docs
-          uuid: ol-2-1-0-op-s-bs-005
+          uuid: ol-2-1-2-op-s-bs-005
       individual:
         - operation-name: /v1/regard-application
-          uuid: ol-2-1-0-op-s-is-001
+          uuid: ol-2-1-2-op-s-is-001
         - operation-name: /v1/disregard-application
-          uuid: ol-2-1-0-op-s-is-002
+          uuid: ol-2-1-2-op-s-is-002
         - operation-name: /v1/list-applications
-          uuid: ol-2-1-0-op-s-is-003
+          uuid: ol-2-1-2-op-s-is-003
         - operation-name: /v1/record-oam-request
-          uuid: ol-2-1-0-op-s-is-004
+          uuid: ol-2-1-2-op-s-is-004
         - operation-name: /v1/list-records
-          uuid: ol-2-1-0-op-s-is-005
+          uuid: ol-2-1-2-op-s-is-005
         - operation-name: /v1/list-records-of-application
-          uuid: ol-2-1-0-op-s-is-006
+          uuid: ol-2-1-2-op-s-is-006
   http-server:
     own-application-name: OamLog
-    own-release-number: 2.1.1
-    uuid: ol-2-1-0-http-s-000
+    own-release-number: 2.1.2
+    uuid: ol-2-1-2-http-s-000
   tcp-server:
     - description: Without TLS layer
       local-protocol: http
       own-ip-address: 127.0.0.1
-      own-tcp-port: 3027
-      uuid: ol-2-1-0-tcp-s-000
+      own-tcp-port: 3034
+      uuid: ol-2-1-2-tcp-s-000
 
 
 clients:
@@ -80,30 +80,30 @@ clients:
   - http-client:
       application-name: ElasticSearch
       release-number: 1.0.0
-      uuid: ol-2-1-0-http-c-es-1-0-0-000
+      uuid: ol-2-1-2-http-c-es-1-0-0-000
     tcp-client:
       remote-protocol: http
       ip-address: 127.0.0.1
       tcp-port: 3015
-      uuid: ol-2-1-0-tcp-c-es-1-0-0-000
+      uuid: ol-2-1-2-tcp-c-es-1-0-0-000
     elasticsearch-client:
-      uuid: ol-2-1-0-es-c-es-1-0-0-000
-      index-alias: ol-2-0-1
+      uuid: ol-2-1-2-es-c-es-1-0-0-000
+      index-alias: ol-2-1-2
 
   - http-client:
       application-name: OamLog
-      release-number: 2.0.1
-      uuid: ol-2-1-0-http-c-or-2-0-1-000
+      release-number: 2.1.1
+      uuid: ol-2-1-2-http-c-or-2-1-1-000
     tcp-client:
       remote-protocol: http
       ip-address: 127.0.0.1
-      tcp-port: 3011
-      uuid: ol-2-1-0-tcp-c-or-2-0-1-000
+      tcp-port: 3027
+      uuid: ol-2-1-2-tcp-c-or-2-1-1-000
     operation-clients:
       own-oam:
         basic:
           - operation-name: /v1/bequeath-your-data-and-die
-            uuid: ol-2-1-0-op-c-bm-or-2-0-1-000
+            uuid: ol-2-1-2-op-c-bm-or-2-1-1-000
         individual:
       service:
         basic:
@@ -111,180 +111,180 @@ clients:
 
   - http-client:
       application-name: NewRelease
-      release-number: 2.1.0
-      uuid: ol-2-1-0-http-c-nr-2-1-0-000
+      release-number: 2.1.2
+      uuid: ol-2-1-2-http-c-nr-2-1-2-000
     tcp-client:
       remote-protocol: http
       ip-address: 127.0.0.1
-      tcp-port: 3027
-      uuid: ol-2-1-0-tcp-c-nr-2-1-0-000
+      tcp-port: 3034
+      uuid: ol-2-1-2-tcp-c-nr-2-1-2-000
     operation-clients:
       own-oam:
         basic:
         individual:
           - operation-name: /v1/regard-application
-            uuid: ol-2-1-0-op-c-im-nr-2-1-0-000
+            uuid: ol-2-1-2-op-c-im-nr-2-1-2-000
       service:
         basic:
         individual:
 
   - http-client:
       application-name: RegistryOffice
-      release-number: 2.1.0
-      uuid: ol-2-1-0-http-c-ro-2-1-0-000
+      release-number: 2.1.2
+      uuid: ol-2-1-2-http-c-ro-2-1-2-000
     tcp-client:
       remote-protocol: http
       ip-address: 127.0.0.1
-      tcp-port: 3024
-      uuid: ol-2-1-0-tcp-c-ro-2-1-0-000
+      tcp-port: 3031
+      uuid: ol-2-1-2-tcp-c-ro-2-1-2-000
     operation-clients:
       own-oam:
         basic:
           - operation-name: /v2/register-application
-            uuid: ol-2-1-0-op-c-bm-ro-2-1-0-000
+            uuid: ol-2-1-2-op-c-bm-ro-2-1-2-000
           - operation-name: /v1/relay-server-replacement
-            uuid: ol-2-1-0-op-c-bm-ro-2-1-0-001
+            uuid: ol-2-1-2-op-c-bm-ro-2-1-2-001
           - operation-name: /v1/deregister-application
-            uuid: ol-2-1-0-op-c-bm-ro-2-1-0-002
+            uuid: ol-2-1-2-op-c-bm-ro-2-1-2-002
           - operation-name: /v1/relay-operation-update
-            uuid: ol-2-1-0-op-c-bm-ro-2-1-0-003
+            uuid: ol-2-1-2-op-c-bm-ro-2-1-2-003
         individual:
           - operation-name: /v1/redirect-oam-request-information
-            uuid: ol-2-1-0-op-c-im-ro-2-1-0-004
+            uuid: ol-2-1-2-op-c-im-ro-2-1-2-004
       service:
         basic:
         individual:
 
   - http-client:
       application-name: TypeApprovalRegister
-      release-number: 2.1.0
-      uuid: ol-2-1-0-http-c-tar-2-1-0-000
+      release-number: 2.1.2
+      uuid: ol-2-1-2-http-c-tar-2-1-2-000
     tcp-client:
       remote-protocol: http
       ip-address: 127.0.0.1
-      tcp-port: 3025
-      uuid: ol-2-1-0-tcp-c-tar-2-1-0-000
+      tcp-port: 3032
+      uuid: ol-2-1-2-tcp-c-tar-2-1-2-000
     operation-clients:
       own-oam:
         basic:
         individual:
           - operation-name: /v1/redirect-oam-request-information
-            uuid: ol-2-1-0-op-c-im-tar-2-1-0-004
+            uuid: ol-2-1-2-op-c-im-tar-2-1-2-004
       service:
         basic:
         individual:
 
   - http-client:
       application-name: ExecutionAndTraceLog
-      release-number: 2.1.0
-      uuid: ol-2-1-0-http-c-eatl-2-1-0-000
+      release-number: 2.1.2
+      uuid: ol-2-1-2-http-c-eatl-2-1-2-000
     tcp-client:
       remote-protocol: http
       ip-address: 127.0.0.1
-      tcp-port: 3026
-      uuid: ol-2-1-0-tcp-c-eatl-2-1-0-000
+      tcp-port: 3033
+      uuid: ol-2-1-2-tcp-c-eatl-2-1-2-000
     operation-clients:
       own-oam:
         basic:
         individual:
           - operation-name: /v1/redirect-oam-request-information
-            uuid: ol-2-1-0-op-c-im-eatl-2-1-0-004
+            uuid: ol-2-1-2-op-c-im-eatl-2-1-2-004
       service:
         basic:
           - operation-name: /v1/record-service-request
-            uuid: ol-2-1-0-op-c-bs-eatl-2-1-0-000
+            uuid: ol-2-1-2-op-c-bs-eatl-2-1-2-000
         individual:
 
   - http-client:
       application-name: OamLog
-      release-number: 2.0.1
-      uuid: ol-2-1-0-http-c-ol-2-0-1-000
+      release-number: 2.1.2
+      uuid: ol-2-1-2-http-c-ol-2-1-2-000
     tcp-client:
       remote-protocol: http
       ip-address: 127.0.0.1
-      tcp-port: 3011
-      uuid: ol-2-1-0-tcp-c-ol-2-0-1-000
+      tcp-port: 3034
+      uuid: ol-2-1-2-tcp-c-ol-2-1-2-000
     operation-clients:
       own-oam:
         basic:
         individual:
           - operation-name: /v1/redirect-oam-request-information
-            uuid: ol-2-1-0-op-c-im-ol-2-0-1-004
+            uuid: ol-2-1-2-op-c-im-ol-2-1-2-004
       service:
         basic:
           - operation-name: /v1/record-oam-request
-            uuid: ol-2-1-0-op-c-bs-ol-2-0-1-000
+            uuid: ol-2-1-2-op-c-bs-ol-2-1-2-000
         individual:
 
   - http-client:
       application-name: AccessAdministration
-      release-number: 2.1.0
-      uuid: ol-2-1-0-http-c-aa-2-1-0-000
+      release-number: 2.1.2
+      uuid: ol-2-1-2-http-c-aa-2-1-2-000
     tcp-client:
       remote-protocol: http
       ip-address: 127.0.0.1
-      tcp-port: 3028
-      uuid: ol-2-1-0-tcp-c-aa-2-1-0-000
+      tcp-port: 3035
+      uuid: ol-2-1-2-tcp-c-aa-2-1-2-000
     operation-clients:
       own-oam:
         basic:
         individual:
           - operation-name: /v1/redirect-oam-request-information
-            uuid: ol-2-1-0-op-c-im-aa-2-1-0-004
+            uuid: ol-2-1-2-op-c-im-aa-2-1-2-004
       service:
         basic:
           - operation-name: /v1/approve-basic-auth-request
-            uuid: ol-2-1-0-op-c-bs-aa-2-1-0-000
+            uuid: ol-2-1-2-op-c-bs-aa-2-1-2-000
         individual:
 
   - http-client:
       application-name: ApplicationLayerTopology
-      release-number: 2.1.0
-      uuid: ol-2-1-0-http-c-alt-2-1-0-000
+      release-number: 2.1.2
+      uuid: ol-2-1-2-http-c-alt-2-1-2-000
     tcp-client:
       remote-protocol: http
       ip-address: 127.0.0.1
-      tcp-port: 3029
-      uuid: ol-2-1-0-tcp-c-alt-2-1-0-000
+      tcp-port: 3036
+      uuid: ol-2-1-2-tcp-c-alt-2-1-2-000
     operation-clients:
       own-oam:
         basic:
           - operation-name: /v1/update-all-ltps-and-fcs
-            uuid: ol-2-1-0-op-c-bm-alt-2-1-0-000
+            uuid: ol-2-1-2-op-c-bm-alt-2-1-2-000
           - operation-name: /v1/update-ltp
-            uuid: ol-2-1-0-op-c-bm-alt-2-1-0-001
+            uuid: ol-2-1-2-op-c-bm-alt-2-1-2-001
           - operation-name: /v1/delete-ltp-and-dependents
-            uuid: ol-2-1-0-op-c-bm-alt-2-1-0-002
+            uuid: ol-2-1-2-op-c-bm-alt-2-1-2-002
           - operation-name: /v1/update-fc
-            uuid: ol-2-1-0-op-c-bm-alt-2-1-0-003
+            uuid: ol-2-1-2-op-c-bm-alt-2-1-2-003
           - operation-name: /v1/update-fc-port
-            uuid: ol-2-1-0-op-c-bm-alt-2-1-0-004
+            uuid: ol-2-1-2-op-c-bm-alt-2-1-2-004
           - operation-name: /v1/delete-fc-port
-            uuid: ol-2-1-0-op-c-bm-alt-2-1-0-005
+            uuid: ol-2-1-2-op-c-bm-alt-2-1-2-005
         individual:
           - operation-name: /v1/redirect-oam-request-information
-            uuid: ol-2-1-0-op-c-im-alt-2-1-0-004
+            uuid: ol-2-1-2-op-c-im-alt-2-1-2-004
       service:
         basic:
         individual:
           - operation-name: /v1/add-operation-client-to-link
-            uuid: ol-2-1-0-op-c-is-alt-2-1-0-000
+            uuid: ol-2-1-2-op-c-is-alt-2-1-2-000
 
   - http-client:
       application-name: OperationKeyManagement
-      release-number: 2.1.0
-      uuid: ol-2-1-0-http-c-okm-2-1-0-000
+      release-number: 2.1.2
+      uuid: ol-2-1-2-http-c-okm-2-1-2-000
     tcp-client:
       remote-protocol: http
       ip-address: 127.0.0.1
-      tcp-port: 3030
-      uuid: ol-2-1-0-tcp-c-okm-2-1-0-000
+      tcp-port: 3037
+      uuid: ol-2-1-2-tcp-c-okm-2-1-2-000
     operation-clients:
       own-oam:
         basic:
         individual:
           - operation-name: /v1/redirect-oam-request-information
-            uuid: ol-2-1-0-op-c-im-okm-2-1-0-004
+            uuid: ol-2-1-2-op-c-im-okm-2-1-2-004
       service:
         basic:
         individual:
