@@ -672,10 +672,11 @@ paths:
                           - 'OL_ALT_CONSUMING_APPLICATION_NAME_UNKNOWN'
                           - 'OL_ALT_CONSUMING_APPLICATION_RELEASE_NUMBER_UNKNOWN'
                           - 'OL_ALT_UNKNOWN'
-                          - 'OL_NOT_REACHABLE'
+                          - 'OL_DID_NOT_REACH_ALT'
+                          - 'OL_DID_NOT_REACH_NEW_APPLICATION'
                           - 'OL_UNKNOWN'
                           - 'OL_MAXIMUM_WAIT_TIME_TO_RECEIVE_OPERATION_KEY_EXCEEDED'
-                        description: 'Reasons provided by ALT to be pre-fixed with OL_. If (NOT (200 OR 204)) respond OL_NOT_REACHABLE'
+                        description: 'Reasons provided by ALT to be pre-fixed with OL_. If (NOT (200 OR 204)) respond OL_DID_NOT_REACH_*'
               examples:
                 if-successful:
                   value:
