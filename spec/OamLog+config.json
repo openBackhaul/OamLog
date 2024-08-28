@@ -1010,7 +1010,7 @@
             "http-server-interface-1-0:http-server-interface-pac": {
               "http-server-interface-capability": {
                 "application-name": "OamLog",
-                "release-number": "2.1.1",
+                "release-number": "2.1.2",
                 "application-purpose": "Logs OaM requests for documentation purposes.",
                 "data-update-period": "http-server-interface-1-0:DATA_UPDATE_PERIOD_TYPE_REAL_TIME",
                 "owner-name": "Thorsten Heinze",
@@ -1088,7 +1088,7 @@
                 "auth": {
                   "api-key": "API key not yet defined."
                 },
-                "index-alias": "ol-2-1-2"
+                "index-alias": "ol-2-0-1"
               },
               "elasticsearch-client-interface-status": {
                 "operational-state": "elasticsearch-client-interface-1-0:OPERATIONAL_STATE_TYPE_NOT_YET_DEFINED",

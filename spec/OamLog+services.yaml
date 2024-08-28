@@ -88,7 +88,7 @@ clients:
       uuid: ol-2-1-2-tcp-c-es-1-0-0-000
     elasticsearch-client:
       uuid: ol-2-1-2-es-c-es-1-0-0-000
-      index-alias: ol-2-1-2
+      index-alias: ol-2-0-1
 
   - http-client:
       application-name: OamLog
