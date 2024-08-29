@@ -32,6 +32,7 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
         let timestampOfCurrentRequest = new Date();
         try {
             operationKeyUpdateNotificationService.turnONNotificationChannel(timestampOfCurrentRequest);
+
             const result = await CreateLinkForInquiringOamRecords(applicationName,
                 releaseNumber,
                 user,
@@ -39,16 +40,19 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
                 traceIndicator,
                 customerJourney,
                 traceIndicatorIncrementer++);
+            let statusForCreateLinkForInquiringServiceRecords = {}
             if (result['status'] != 200) {
-                resolve({
+                statusForCreateLinkForInquiringServiceRecords = {
                     "successfully-connected": false,
                     "reason-of-failure": "OL_UNKNOWN"
-                });
+                }
+
             } else if (result['status'] == 200 && !result['data']['client-successfully-added']) {
-                resolve({
+                statusForCreateLinkForInquiringServiceRecords = {
                     "successfully-connected": false,
                     "reason-of-failure": `OL_${result['data']['reason-of-failure']}`
-                });
+                }
+
             } else {
                 let forwardingKindName = "RegardApplicationCausesSequenceForInquiringOamRecords.RequestForInquiringOamRecords";
                 let operationClientUuid = await getConsequentOperationClientUuid(forwardingKindName, applicationName, releaseNumber);
@@ -56,12 +60,11 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
                 let isOperationKeyUpdated = await operationKeyUpdateNotificationService.waitUntilOperationKeyIsUpdated(operationClientUuid, timestampOfCurrentRequest, waitTime);
 
                 if (!isOperationKeyUpdated) {
-                    resolve(
-                        {
-                            "successfully-connected": false,
-                            "reason-of-failure": "OL_MAXIMUM_WAIT_TIME_TO_RECEIVE_OPERATION_KEY_EXCEEDED"
-                        }
-                    );
+                    statusForCreateLinkForInquiringServiceRecords = {
+                        "successfully-connected": false,
+                        "reason-of-failure": "OL_MAXIMUM_WAIT_TIME_TO_RECEIVE_OPERATION_KEY_EXCEEDED"
+                    }
+
                 } else {
                     const result = await RequestForInquiringOamRecords(applicationName,
                         releaseNumber,
@@ -72,12 +75,11 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
                         traceIndicatorIncrementer++)
 
                     if (result['status'] != 204) {
-                        resolve(
-                            {
-                                "successfully-connected": false,
-                                "reason-of-failure": "OL_UNKNOWN"
-                            }
-                        );
+                        statusForCreateLinkForInquiringServiceRecords = {
+                            "successfully-connected": false,
+                            "reason-of-failure": "OL_UNKNOWN"
+                        }
+
                     }
                     else {
                         let maximumNumberOfAttemptsToCreateLink = await IntegerProfile.getIntegerValueForTheIntegerProfileNameAsync("maximumNumberOfAttemptsToCreateLink");
@@ -92,28 +94,30 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
                             );
                             if (attempts == maximumNumberOfAttemptsToCreateLink &&
                                 (result['status'] == 200 && result['data']['client-successfully-added'] == false)) {
-                                resolve({
+                                statusForCreateLinkForInquiringServiceRecords = {
                                     "successfully-connected": false,
                                     "reason-of-failure": `OL_${result['data']['reason-of-failure']}`
-                                });
-                            } else if(attempts == maximumNumberOfAttemptsToCreateLink && result['status'] != 200){
-                                resolve({
+                                }
+
+                            } else if (attempts == maximumNumberOfAttemptsToCreateLink && result['status'] != 200) {
+                                statusForCreateLinkForInquiringServiceRecords = {
                                     "successfully-connected": false,
                                     "reason-of-failure": "OL_UNKNOWN"
-                                });
-                            }else {
+                                }
+
+                            } else {
                                 if (result['status'] != 200) {
-                                    resolve({
+                                    statusForCreateLinkForInquiringServiceRecords = {
                                         "successfully-connected": false,
                                         "reason-of-failure": "OL_UNKNOWN"
-                                    });
-                                    break;
+                                    }
+
                                 } else if (result['status'] == 200 && !result['data']['client-successfully-added']) {
-                                    resolve({
+
+                                    statusForCreateLinkForInquiringServiceRecords = {
                                         "successfully-connected": false,
                                         "reason-of-failure": `OL_${result['data']['reason-of-failure']}`
-                                    });
-                                    break;
+                                    }
                                 } else {
                                     let operationServerUuidOfRecordOamRequest = "ol-2-1-0-op-s-is-004";
                                     let isOperationServerKeyUpdated = await operationKeyUpdateNotificationService.waitUntilOperationKeyIsUpdated(
@@ -121,25 +125,30 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
                                         timestampOfCurrentRequest,
                                         waitTime);
                                     if (!isOperationServerKeyUpdated) {
-                                        resolve({
+                                        statusForCreateLinkForInquiringServiceRecords = {
                                             "successfully-connected": false,
                                             "reason-of-failure": "OL_MAXIMUM_WAIT_TIME_TO_RECEIVE_OPERATION_KEY_EXCEEDED"
-                                        });
-                                        break;
+                                        }
+
                                     } else {
-                                        resolve({
-                                            "successfully-connected": true
-                                        });
-                                        break;
+                                        statusForCreateLinkForInquiringServiceRecords = {
+                                            'successfully-connected': true
+                                        }
+
                                     }
                                 }
+                                break;
                             }
                         }
 
                     }
                 }
             }
-
+            if (Object.keys(statusForCreateLinkForInquiringServiceRecords).length > 0) {
+                resolve(statusForCreateLinkForInquiringServiceRecords)
+            } else {
+                throw "Operation is not success";
+            }
         } catch (error) {
             reject(error);
         } finally {
