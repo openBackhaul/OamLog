@@ -23,5 +23,5 @@ USER node
 # Bundle app source
 COPY --chown=node:node . .
 
-EXPOSE 3027
+EXPOSE 3034
 CMD [ "node", "index.js" ]
