@@ -42,7 +42,7 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
             if (result['status'] != 200) {
                 resolve({
                     "successfully-connected": false,
-                    "reason-of-failure": "OL_UNKNOWN"
+                    "reason-of-failure": "OL_DID_NOT_REACH_ALT"
                 });
             } else if (result['status'] == 200 && !result['data']['client-successfully-added']) {
                 resolve({
@@ -75,7 +75,7 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
                         resolve(
                             {
                                 "successfully-connected": false,
-                                "reason-of-failure": "OL_UNKNOWN"
+                                "reason-of-failure": "OL_DID_NOT_REACH_NEW_APPLICATION"
                             }
                         );
                     }
@@ -99,13 +99,13 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
                             } else if(attempts == maximumNumberOfAttemptsToCreateLink && result['status'] != 200){
                                 resolve({
                                     "successfully-connected": false,
-                                    "reason-of-failure": "OL_UNKNOWN"
+                                    "reason-of-failure": "OL_DID_NOT_REACH_ALT"
                                 });
                             }else {
                                 if (result['status'] != 200) {
                                     resolve({
                                         "successfully-connected": false,
-                                        "reason-of-failure": "OL_UNKNOWN"
+                                        "reason-of-failure": "OL_DID_NOT_REACH_ALT"
                                     });
                                     break;
                                 } else if (result['status'] == 200 && !result['data']['client-successfully-added']) {
