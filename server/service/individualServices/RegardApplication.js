@@ -39,11 +39,16 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
                 traceIndicator,
                 customerJourney,
                 traceIndicatorIncrementer++);
-            if (result['status'] != 200) {
+            if (result['status'].toString() == "408" || result['status'].toString() == "404") {
                 resolve({
                     "successfully-connected": false,
                     "reason-of-failure": "OL_DID_NOT_REACH_ALT"
                 });
+            }else if(result['status'].toString().startsWith("5")){ 
+                statusForCreateLinkForInquiringServiceRecords = {
+                    "successfully-connected": false,
+                    "reason-of-failure": "OL_ALT_UNKNOWN"
+                }
             } else if (result['status'] == 200 && !result['data']['client-successfully-added']) {
                 resolve({
                     "successfully-connected": false,
@@ -71,15 +76,19 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
                         customerJourney,
                         traceIndicatorIncrementer++)
 
-                    if (result['status'] != 204) {
+                    if(result['status'].toString() == "408" || result['status'].toString() == "404"){
                         resolve(
                             {
                                 "successfully-connected": false,
                                 "reason-of-failure": "OL_DID_NOT_REACH_NEW_APPLICATION"
                             }
                         );
-                    }
-                    else {
+                    }else if(result['status'].toString().startsWith("5")){
+                        statusForCreateLinkForInquiringServiceRecords = {
+                            "successfully-connected": false,
+                            "reason-of-failure": "OL_UNKNOWN"
+                        }
+                    }else {
                         let maximumNumberOfAttemptsToCreateLink = await IntegerProfile.getIntegerValueForTheIntegerProfileNameAsync("maximumNumberOfAttemptsToCreateLink");
                         for (let attempts = 1; attempts <= maximumNumberOfAttemptsToCreateLink; attempts++) {
                             const result = await CreateLinkForReceivingOamRecords(applicationName,
@@ -102,12 +111,17 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
                                     "reason-of-failure": "OL_DID_NOT_REACH_ALT"
                                 });
                             }else {
-                                if (result['status'] != 200) {
+                                if(result['status'].toString() == "408" || result['status'].toString() == "404"){
                                     resolve({
                                         "successfully-connected": false,
                                         "reason-of-failure": "OL_DID_NOT_REACH_ALT"
                                     });
                                     break;
+                                } else if(result['status'].toString().startsWith("5")){
+                                    statusForCreateLinkForInquiringServiceRecords = {
+                                        "successfully-connected": false,
+                                        "reason-of-failure": "OL_ALT_UNKNOWN"
+                                    }
                                 } else if (result['status'] == 200 && !result['data']['client-successfully-added']) {
                                     resolve({
                                         "successfully-connected": false,
