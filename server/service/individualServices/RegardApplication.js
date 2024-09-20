@@ -84,7 +84,7 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
                             resultForCreateLinks = validateResponseFromALT(result)
                             
                             if(resultForCreateLinks["successfully-connected"]) {
-                                let operationServerUuidOfRecordOamRequest = "ol-2-1-0-op-s-is-004";
+                                let operationServerUuidOfRecordOamRequest = "ol-2-1-2-op-s-is-004";
                                 let isOperationServerKeyUpdated = await operationKeyUpdateNotificationService.waitUntilOperationKeyIsUpdated(
                                     operationServerUuidOfRecordOamRequest,
                                     timestampOfCurrentRequest,
