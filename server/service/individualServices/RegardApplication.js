@@ -30,9 +30,10 @@ const operationKeyUpdateNotificationService = require('onf-core-model-ap/applica
 exports.regardApplication = function (applicationName, releaseNumber, user, xCorrelator, traceIndicator, customerJourney, traceIndicatorIncrementer) {
     return new Promise(async function (resolve, reject) {
         let timestampOfCurrentRequest = new Date();
+        let result;
         try {
             operationKeyUpdateNotificationService.turnONNotificationChannel(timestampOfCurrentRequest);
-            const result = await CreateLinkForInquiringOamRecords(applicationName,
+            result = await CreateLinkForInquiringOamRecords(applicationName,
                 releaseNumber,
                 user,
                 xCorrelator,
@@ -41,7 +42,7 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
                 traceIndicatorIncrementer++);
 
             let resultForCreateLinks;
-            resultForCreateLinks = processResponseForCreatingLinkService(result, true)
+            resultForCreateLinks = validateResponseFromALT(result)
             if (resultForCreateLinks["successfully-connected"]) {
                 let forwardingKindName = "RegardApplicationCausesSequenceForInquiringOamRecords.RequestForInquiringOamRecords";
                 let operationClientUuid = await getConsequentOperationClientUuid(forwardingKindName, applicationName, releaseNumber);
@@ -55,7 +56,7 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
                     }
 
                 } else {
-                    const result = await RequestForInquiringOamRecords(applicationName,
+                    result = await RequestForInquiringOamRecords(applicationName,
                         releaseNumber,
                         user,
                         xCorrelator,
@@ -63,11 +64,15 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
                         customerJourney,
                         traceIndicatorIncrementer++)
 
-                    resultForCreateLinks = processResponseForCreatingLinkService(result, false)
-                    if (resultForCreateLinks["successfully-connected"]) {
+                    if (result['status'] != 204) {
+                        resultForCreateLinks = {
+                            "successfully-connected": false,
+                            "reason-of-failure": "OL_DID_NOT_REACH_NEW_APPLICATION"
+                        }
+                    } else {
                         let maximumNumberOfAttemptsToCreateLink = await IntegerProfile.getIntegerValueForTheIntegerProfileNameAsync("maximumNumberOfAttemptsToCreateLink");
                         for (let attempts = 1; attempts <= maximumNumberOfAttemptsToCreateLink; attempts++) {
-                            const result = await CreateLinkForReceivingOamRecords(applicationName,
+                            result = await CreateLinkForReceivingOamRecords(applicationName,
                                 releaseNumber,
                                 user,
                                 xCorrelator,
@@ -76,7 +81,7 @@ exports.regardApplication = function (applicationName, releaseNumber, user, xCor
                                 traceIndicatorIncrementer++
                             );
 
-                            resultForCreateLinks = processResponseForCreatingLinkService(result, true)
+                            resultForCreateLinks = validateResponseFromALT(result)
                             
                             if(resultForCreateLinks["successfully-connected"]) {
                                 let operationServerUuidOfRecordOamRequest = "ol-2-1-0-op-s-is-004";
@@ -316,31 +321,25 @@ async function isOutputMatchesContextAsync(fcPort, context) {
     return (context == (applicationName + releaseNumber));
 }
 
-function processResponseForCreatingLinkService(response, isApplicationALT) {
-    let result = {};
+function validateResponseFromALT(response) {
+    let result = {
+        "successfully-connected": false
+    };
     try {
         let responseCode = response.status;
         if (!responseCode.toString().startsWith("2")) {
-            if (responseCode.toString() == "408" || responseCode.toString() == "404") {
-                result["successfully-connected"] = false;
-                if (isApplicationALT) {
-                    result["reason-of-failure"] = `OL_DID_NOT_REACH_ALT`;
-                } else {
-                    result["reason-of-failure"] = `OL_DID_NOT_REACH_NEW_APPLICATION`;
-                }
-
-            } else if (responseCode.toString() == "400"){
-                result["successfully-connected"] = false;
+            if (responseCode == 408 || responseCode == 404 || responseCode == 503) {
+                result["reason-of-failure"] = `OL_DID_NOT_REACH_ALT`;
+            } else if (responseCode.toString().startsWith("4")) {
                 result["reason-of-failure"] = `OL_UNKNOWN`;
-            }
-            else {
-                result["successfully-connected"] = false;
+            } else if (responseCode.toString().startsWith("5")) {
                 result["reason-of-failure"] = `OL_ALT_UNKNOWN`;
+            } else {
+                result["reason-of-failure"] = `OL_UNKNOWN`;
             }
         } else {
             let responseData = response.data;
             if (!responseData["client-successfully-added"]) {
-                result["successfully-connected"] = false;
                 result["reason-of-failure"] = `OL_${responseData["reason-of-failure"]}`;
             } else {
                 result["successfully-connected"] = true;
@@ -348,7 +347,6 @@ function processResponseForCreatingLinkService(response, isApplicationALT) {
         }
     } catch (error) {
         console.log(error);
-        result["successfully-connected"] = false;
         result["reason-of-failure"] = `OL_UNKNOWN`;
     }
     return result;
