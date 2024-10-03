@@ -69,7 +69,7 @@ exports.getElasticsearchClientOperationalState = async function(uuid) {
 exports.getElasticsearchClientServiceRecordsPolicy = async function(uuid) {
   var value = await elasticsearchService.getElasticsearchClientServiceRecordsPolicyAsync(uuid);
   var response = {};
-  response['application/json'] = {
+  response = {
     "elasticsearch-client-interface-1-0:service-records-policy" : value
   };
   return response;
