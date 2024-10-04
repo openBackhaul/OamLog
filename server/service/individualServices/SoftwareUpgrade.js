@@ -99,8 +99,13 @@ async function PromptForBequeathingDataCausesTransferOfListOfApplications(user, 
                         traceIndicator + "." + traceIncrementer++,
                         customerJourney
                     );
-                    if (!result || !result.data["successfully-connected"]) {
-                        throw forwardingKindNameOfTheBequeathOperation + " forwarding is not success for the input" + JSON.stringify(requestBody);
+                    let errorMessage = forwardingKindNameOfTheBequeathOperation + "forwarding is not success for the input" + JSON.stringify(requestBody);
+                    if( result != undefined && result.data != undefined){
+                        if(!result.data["successfully-connected"]){
+                            throw errorMessage
+                        }
+                    }else{
+                        throw errorMessage
                     }
 
                 } catch (error) {
