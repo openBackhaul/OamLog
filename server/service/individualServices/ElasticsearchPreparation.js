@@ -20,6 +20,29 @@ module.exports = async function prepareElasticsearch() {
         console.error(`Elasticsearch unavailable. Skipping Elasticsearch configuration.`);
         return;
     }
+    let body = {
+        "elasticsearch-client-interface-1-0:service-records-policy" : {
+        "service-records-policy-name": "ol_service_records_policy",
+        "phases": {
+          "hot": {
+            "min-age": "30s",
+            "actions": {
+              "rollover": {
+                "max-age": "30d"
+              }
+            }
+          },
+          "delete": {
+            "min-age": "5d",
+            "actions": {
+              "delete": {
+                "delete-searchable-snapshot": true
+              }
+            }
+          }
+        }}
+    };
+    await elasticsearchService.putElasticsearchClientServiceRecordsPolicyAsync(undefined, body);
     await createIndexTemplate();
     await elasticsearchService.createAlias();
     console.log('Elasticsearch is properly configured!');
@@ -54,7 +77,7 @@ async function createIndexTemplate() {
             index_patterns: `${indexAlias}-*`,
             template: {
                 settings: {
-                    'index.lifecycle.rollover_alias': indexAlias
+                    'index.lifecycle.name': "ol_service_records_policy",
                 }
             }
         }
