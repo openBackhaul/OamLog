@@ -78,6 +78,8 @@ async function createIndexTemplate() {
             template: {
                 settings: {
                     'index.lifecycle.name': "ol_service_records_policy",
+                    'index.lifecycle.rollover_alias': indexAlias
+                    
                 }
             }
         }
