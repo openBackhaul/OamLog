@@ -1186,7 +1186,7 @@
             "layer-protocol-name": "http-client-interface-1-0:LAYER_PROTOCOL_NAME_TYPE_HTTP_LAYER",
             "http-client-interface-1-0:http-client-interface-pac": {
               "http-client-interface-configuration": {
-                "application-name": "OamLog",
+                "application-name": "OldRelease",
                 "release-number": "2.1.1"
               }
             }
